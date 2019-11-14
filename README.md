@@ -14,31 +14,25 @@ No momento estão implementadas as seguintes aplicações no PIC:<br />
 
 ![PIC](https://luizbitencourt.files.wordpress.com/2016/09/pic18f4550.gif?w=630&zoom=2)<br />
 
-Aplicações a serem implementadas:<br />
-
-<ul>
-  <li>Item1</li>
-  <li>Item2</li>
-  <li>Item3</li>
-</ul><br />
-
 ### Medidor de combustível
-
+A medição do combustível é feita utilizando um sensor capacitivo. O sensor capacitivo funciona como.....(adicionar explicação)
 
 
 
 ### Leitura do RPM e da Velocidade
 A leitura do RPM e da Velocidade é feita utilizando sensores de efeito hall, que funcionam como um detector de campo magnético. No pneu dianteiro e no virabrequim do motor foram colocados 2 ímãs, de forma que, a cada rotação de seus eixos, um sinal será enviado para o PIC pelo sensor. Esse sinal se comporta como uma perna de baixa, pois a tensão presente nos fios pula de 5 para 0 Volts cada vez que o sensor identifica a presença do ímã. Para se contabilizar o RPM do motor basta saber quantas vezes esse processo se repete em 1 segundo e depois multiplicar por 60. Entretanto, para calcular a velocidade do carro, precisamos multiplicar o número de rotações do pneu pelo seu diâmetro. Esses valores são posteriormente enviados ao display para exibição no carro. 
 
-![PIC](https://luizbitencourt.files.wordpress.com/2016/09/pic18f4550.gif?w=630&zoom=2)<br />
+![Sensor de Efeito Hall](https://http2.mlstatic.com/kit-2-sensores-tecnotron-indutivo-1-sensor-capacitivo-D_NQ_NP_782659-MLB28824081579_112018-F.jpg)<br />
 
 
 
 ### Exibição dos valores no display
+Os valores exibidos no display são o RPM e a Velocidade. Essa exibição é feita....(adicionar explicação)
 
 
 
 ### Transmissao dos valores do PIC para o Arduino
+Para transmitir os dados do PIC do Arduino estamos utilizando uma funcionalidade do pic conhecida como.....(adicionar explicação)
 
 
 ## Arduino
