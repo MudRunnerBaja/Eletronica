@@ -21,12 +21,12 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   // Código para pegar tempo de aceleração:
-  Serial.print(digitalRead(sensor30));
+  //Serial.print(digitalRead(sensor30));
   if (digitalRead(sensor30) == !HIGH && contado30 == false) {
 
     tempoace = millis();
     tempoant = millis();
-    Serial.print("O carro acabou de passar aqui!\n");
+    Serial.println("O carro acabou de passar aqui!\n");
     Serial.print("Tempo: ");
     Serial.print(tempoace / 1000);
     contado30 = true;
@@ -38,12 +38,12 @@ void loop() {
     if (inicio == true) {
       tempoinicial = millis();
       inicio = false;
-      Serial.print("Iniciado o teste");
+      Serial.println("Iniciado o teste");
     }
 
     if (contado30 == true) {
       tempofinal = millis() - tempoinicial;
-      Serial.print("Teste finalizado!\n");
+      Serial.println("Teste finalizado!\n");
       Serial.print("Tempo final: ");
       Serial.print(tempofinal);
     }
