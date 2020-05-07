@@ -13,8 +13,10 @@ void loop() {
 
   // Código para pegar tempo de aceleração: 
 
-    //Serial.println("Estado do sensor_30m:"); 
-    Serial.println(sensor30); 
+    //Serial.println("Estado do sensor_30m:");
+    if(digitalRead(sensor30) == 0){ 
+      Serial.println(digitalRead(sensor30));
+      } 
 
 
 } 

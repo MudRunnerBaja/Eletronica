@@ -1,4 +1,4 @@
-int sensor30 = 0; 
+int sensor30;
 int sensorfinal = 6; 
 float tempoant = 0; 
 float tempoace = 0; 
@@ -14,8 +14,7 @@ bool final = false;
 void setup() { 
 
   // put your setup code here, to run once: 
-
-  pinMode(sensor30, INPUT_PULLUP); 
+ 
   pinMode(sensorfinal, INPUT_PULLUP); 
   Serial.begin(9600); 
 
@@ -27,15 +26,15 @@ void loop() {
 
   // Código para pegar tempo de aceleração: 
 
-if (Serial.available() > 0) { 
+if (Serial.available()) { 
 
 // atribuindo o valor do serial.read para o sensor30 
 
-  sensor30 = Serial.read(); 
+ sensor30 = Serial.read(); 
 
 } 
 
-  if (sensor30 == 0 && contado30 == false) { 
+  if (sensor30 == '0' && contado30 == false) { 
 
     tempoace = millis(); 
     tempoant = millis(); 
@@ -44,15 +43,15 @@ if (Serial.available() > 0) {
     Serial.println(tempoace / 1000); 
     contado30 = true; 
 
-  } 
+  }
 
   
 
   // Código para passagem final: 
 
-  if (digitalRead(sensorfinal) == !HIGH) { 
+  if (digitalRead(sensorfinal) == 0) { 
 
-    if (inicio == true) { 
+    if (inicio) { 
 
       tempoinicial = millis(); 
       inicio = false; 
