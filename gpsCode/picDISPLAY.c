@@ -81,7 +81,7 @@ void interrupt(){
 
 void main() {
      PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
-     UART1_Init(9600);
+
      GIE_bit = 1;
      PEIE_bit = 1;
      INT0IE_bit = 1;

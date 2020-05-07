@@ -1,4 +1,3 @@
-
 char txt[768];
 char *string;
 int i,ready;
@@ -76,17 +75,17 @@ void checarCombustivel(void){
 
 void TELEMETRIA(int rpm, int vel,int comb){
      char rpmstring[5],velstring[5],combstring[5];
-     
+
      sprintf(rpmstring, "%d", rpm);
      UART1_Write_Text("rpm:");
      UART1_Write_Text(rpmstring);
      UART1_Write(13);
-     
+
      sprintf(velstring, "%d", vel);
      UART1_Write_Text("vel:");
      UART1_Write_Text(velstring);
      UART1_Write(13);
-     
+
      sprintf(combstring, "%d", comb);
      UART1_Write_Text("comb:");
      UART1_Write_Text(combstring);
@@ -115,7 +114,7 @@ void GPS(){
 
 
       }
-      
+
 
 }
 
@@ -124,11 +123,11 @@ void interrupt(){
      if(TMR1IF_bit){
 
               ready = 1;
-              TMR1H= 0x00;
-              TMR1L= 0x00;
+              TMR1H= 0xF3;
+              TMR1L= 0xC8;
               TMR1IF_bit = 0;
-     
-     
+
+
      }
 
      if(RCIF_bit){
@@ -141,7 +140,7 @@ void interrupt(){
 
      }
 
-     
+
      if (INT0IF_bit){
         portaRpmRecebeuSinal++;     //Variavel que armazena o total de sinais recebidos pelo motor
 
@@ -154,7 +153,7 @@ void interrupt(){
         INT1IF_bit = 0;
 
      }
-     
+
 
 }
 
@@ -171,10 +170,13 @@ void main() {
            INT1IE_bit = 1;
            INTEDG1_bit = 0;
            TMR1IE_bit = 1;
-           RD16_bit = 1;
-           TMR1H = 0x00;  TMR1L = 0x00;
-           TMR1ON_bit = 1;
+           T1CKPS1_bit = 1;
+           T1CKPS0_bit = 1;
            
+           RD16_bit = 1;
+           TMR1H = 0xF3;  TMR1L = 0xC8;
+           TMR1ON_bit = 1;
+
 
            TRISA   = 0x00;
            TRISB   = 0b00001111;
@@ -185,7 +187,7 @@ void main() {
            while(1){
 
 
-           
+
                if(ready){
                     count++;
                     ready = 0;
@@ -194,8 +196,8 @@ void main() {
                     LATA = digits[digit];
                     LATD = segs[(num / mods[digit])];
                     digit = nexts[digit];
-                     
-                     if (count == 74){
+
+                     if (count == 200){
                           count = 0;
                           value = ~value;
                           LATC0_bit = value;
@@ -209,6 +211,6 @@ void main() {
 
                      }
                }
-           
+
            }
 }
