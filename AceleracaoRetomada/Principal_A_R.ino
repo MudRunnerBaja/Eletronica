@@ -34,7 +34,7 @@ if (Serial.available()) {
 
 } 
 
-  if (sensor30 == '0' && contado30 == false) { 
+  if (sensor30 == '@' && contado30 == false) { 
 
     tempoace = millis(); 
     tempoant = millis(); 
