@@ -15,7 +15,7 @@ void loop() {
 
     //Serial.println("Estado do sensor_30m:");
     if(digitalRead(sensor30) == 0){ 
-      Serial.println(digitalRead(sensor30));
+      Serial.println('@');
       } 
 
 
