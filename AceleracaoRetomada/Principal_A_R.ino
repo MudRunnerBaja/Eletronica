@@ -3,6 +3,7 @@ int sensor30;
 int sensorfinal = 6;
 int vel = 0;
 int rpm = 0;
+char data;
 float tempoant = 0;
 float tempoace = 0;
 float tempofinal = 0;
@@ -11,37 +12,41 @@ bool contado30 = false;
 bool contadoinicio = false;
 bool inicio = true;
 bool final = false;
-bool recebevel = false;
-bool receberpm = false;
-bool mostrarvel = false;
+bool lendorpm = false;
 
-
-SoftwareSerial m30(10, 11);
+//Declarando as comunicações
+SoftwareSerial ace(10, 11);
+SoftwareSerial carro(8, 9);
 
 void setup() {
-
-  // put your setup code here, to run once:
-
   pinMode(sensorfinal, INPUT_PULLUP);
 
-  m30.begin(9600);
+  ace.begin(9600);
   Serial.begin(9600);
 
 }
 
-
-
 void loop() {
-
-  // Código para pegar tempo de aceleração:
-  if (mostrarvel == true) {
-    Serial.print(vel);
-    mostrarvel = false;
+  //Recebendo 30m sensor:
+  ace.listen();
+  while (ace.available()) {
+    sensor30 = ace.read();
   }
 
-  if (m30.available()) {
-    sensor30 = m30.read();
+  //Recebendo velocidade e rpm:
+  carro.listen();
+  while (carro.available()) {
+    data = carro.read();
+    if (data == '!' || lendorpm == true) {
+      rpm = carro.read();
+      lendorpm = true;
+    }
+
+    else {
+      vel = carro.read();
+    }
   }
+  lendorpm = false;
 
   if (sensor30 == '@' && contado30 == false) {
 
@@ -51,35 +56,24 @@ void loop() {
     Serial.print("Tempo 30 metros: ");
     Serial.println(tempoace / 1000);
     contado30 = true;
-
   }
-
-
 
   // Código para passagem final:
 
   if (digitalRead(sensorfinal) == 0) {
-
+    
     if (inicio) {
-
       tempoinicial = millis();
       inicio = false;
       Serial.println("Iniciado o teste");
-
     }
 
-
-
     if (contado30 == true && final == false) {
-
       tempofinal = millis() - tempoinicial;
       Serial.println("\nTeste finalizado!\n");
       Serial.print("Tempo final: ");
       Serial.println((tempofinal + tempoace) / 1000);
       final = true;
-
     }
-
   }
-
 }
