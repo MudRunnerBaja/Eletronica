@@ -1,8 +1,35 @@
+#define PRECISAO_DA_FILTRAGEM 10
+
+unsigned int guardaValoresRpm[PRECISAO_DA_FILTRAGEM];
+unsigned int guardaValoresVel[PRECISAO_DA_FILTRAGEM];
 
 int ready,count,value;
 unsigned long int num=0,nextNum = 0;
 unsigned int digit = 0;
-int portaRpmRecebeuSinal, portaVelRecebeuSinal,vel,rpm;
+int portaRpmRecebeuSinal, portaVelRecebeuSinal,numvel,numrpm;
+int i = 0;
+
+void filtrarValores(unsigned int Rpm, unsigned int Vel){
+
+    unsigned long somaValoresRpm = 0, somaValoresVel = 0;
+
+    for(i = PRECISAO_DA_FILTRAGEM - 1; i > 0; i--){
+        guardaValoresRpm[i] = guardaValoresRpm[i-1];
+        guardaValoresVel[i] = guardaValoresVel[i-1];
+    }
+
+    guardaValoresRpm[0] = Rpm;
+    guardaValoresVel[0] = Vel;
+
+    for (i = 0; i < PRECISAO_DA_FILTRAGEM; i++){
+        somaValoresRpm = somaValoresRpm + guardaValoresRpm[i];
+        somaValoresVel = somaValoresVel + guardaValoresVel[i];
+    }
+
+    numrpm = somaValoresRpm/PRECISAO_DA_FILTRAGEM;
+    numvel = somaValoresVel/PRECISAO_DA_FILTRAGEM;
+
+}
 
 unsigned char segs[10] = {
     0b11000000,//0
@@ -113,7 +140,7 @@ void main() {
               
               
               }
-              if(count == 100){
+              if(count == 25){
               
 
                        value = ~value;
@@ -121,13 +148,15 @@ void main() {
                        count = 0;
 
                        
-                       vel = portaVelRecebeuSinal*1.5;
-                       rpm = portaRpmRecebeuSinal*60;
+                       numvel = portaVelRecebeuSinal*6;
+                       numrpm = portaRpmRecebeuSinal*240;
+                       
+                       filtrarValores(numrpm,numvel);
                        
                        portaVelRecebeuSinal = 0;
                        portaRpmRecebeuSinal = 0;
                        
-                       nextNum = (vel * 100 + (rpm /100));
+                       nextNum = (numvel * 100 + (numrpm /100));
                        
                        
               
