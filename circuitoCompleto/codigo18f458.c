@@ -164,6 +164,7 @@ void interrupt(){
 void main()
 {
 char texto[8];
+int temperatura;
 
    PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
    CMCON   = 0x0F;
@@ -208,6 +209,7 @@ char texto[8];
                         value = ~value;
                         LATC1_bit = value;
                         WordToStr( Max6675Data.temperature >> 1, texto );
+                        temperatura = atoi(texto);
                         GPS();
                         Lcd_Out( 2, 1, "Temp: " );
                         Lcd_Out_CP( texto+2 );
@@ -221,6 +223,12 @@ char texto[8];
                         UART1_Write(13);
                         portaRpmRecebeuSinal = 0; portaVelRecebeuSinal = 0;
                         checarCombustivel();
+                        if(temperatura >= 120){
+                             LATD.F0 = 1;
+                        }
+                        else{
+                             LATD.F0 = 0;
+                        }
                }
            
            }

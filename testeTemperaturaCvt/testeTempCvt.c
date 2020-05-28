@@ -1,9 +1,12 @@
 //Habilitar as seguintes bibliotecas:
-// - Lcd
+// - Lcd  e Lcd_Constants
 // - SPI
 // - Conversions e C_String
+// - Uart
+// - C_Stdlib
 
 #include <built_in.h>
+#define tempmax 120
 
 sbit LCD_RS at RB5_bit;
 sbit LCD_EN at RB4_bit;
@@ -54,7 +57,7 @@ unsigned tmp;
 void main()
 {
 char texto[8];
-
+int temperatura;
    PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
    UART1_Init(9600);
    SPI1_Init();
@@ -63,6 +66,7 @@ char texto[8];
    Lcd_Cmd( _LCD_CURSOR_OFF );
    Lcd_Cmd( _LCD_CLEAR );
    Lcd_Out( 1, 6, "MAX6675" );
+   TRISD = 0;
 
    while(1)
    {
@@ -76,7 +80,15 @@ char texto[8];
       UART1_Write_Text("temperatura:");
       UART1_Write_Text(texto);
       UART1_Write(13);
+      
+      temperatura = atoi(texto);
 
+      if (temperatura >= tempmax){
+      LATD.F0 = 1;
+      }
+      else{
+      LATD.F0 = 0;
+      }
       Delay_ms( 1000 );
    }
 
