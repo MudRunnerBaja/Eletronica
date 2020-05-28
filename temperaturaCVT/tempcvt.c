@@ -50,7 +50,8 @@ unsigned tmp;
   return(tmp);
 }
 
-
+ int tempmax = 120;
+ TRISD = 0;
 void main()
 {
 char texto[8];
@@ -77,6 +78,10 @@ char texto[8];
       UART1_Write_Text(texto);
       UART1_Write(13);
 
+      if (tmp>= tempmax){
+      LAT.D0 = 1;
+      
+      }
       Delay_ms( 1000 );
    }
 
