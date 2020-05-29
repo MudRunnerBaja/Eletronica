@@ -19,7 +19,7 @@ sbit LCD_D5_Direction at TRISB2_bit;
 sbit LCD_D6_Direction at TRISB1_bit;
 sbit LCD_D7_Direction at TRISB0_bit;
 
-//Copie e cole o código da bilioteca aqui!!!
+//Copie e cole o codigo da bilioteca aqui!!!
 
 sbit MAX6675_CS at RC0_Bit;
 sbit MAX6675_CS_Direction at TRISC0_Bit;
@@ -50,11 +50,16 @@ unsigned tmp;
   return(tmp);
 }
 
- int tempmax = 120;
- TRISD = 0;
-void main()
+
+ #define TEMPMAX 120
+ int temperatura;
+
+ void main()
 {
-char texto[8];
+
+
+ 
+  char texto[8];
 
    PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
    UART1_Init(9600);
@@ -64,7 +69,7 @@ char texto[8];
    Lcd_Cmd( _LCD_CURSOR_OFF );
    Lcd_Cmd( _LCD_CLEAR );
    Lcd_Out( 1, 6, "MAX6675" );
-
+   TRISD0_bit = 0;
    while(1)
    {
       *(unsigned*)&Max6675Data = MAX6675_Read();
@@ -77,12 +82,12 @@ char texto[8];
       UART1_Write_Text("temperatura:");
       UART1_Write_Text(texto);
       UART1_Write(13);
-
-      if (tmp>= tempmax){
-      LAT.D0 = 1;
+      // converting the string 'texto' in a int value
+      temperatura = atoi(texto);
       
+      if ( temperatura >= TEMPMAX){
+      LATD0_bit = 1;
       }
       Delay_ms( 1000 );
    }
-
 }
