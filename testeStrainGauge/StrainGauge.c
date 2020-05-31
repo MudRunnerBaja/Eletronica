@@ -5,9 +5,9 @@
 
 #define GF 2                            //Sensibilidade do strain Gauge
 #define VIN 5                           //Alimentação da ponte de wheatstone(normalmente 5V)
-#define AMP 600                         //Valor da amplificação do Amplificador
+#define AMP 150                         //Valor da amplificação do Amplificador
 #define ELASTICIDADE 172000             //Modulo de elasticidade do material em Newtons por mm²
-#define AREA 314                       //Area da seção transversal do material em mm²
+#define AREA 314                        //Area da seção transversal do material em mm²
 
 double calibragem = 0;
 int count = 0;
