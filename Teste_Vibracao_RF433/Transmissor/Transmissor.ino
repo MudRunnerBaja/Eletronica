@@ -10,7 +10,8 @@
 
 MPU6050 mpu6050(Wire);
 
-long timer = 0;
+const unsigned long repeticao = 50;
+unsigned long tempoPrecedente = 0;
 
 struct tipoPacote{
   float valor_X;
@@ -19,8 +20,6 @@ struct tipoPacote{
 };
 
 tipoPacote pacote;
-
-int AcX,AcY,AcZ;
 
 void setup (){
  Serial.begin(9600);
@@ -38,10 +37,12 @@ void setup (){
   pinMode(pinLED, OUTPUT); 
 }
 
-void loop() {
+void loop() { 
+
+  unsigned long tempoDomillis = millis ();
    mpu6050.update();
 
-   if(millis() - timer > 1000){
+   if(tempoDomillis - tempoPrecedente >= repeticao){
    
       pacote.valor_X = mpu6050.getAccX();
       pacote.valor_Y = mpu6050.getAccY();
@@ -52,12 +53,11 @@ void loop() {
       digitalWrite(pinLED, LOW);
   
   
-      /*Serial.println("=======================================================");
-      Serial.print("accX : ");Serial.print(mpu6050.getAccX());
-      Serial.print("\taccY : ");Serial.print(mpu6050.getAccY());
-      Serial.print("\taccZ : ");Serial.println(mpu6050.getAccZ());
-
-      Serial.println("=======================================================\n");*/
-      timer = millis();
+      Serial.println("=======================================================");
+      Serial.print("accX : ");Serial.print( pacote.valor_X);
+      Serial.print("\taccY : ");Serial.print(pacote.valor_Y);
+      Serial.print("\taccZ : ");Serial.println(pacote.valor_Z);
+      Serial.println("=======================================================\n");
+      tempoPrecedente = tempoDomillis;
     }
 }
