@@ -35,6 +35,102 @@ Após uma análise dos módulos a serem utilizados, o escolhido foi o módulo ma
 ![max6675](https://user-images.githubusercontent.com/57758959/103159764-2d9ad180-47ac-11eb-93e6-ab4ec3b03b7b.jpg)<br />
 Fig 1 - Termopar max6675<br />
 
+```c
+ /*
+Código do pic 18f4550 para simulação da temperatura da CVT
+
+Habilitar as seguintes bibliotecas:
+- Lcd  e Lcd_Constants
+- SPI
+- Conversions e C_String e C_Type
+- Uart
+- C_Stdlib
+
+Clock padrão: 20MHz
+*/
+
+#include <built_in.h>
+#define tempmax 120
+
+sbit LCD_RS at RB5_bit;
+sbit LCD_EN at RB4_bit;
+sbit LCD_D4 at RB3_bit;
+sbit LCD_D5 at RB2_bit;
+sbit LCD_D6 at RB1_bit;
+sbit LCD_D7 at RB0_bit;
+
+sbit LCD_RS_Direction at TRISB5_bit;
+sbit LCD_EN_Direction at TRISB4_bit;
+sbit LCD_D4_Direction at TRISB3_bit;
+sbit LCD_D5_Direction at TRISB2_bit;
+sbit LCD_D6_Direction at TRISB1_bit;
+sbit LCD_D7_Direction at TRISB0_bit;
+
+sbit MAX6675_CS at RC0_Bit;
+sbit MAX6675_CS_Direction at TRISC0_Bit;
+
+union{
+  char state:1;
+  char deviceID:1;
+  char open:1;
+  char temperature:12;
+  char sign:1;
+  unsigned output;
+}Max6675Data;
+
+void MAX6675_Init(){
+  MAX6675_CS_Direction = 0;
+  MAX6675_CS = 1;
+}
+
+unsigned Max6675_Read(){
+unsigned tmp;
+  MAX6675_CS = 0;
+  Hi(tmp) = SPI1_Read(0);
+  Lo(tmp) = SPI1_Read(0);
+  MAX6675_CS = 1;
+  return(tmp);
+}
+
+void main(){
+char texto[8];
+int temperatura;
+   PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
+   UART1_Init(9600);
+   SPI1_Init();
+   MAX6675_Init();
+   Lcd_Init();
+   Lcd_Cmd( _LCD_CURSOR_OFF );
+   Lcd_Cmd( _LCD_CLEAR );
+   Lcd_Out( 1, 6, "Temperatura CVT" );
+   TRISD = 0;
+
+   while(1)
+   {
+      *(unsigned*)&Max6675Data = MAX6675_Read();
+
+      WordToStr( Max6675Data.temperature >> 1, texto );
+      Lcd_Out( 2, 1, "Temp: " );
+      Lcd_Out_CP( texto+2 );
+      Lcd_Chr_CP( 223 );
+      Lcd_Chr_CP( 'C' );
+      UART1_Write_Text("temperatura:");
+      UART1_Write_Text(texto);
+      UART1_Write(13);
+
+      temperatura = atoi(texto);
+
+      if (temperatura >= tempmax){
+      LATD.F0 = 1;
+      }
+      else{
+      LATD.F0 = 0;
+      }
+      Delay_ms( 1000 );
+   }
+}
+```
+
 ### GPS para localização e mapeamento do carro
 O mapeamento de percurso é uma informação de suma importância para nossa equipe, visto que, com ela, é possível analisarmos possíveis falhas de direção, analisar as maiores dificuldades de nossos pilotos, saber se e onde o carro parou, e entre outros dados. O módulo GPS serve para transmitir em tempo real a localização do baja, a partir de dados como a longitude e a latitude. Esses dados podem posteriormente serem processados para mapear os locais visitados pelo carro, bem como sua atual posição. <br />
 
@@ -43,6 +139,91 @@ O módulo escolhido pela equipe foi o  GPS GY-NEO6MV2, por ser mais barato e de 
 ![gps](https://user-images.githubusercontent.com/57758959/103160082-a2233f80-47af-11eb-986d-ffa3a41f8a7b.png)<br />
 Fig 2 - GPS GY-NEO6MV2<br />
 
+```c
+/*
+Código do pic 18f4550 para simulação do GPS
+
+Habilitar as seguintes bibliotecas:
+- UART
+- C_String
+
+Clock padrão: 20MHz
+*/
+
+char txt[768];   // variavel txt para guardar todos os caracteres enviados pelo GPS
+char *string;    // ponteiro para guardar a informação de interesse
+int i,count,value;
+
+void GPS(){
+      int j;
+      string = strstr(txt,"$GPGGA");    //String GPGGA contem as informações de latitude e longitude
+
+      // Se a variavel string não for vazia, enviamos a latitude e longitude pela telemetria
+      if(string != 0) {
+          UART_Write_Text("latitude:");
+          for(j = 18; j<27; j++)
+              UART_Write(string[j]);
+          UART_Write(13);
+          UART_Write_Text("longitude:");
+          for(j = 30; j<40; j++)
+              UART_Write(string[j]);
+          UART_Write(13);
+      }
+}
+
+void interrupt(){
+     if(TMR1IF_bit){
+              count++;
+              TMR1H= 0x0B;
+              TMR1L= 0xDC;
+              TMR1IF_bit = 0;
+     }
+
+     if(RCIF_bit){
+              txt[i++] = UART1_Read();
+              if(i==768) i=0;
+              RCIF_bit = 0;
+     }
+}
+
+void main() {
+           PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1; // setando PORTA como digital ( evitar bugs )
+           UART1_Init(9600);
+
+           /*Configuração do timer 1 para obter o estouro desejado em ms
+             Valores obtidos utilizando o clock padrão de 20MHz e preescaler de 8
+
+              TMR1H = 0x0B;  TMR1L = 0xDC; ----> estouro de 100ms
+              TMR1H = 0x85;  TMR1L = 0xEE; ----> estouro de 50ms
+              TMR1H = 0xE7;  TMR1L = 0x96; ----> estouro de 10ms
+              TMR1H = 0xF3;  TMR1L = 0xCB; ----> estouro de 5ms
+              TMR1H = 0xFD;  TMR1L = 0x8F; ----> estouro de 1ms
+
+           */
+           TMR1IE_bit = 1;
+           T1CON = 0b10110001;
+           TMR1H = 0x0B;  TMR1L = 0xDC;
+
+           TRISC.F0 = 0; // porta rc0 definida como saída
+
+           // habilitando as interrupções globais, por periféricos e por UART
+           GIE_bit = 1;
+           PEIE_bit = 1;
+           RCIE_bit = 1;
+
+           while(1){
+
+                    // count é incrementado a cada 100ms pelo timer 1, logo esse if será executado a cada 1segundo
+                     if (count == 10){
+                          count = 0;
+                          value = ~value;
+                          LATC.F0 = value;
+                          GPS();
+                     }
+
+           }
+}
+```
 ### Medidor de combustível
 O sistema de controle de nível de combustível é um dos circuitos mais importantes no carro, visto que com a noção do volume de gasolina presente no tanque, é possível prevenir a pane seca, que elimina a equipe da prova. Portanto, visando obter um maior tempo de carro na pista sem precisar reabastecer, é imprescindível que tenhamos um bom funcionamento nesse sistema.<br /> 
 
