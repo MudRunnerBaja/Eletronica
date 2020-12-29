@@ -79,9 +79,9 @@ Dado agora que já somos capazes de implementar na prática todos os projetos ac
 De modo geral, serão 2 desafios a serem superados. O primeiro consiste em juntar todos os projetos em um só. Já o segundo se resume na criação de um sistema supervisório e interativo, o qual ficou decidido que será um site.<br />
 Para transmitir nossos dados, a equipe optou por escolher os seguintes componentes:<br />
 
-*__Módulo HC-12:__ Tal módulo foi selecionado pela sua facilidade de uso, possui um custo baixo e atender a meta de telemetria de 800m, se utilizada com uma antena adequada. A antena helicoidal (que vem junto ao módulo) tem uma limitação de até 300-500m dependendo do local. É importante estar atento a escolha do próprio módulo, devendo ele ser ORIGINAL. Existem versões genéricas que limitam o alcance.*<br />  
+- *__Módulo HC-12:__ Tal módulo foi selecionado pela sua facilidade de uso, possui um custo baixo e atender a meta de telemetria de 800m, se utilizada com uma antena adequada. A antena helicoidal (que vem junto ao módulo) tem uma limitação de até 300-500m dependendo do local. É importante estar atento a escolha do próprio módulo, devendo ele ser ORIGINAL. Existem versões genéricas que limitam o alcance.*<br />  
 
-*__Antena monopólo vertical:__ https://www.youtube.com/watch?v=nQ4qYwILRjA Nesse video, há uma validação pratica com 2 diferentes antenas usando o HC12. Explicando o porquê de utilizar a antena monopólio vertical. Como ela pode ser fabricada por nós mesmos, de forma simples e barata, ela foi selecionada.*<br />
+- *__Antena monopólo vertical:__ https://www.youtube.com/watch?v=nQ4qYwILRjA Nesse video, há uma validação pratica com 2 diferentes antenas usando o HC12. Explicando o porquê de utilizar a antena monopólio vertical. Como ela pode ser fabricada por nós mesmos, de forma simples e barata, ela foi selecionada.*<br />
 
 ![hc12](https://user-images.githubusercontent.com/39687418/103317085-3f2ce500-4a09-11eb-96c7-58145a00bb46.PNG)
 ![antena](https://user-images.githubusercontent.com/39687418/103317095-4522c600-4a09-11eb-9319-c5dd3230839c.PNG)<br />
@@ -109,10 +109,10 @@ O Strain Gauge ou um extensômetro é um sensor de força capaz de medir a defor
 
 Antes de implementar no carro esse teste, pretendemos aplicar um método de validação. Para validação, faremos primeiro um teste de medir peso de objetos com o strain gauge e compararemos os resultados com o de uma balança. Caso não ocorra muita diferença entre as medições, procederemos para os testes no carro. O teste ainda está a ser decidido, mas temos algumas opções: 
 
-*Cortar, em formato de quadrado, um pedaço de metal e colocar um strain gauge em cada canto –Com isso, conseguimos pegar a força que o objeto a ser medido vai exercer em praticamente toda área. Depois de todas as conexões feitas e o circuito pronto, calibrar, com o código, o sistema e fazer o teste.*
+- *Cortar, em formato de quadrado, um pedaço de metal e colocar um strain gauge em cada canto –Com isso, conseguimos pegar a força que o objeto a ser medido vai exercer em praticamente toda área. Depois de todas as conexões feitas e o circuito pronto, calibrar, com o código, o sistema e fazer o teste.*
 
 
-*Colocar o strain gauge num pedaço de tubo normal e comparar os dados obtidos com o software de simulação ANSYS.*
+- *Colocar o strain gauge num pedaço de tubo normal e comparar os dados obtidos com o software de simulação ANSYS.*
 
 
 
