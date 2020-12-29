@@ -13,7 +13,6 @@ No momento foram implementadas as seguintes funcionalidades no carro:<br />
   <li>GPS para localização e mapeamento do carro</li>
   <li>Medidor de combustível</li>
   <li>Leitura do RPM e da Velocidade</li>
-  <li>Exibição dos valores no display</li>
   <li>Telemetria do carro</li>
   <li>Chamada para o box</li>
 </ul><br />
@@ -75,12 +74,25 @@ Fig 6 - Filtro atual implementado pela equipe<br />
 ![filtronovo](https://user-images.githubusercontent.com/57758959/103160513-f4b32a80-47b4-11eb-8550-59f0dd2b4f46.PNG)<br />
 Fig 7 - Filtro que pretendemos implementar no futuro<br />
 
-### Exibição dos valores no display
-
 ### Telemetria
+Dado agora que já somos capazes de implementar na prática todos os projetos acima mencionados, damos início ao nosso projeto da Telemetria. Irá funcionar como um sistema supervisório, em que todos os dados coletados são enviados por meio de um transmissor para nosso box. Dessa forma, todos da equipe poderam observar e perceber o que está se passando no carro, ajudando nas tomadas de decisão durante a prova.<br />
+De modo geral, serão 2 desafios a serem superados. O primeiro consiste em juntar todos os projetos em um só. Já o segundo se resume na criação de um sistema supervisório e interativo, o qual ficou decidido que será um site.<br />
+Para transmitir nossos dados, a equipe optou por escolher os seguintes componentes:<br />
+
+*__Módulo HC-12:__ Tal módulo foi selecionado pela sua facilidade de uso, possui um custo baixo e atender a meta de telemetria de 800m, se utilizada com uma antena adequada. A antena helicoidal (que vem junto ao módulo) tem uma limitação de até 300-500m dependendo do local. É importante estar atento a escolha do próprio módulo, devendo ele ser ORIGINAL. Existem versões genéricas que limitam o alcance.*<br />  
+
+*__Antena monopólo vertical:__ https://www.youtube.com/watch?v=nQ4qYwILRjA Nesse video, há uma validação pratica com 2 diferentes antenas usando o HC12. Explicando o porquê de utilizar a antena monopólio vertical. Como ela pode ser fabricada por nós mesmos, de forma simples e barata, ela foi selecionada.*<br />
+
+![hc12](https://user-images.githubusercontent.com/39687418/103317085-3f2ce500-4a09-11eb-96c7-58145a00bb46.PNG)
+![antena](https://user-images.githubusercontent.com/39687418/103317095-4522c600-4a09-11eb-9319-c5dd3230839c.PNG)<br />
+Fig 8 - Módulo HC 12 e antena<br />
 
 ### Chamada para o box
+A comunicação entre o piloto e o box durante a competição é algo muito importante para a equipe. Dessa forma, decidimos implementar um sistema de chamada para o box que será adicionado ao projeto da telemetria que a equipe já tem. Esse sistema consiste em uma comunicação bilateral onde o piloto tem a capacidade de avisar a equipe que ele está indo para o box ou a equipe pode chamar o piloto para ir para o box para reabastecer ou devido a um problema detectado no carro. <br />
+A implementação será feita por meio da adição de um diodo LED no painel do carro para avisar o piloto que ele precisa ir para o box (a equipe chamando o piloto) e uma chave Push Button (Botão) para o piloto avisar a equipe que está indo ou querendo ir para o box. <br />
 
+![box](https://user-images.githubusercontent.com/39687418/103317573-4f918f80-4a0a-11eb-8a07-47d8383fcef5.PNG)<br />
+Fig 9 - LEDs e Push Button<br />
 
 ## Testes
 Os seguintes testes estão em desenvolvimento para auxíliar a equipe quanto a otimização dos componentes do carro<:br />
@@ -92,10 +104,17 @@ Os seguintes testes estão em desenvolvimento para auxíliar a equipe quanto a o
   <li>Teste de vibração</li>
 </ul><br />
   
-![PIC](https://luizbitencourt.files.wordpress.com/2016/09/pic18f4550.gif?w=630&zoom=2)<br />
-
-
 ### Teste de Strain Gauge
+O Strain Gauge ou um extensômetro é um sensor de força capaz de medir a deformação de uma superfície que sofreu a ação de uma força. Devido à sua composição, a resistência elétrica desse sensor varia proporcionalmente com a deformação do corpo de prova. Dessa forma, a deformação sofrida pelo corpo de prova é transferida para o extensômetro que a recebe na forma da variação linear da sua resistência elétrica. O teste/projeto de strain gauge é muito importante para o subsistema de eletrônica, pois fornecerá a equipe dados concretos para serem parâmetros no projeto de futuros carros. <br />
+
+Antes de implementar no carro esse teste, pretendemos aplicar um método de validação. Para validação, faremos primeiro um teste de medir peso de objetos com o strain gauge e compararemos os resultados com o de uma balança. Caso não ocorra muita diferença entre as medições, procederemos para os testes no carro. O teste ainda está a ser decidido, mas temos algumas opções: 
+
+*Cortar, em formato de quadrado, um pedaço de metal e colocar um strain gauge em cada canto –Com isso, conseguimos pegar a força que o objeto a ser medido vai exercer em praticamente toda área. Depois de todas as conexões feitas e o circuito pronto, calibrar, com o código, o sistema e fazer o teste.*
+
+
+*Colocar o strain gauge num pedaço de tubo normal e comparar os dados obtidos com o software de simulação ANSYS.*
+
+
 
 ### Teste de retomada e aceleração
 
