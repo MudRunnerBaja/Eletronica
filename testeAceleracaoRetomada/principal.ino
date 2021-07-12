@@ -19,7 +19,7 @@ void setup() {
   m30.begin(9600);
 
   pinMode(ir_sensor,INPUT_PULLUP)
-  attachInterrupt(digitalPinToInterrupt(ir_sensor), interruptFunc, RISING);
+  attachInterrupt(digitalPinToInterrupt(ir_sensor), interruptFunc, FALLING);
 
 }
 
