@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Baja dashboard</title>
+    <link rel="stylesheet" href="./styles/all.css">
+
+</head>
+
+<body>
+
+        <div class="content">
+            <div class="header">
+                <div class="menu" id="mob_menu">
+                    <i class="fas fa-bars fa-3x"></i>
+                </div>
+                <header class="main_header">
+                    <h1>Baja Dashboard</h1>
+                </header>
+            </div><!-- Header -->
+
+            <div class="main_box" id="room">
+
+                <div class="measure_container">
+                    
+                    <div class="side"> 
+                        <div class="measure_box">
+                            <div class="measure_title">
+                                <h2>Transmissão</h2>
+                            </div>  
+
+                            <div class="measure_line">
+                                <div class="measure">
+                                    <div class="display_measure">
+                                        <h1 id="vel"><strong>0</strong></h1>
+                                        <p> m/s</p>
+                                    </div>
+                                    
+                                    <h3>Velocidade</h3>
+                                </div>
+
+                                <div class="measure">
+                                    <div class="display_measure">
+                                        <h1 id="rpm"><strong>0</strong></h1>
+                                        <p> Rpm</p>
+                                    </div>
+                                    
+                                    <h3>Rotação</h3>
+                                </div>
+
+                            </div>
+                 
+                        </div>
+                            
+                    </div><!-- Temperature -->
+
+                    
+                    <div class="side">
+                        <div class="measure_box">
+                            <div class="measure_title">
+                                <h2>Comunicação</h2>
+                            </div>  
+
+                            <div class="measure_line">
+                                <div class="measure">
+                                    <div class="display_measure">
+                                        <div class="con_status"></div>
+                                        <p></p>
+                                    </div>
+                                    <h3>Status</h3>
+                                </div>
+
+                                <div class="measure" >
+                                    <div class="display_measure">
+                                        <div class="piloto"></div>
+                                        <p> </p>
+                                    </div>
+                                    <h3>Piloto</h3>
+                                </div>
+
+                                <div class="measure" >
+                                    <div class="display_measure">
+                                        <div class="box"></div>
+                                        <p> </p>
+                                    </div>
+                                    <h3>Box</h3>
+                                </div>
+                                
+                            </div>
+                 
+                        </div>
+                    </div><!-- Tempo -->
+                    
+                    
+
+                    <div class="side"> 
+                        <div class="measure_box">
+                            <div class="measure_title">
+                                <h2>Combustível</h2>
+                            </div>  
+
+                            <div class="measure_line">
+                                <div class="measure">
+                                    <div class="display_measure">
+                                        <div class="red_comb"></div>
+                                    </div>
+                                    <h3>Vazio</h3>
+                                </div>
+
+                                <div class="measure" >
+                                    <div class="display_measure">
+                                        <div class="yellow_comb"></div>
+                                    </div>
+                                    <h3>Médio</h3>
+                                </div>
+
+                                <div class="measure" >
+                                    <div class="display_measure">
+                                        <div class="green_comb"></div>
+                                    </div>
+                                    <h3>Cheio</h3>
+                                </div>
+                                
+                            </div>
+                 
+                        </div>
+                            
+                    </div><!-- Combustivel -->
+                </div><!-- Measurement -->
+                
+                <div class="control_container">
+
+                    <div class="control_title">
+                        <button class="control_buttom" id="parar_carro">Andar Carro</button>
+                        <h1>Controle Geral</h1>
+                        <button class="control_buttom" id="comecar_corrida">Começar corrida</button>
+                    </div>
+
+                    <div class="control_itens">
+                        <div class="time">
+                            <div class="control_item_title"><h2>Tempo</h2></div>
+
+                            <div class="timers">
+                                <p>Integral: <span id="tempo_integral">00.00</span></p>
+                                <p>Parado: <span id="tempo_parado">00.00</span></p>
+                                <p>Andando: <span id="tempo_andando">00.00</span></p>
+                                <p>Média volta: <span id="tempo_medio">00.00</span></p>
+                                <p>Ultima volta: <span id="tempo_ultima_volta">00.00</span></p>
+                                <p>Melhor volta: <span id="tempo_melhor_volta">00.00</span></p>
+                                <p>Voltas Completas: <span id="voltas">0</span></p>
+                                <button class="control_buttom" id="volta_botao">Volta Completa</button>
+                            </div>
+
+                        </div>
+
+                        <div class="gps">
+                            <div class="control_item_title"><h2>GPS</h2></div>
+                        </div>
+
+                        <div class="car_data">
+                            <div class="control_item_title"><h2>Baja</h2></div>
+
+                            <div class="timers">
+                                <p>Vel Máx: <span id="vel_max">00.00</span></p>
+                                <p>Vel Média: <span id="vel_media">00.00</span></p>
+                                <p>RPM Máx: <span id="rpm_max">00.00</span></p>
+                                <p>RPM Médio: <span id="rpm_medio">00.00</span></p>
+                                <p>CVT Temp: <span id="temp_cvt">00.00</span></p>
+                                <p>CVT Temp Médio: <span id="temp_cvt_medio">00.00</span></p>
+                                <p>CVT Max Temp: <span id="temp_cvt_max">00.00</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div><!-- Control content -->
+
+            </div><!-- Page content -->
+        </div>
+    </div>
+
+    <script src  ="/socket.io/socket.io.js"></script>
+    <script src  ="scripts/dashboard.js"></script>
+
+</body>

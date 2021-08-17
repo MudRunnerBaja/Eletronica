@@ -1,0 +1,33 @@
+int estadoDoCombustivel;
+
+void checarCombustivel(void){
+          if(PORTA.F1 == 1){
+                LATD4_bit = 0;
+                LATD5_bit = 0;
+                LATD6_bit = 1;
+                estadoDoCombustivel = 1;
+
+            }else if(PORTA.F4 == 1){
+                LATD4_bit = 0;
+                LATD5_bit = 1;
+                LATD6_bit = 0;
+                estadoDoCombustivel = 2;
+
+            }else{
+                LATD4_bit = 1;
+                LATD5_bit = 0;
+                LATD6_bit = 0;
+                estadoDoCombustivel = 3;
+            }
+}
+
+void main() {
+       PCFG3_bit = 1; PCFG2_bit = 1; PCFG1_bit = 1; PCFG0_bit = 1;
+       
+       TRISA = 0b00010010;
+       TRISD = 0;
+       
+       while(1){
+           checarCombustivel();
+       }
+}
