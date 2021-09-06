@@ -1,0 +1,253 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+main {
+  height: 100%;
+  width: 100vw;
+  background-color: #013a63;
+  font-family: "Roboto", sans-serif;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 20px;
+  margin-top: 40px;
+  height: calc(100vh - 80px);
+  width: calc(100% - 40px);
+}
+
+.fundo {
+  position: relative;
+  z-index: 1;
+}
+
+.img {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url("../images/Escudo.png") center center;
+  opacity: 0.2;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.medidores,
+.informacoes,
+.ultimo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+#medidor1 {
+  margin-bottom: 45px;
+}
+
+.medidor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.escalaCombustivel {
+  position: relative;
+  bottom: 100px;
+  height: 10px;
+  width: 150px;
+  background: linear-gradient(
+    to right,
+    #e2062c 20% 30%,
+    #fffa00 30% 70%,
+    #009966 70% 80%
+  );
+}
+
+.informacao_medidor {
+  color: azure;
+  font-family: "Orbitron", sans-serif;
+  font-size: 45px;
+  padding-top: 30px;
+  /* font-weight: bold; */
+  /* font-size: 25px; */
+}
+
+.texto_medidor {
+  color: azure;
+  /* font-size: large; */
+}
+
+.arco {
+  width: 200px;
+  height: 100px; /* as the half of the width */
+  border-top-left-radius: 110px; /* 100px of height + 10px of border */
+  border-top-right-radius: 110px; /* 100px of height + 10px of border */
+  border: 10px solid #e5e5e5;
+  border-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tempo,
+.medias {
+  border: 10px solid #e5e5e5;
+  border-radius: 30px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.tempo h2,
+.medias h2 {
+  color: azure;
+  /* font-weight: bold; */
+  /* font-size: 21px; */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.tempo ul,
+.medias ul {
+  width: 100%;
+}
+
+.tempo li,
+.medias li {
+  display: flex;
+  width: 58%;
+  justify-content: flex-end;
+  /* font-weight: bold; */
+}
+
+.informacao_medido,
+.informacao_tempo {
+  /* font-size: 20px; */
+  color: #e5e5e5;
+}
+
+.gps,
+.cvt_temp {
+  border: 10px solid #e5e5e5;
+  border-radius: 30px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.gps {
+  height: 200px;
+}
+
+.cvt_temp {
+  height: 150px;
+  flex-direction: row;
+  padding-left: 10px;
+}
+
+.titulo_gps {
+  position: relative;
+  bottom: 80px;
+  left: 130px;
+  color: azure;
+  /* font-weight: bold; */
+}
+
+#titulo_cvt_temp {
+  position: relative;
+  top: 60px;
+  left: 40px;
+  color: azure;
+}
+
+#temperatura_cvt {
+  font-size: 30px;
+  /* font-weight: bold; */
+  color: azure;
+}
+
+.status {
+  width: 200px;
+  border-radius: 80px;
+  background-color: #e5e5e5;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.status h3 {
+  position: relative;
+  bottom: 10px;
+}
+
+.comunicacao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.comunicacao_visual {
+  background-color: #013a63; /*#e2062c;  Retorno ao Boxe*/
+  /* background-color: #009966; */
+  height: 40px;
+  width: 70px;
+  border-radius: 20px;
+}
+
+/* icones */
+.iconeBaja {
+  position: relative;
+  right: 85px;
+  bottom: 160px;
+  width: 80px;
+  transform: rotate(-38deg);
+}
+
+.iconeCombustivel {
+  position: relative;
+  left: 80px;
+  bottom: 130px;
+  width: 70px;
+}
+
+.iconeTempo {
+  position: absolute;
+  width: 60px;
+  top: -40px;
+  margin-right: 360px;
+}
+
+.iconeGps {
+  position: relative;
+  bottom: 25px;
+  right: 3px;
+  width: 50px;
+}
+
+.iconeCvt {
+  position: relative;
+  right: 70px;
+  width: 40px;
+}
