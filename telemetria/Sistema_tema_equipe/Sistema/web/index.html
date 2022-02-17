@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MudRunner Dashboard</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <div class="medidores">
+        <div class="medidor" id="medidor1">
+          <div class="arco">
+            <p class="informacao_medidor" id="rpm">0</p>
+          </div>
+          <p class="texto_medidor">RPM</p>
+        </div>
+        <div class="medidor">
+          <div class="arco">
+            <p class="informacao_medidor" id="velocidade">0</p>
+          </div>
+          <p class="texto_medidor">Velocidade</p>
+          <p class="texto_medidor">[km/h]</p>
+          <!-- <img class="iconeBaja" src="./images/iconeBaja.png" /> -->
+        </div>
+        <div class="medidor">
+          <div class="arco" id="arco_combustivel">
+            <p class="informacao_medidor" id="combustivel">Vazio</p>
+          </div>
+          <p class="texto_medidor">Combustível</p>
+          <!-- <img class="iconeCombustivel" src="./images/iconeCombustivel.png" /> -->
+          <div class="escalaCombustivel"></div>
+        </div>
+      </div>
+
+      <div class="informacoes">
+        <div class="tempo">
+          <ul>
+            <li>
+              <p class="informacao_tempo">Total:</p>
+              <p class="informacao_tempo" id="tempo_total">00:00:00</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Parado:</p>
+              <p class="informacao_tempo" id="tempo_parado">00:00:00</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Andando:</p>
+              <p class="informacao_tempo" id="tempo_andando">00:00:00</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Ultima Volta:</p>
+              <p class="informacao_tempo" id="tempo_ultima_volta">00:00:00</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Voltas:</p>
+              <p class="informacao_tempo" id="voltas">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Melhor Volta:</p>
+              <p class="informacao_tempo" id="tempo_melhor_volta">00:00:00</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Média Volta:</p>
+              <p class="informacao_tempo" id="tempo_media_volta">00:00:00</p>
+            </li>
+          </ul>
+          <h1 id="teste_tempo">Tempo</h1>
+          <!-- <img class="iconeTempo" src="./images/iconeTempo.png" /> -->
+        </div>
+        <div class="medias">
+          <ul>
+            <li>
+              <p class="informacao_tempo">Velocidade Máx:</p>
+              <p class="informacao_tempo" id="velocidade_max">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Velocidade Média:</p>
+              <p class="informacao_tempo" id="velocidade_media">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">RPM Máx:</p>
+              <p class="informacao_tempo" id="rpm_max">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">RPM Médio:</p>
+              <p class="informacao_tempo" id="rpm_medio">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Temperatura CVT Máx:</p>
+              <p class="informacao_tempo" id="temperatura_cvt_max">0</p>
+            </li>
+            <li>
+              <p class="informacao_tempo">Temperatura CVT Média:</p>
+              <p class="informacao_tempo" id="temperatura_cvt_media">0</p>
+            </li>
+          </ul>
+          <h1 class="titulo_medias">Valores</h1>
+        </div>
+      </div>
+
+      <div class="ultimo">
+        <div class="gps">
+          <p class="titulo_gps">
+            GPS
+            <!-- GPS<img class="iconeGps" src="./images/iconeGps.png" /> -->
+          </p>
+        </div>
+        <div class="cvt_temp">
+          <img class="iconeCvt" src="./assets/termometro.png" />
+          <p id="temperatura_cvt">0&deg;</p>
+          <p id="titulo_cvt_temp">CVT[&deg;C]</p>
+        </div>
+        <div class="status">
+          <div class="comunicacao">
+            <h2>Box</h2>
+            <div class="comunicacao_visual"></div>
+            <input type="hidden" id="chamada_box" value="false" />
+          </div>
+          <div class="piloto-box">
+            <div class="bola_container">
+              <div class="bola"></div>
+              <!-- <h4>Piloto</h4> -->
+            </div>
+            <div class="bola_container">
+              <div class="bola"></div>
+              <!-- <h4>Box</h4> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="./script/main.js"></script>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "receptor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@serialport/parser-readline": "^10.3.0",
+    "serialport": "^10.3.0",
+    "socket.io-client": "^4.4.1"
+  }
+}

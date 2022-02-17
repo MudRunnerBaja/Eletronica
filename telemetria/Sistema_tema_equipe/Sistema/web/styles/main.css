@@ -1,0 +1,207 @@
+@font-face {
+  font-family: Bebas;
+  src: url("../font/Bebas_Neue/BebasNeue-Regular.ttf");
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-family: Bebas;
+  color: azure;
+}
+
+ul {
+  list-style: none;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-image: url("../assets/background.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: calc(100% - 60px);
+  width: calc(100% - 60px);
+}
+
+.medidores,
+.informacoes,
+.ultimo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 33.3%;
+}
+#medidor1 {
+  margin-bottom: 45px;
+}
+
+.medidor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.informacao_medidor {
+  font-size: 60px;
+  padding-top: 30px;
+  /* font-weight: bold; */
+  /* font-size: 25px; */
+}
+
+.arco {
+  width: 200px;
+  height: 100px; /* as the half of the width */
+  border-top-left-radius: 110px; /* 100px of height + 10px of border */
+  border-top-right-radius: 110px; /* 100px of height + 10px of border */
+  border: 7px solid #e5e5e5;
+  border-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#arco_combustivel,
+#combustivel {
+  border-color: #e2062c;
+  color: #e2062c;
+}
+
+.tempo,
+.medias {
+  border: 5px solid #e5e5e5;
+  border-radius: 150px;
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.tempo h1,
+.medias h1 {
+  margin-left: 25px;
+}
+
+.tempo li,
+.medias li {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Ultimo */
+
+.informacao_medido,
+.informacao_tempo {
+  /* font-size: 20px; */
+  color: #e5e5e5;
+}
+
+.gps,
+.cvt_temp {
+  border: 5px solid #e5e5e5;
+  border-radius: 30px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cvt_temp {
+  border-radius: 100px;
+}
+
+.gps {
+  height: 200px;
+}
+
+.cvt_temp {
+  height: 150px;
+  flex-direction: row;
+  padding-left: 10px;
+}
+
+.titulo_gps {
+  position: relative;
+  bottom: 80px;
+  left: 130px;
+  color: azure;
+  /* font-weight: bold; */
+}
+
+#temperatura_cvt {
+  font-size: 30px;
+  /* font-weight: bold; */
+  color: azure;
+}
+
+.status {
+  width: 200px;
+  border-radius: 80px;
+  background-color: #e5e5e5;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.status h3 {
+  position: relative;
+  bottom: 10px;
+}
+
+.comunicacao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.comunicacao_visual {
+  background-color: #3f3254; /*#e2062c;  Retorno ao Boxe*/
+  /* background-color: #009966; */
+  height: 40px;
+  width: 70px;
+  border-radius: 20px;
+}
+
+.comunicacao h2 {
+  color: black;
+}
+
+#temperatura_cvt {
+  font-size: 60px;
+}
+
+.iconeCvt {
+  height: 50px;
+  width: 50px;
+}
