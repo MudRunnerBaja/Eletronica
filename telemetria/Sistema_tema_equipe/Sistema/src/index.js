@@ -5,6 +5,8 @@ const PORTA = 3000;
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const router = require("./routes/router");
+
 const inicializarBancoDeDados = require("./services/dbService");
 const dadosCarroService = require("./services/dadosCarroService");
 
@@ -13,6 +15,7 @@ inicializarBancoDeDados();
 // Configurações servidor
 app.use(express.json());
 app.use(express.static("web"));
+app.use(router);
 
 server.listen(PORTA, () => {
   console.log(`Escutando na Porta: ${server.address().port} ... `);

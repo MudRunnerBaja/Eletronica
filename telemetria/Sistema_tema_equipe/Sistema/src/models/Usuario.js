@@ -17,7 +17,6 @@ const Usuario = database.define(
 
     imagem: {
       type: Sequelize.STRING,
-      allowNull: false,
     },
     subsistema: {
       type: Sequelize.STRING,
@@ -29,11 +28,9 @@ const Usuario = database.define(
     },
     curso: {
       type: Sequelize.STRING,
-      allowNull: false,
     },
     data: {
       type: Sequelize.DATE,
-      allowNull: false,
       defaultValue: Sequelize.NOW(),
     },
   },

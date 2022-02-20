@@ -1,7 +1,6 @@
-const db = require("../db/db");
 const DadosCarro = require("../models/DadosCarro");
 
-async function adicionar(dados) {
+function adicionar(dados) {
   try {
     DadosCarro.create(dados);
     return { erro: false };
@@ -12,16 +11,12 @@ async function adicionar(dados) {
   }
 }
 
-async function pegarTodosOsDados() {
+function pegarTodos() {
   try {
-    return DadosCarro.findAll();
+    return DadosCarro.findAll({ raw: true });
   } catch (erro) {
     return { erro: true, msg: erro };
   }
 }
 
-async function pegarDadosPorDia(dia) {
-  //
-}
-
-module.exports = { adicionar, pegarTodosOsDados };
+module.exports = { adicionar, pegarTodos };
