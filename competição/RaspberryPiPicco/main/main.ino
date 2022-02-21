@@ -3,6 +3,7 @@
 #include "include/comb.c"
 #include "include/vel.c"
 #include "include/rpm.c"
+#include "include/gps.c"
 #include "include/comunication.c"
 #define TIMER_INTERVAL_MS 1000
 
@@ -17,7 +18,9 @@ bool TimerHandler(struct repeating_timer *t)
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600);  // debug
+  Serial1.begin(9600); // send data;
+  setupGps();
   combSetup();
   setupVel();
   setupRpm();
@@ -31,4 +34,5 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
+  //updateGps(); // ainda não implementado no receptor
 }
