@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
-const PORTA = 3000;
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.static("web"));
 app.use(router);
 
-server.listen(PORTA, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Escutando na Porta: ${server.address().port} ... `);
 });
 

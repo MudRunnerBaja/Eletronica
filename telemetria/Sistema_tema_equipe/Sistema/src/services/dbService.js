@@ -7,6 +7,7 @@ async function inicializarBancoDeDados() {
     return resultado;
   } catch (erro) {
     console.log("Erro na conexão com o banco de dados");
+    console.log(erro);
     return { erro: erro };
   }
 }
