@@ -1,5 +1,6 @@
 int rpmRecieverPort = 4;
 int rpmCounter = 0;
+int rpmGlobal;
 
 void rpmCounterFunc()
 {
@@ -8,9 +9,14 @@ void rpmCounterFunc()
 
 float getRpm()
 {
-    int rpm = rpmCounter * 60;
+    rpmGlobal = rpmCounter * 60;
     rpmCounter = 0;
-    return rpm;
+    return rpmGlobal;
+}
+
+float getRpmValue()
+{
+    return rpmGlobal;
 }
 
 void setupRpm()

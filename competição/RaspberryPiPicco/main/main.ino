@@ -4,6 +4,7 @@
 #include "include/vel.c"
 #include "include/rpm.c"
 #include "include/gps.c"
+#include "include/display.c"
 #include "include/comunication.c"
 #define TIMER_INTERVAL_MS 1000
 
@@ -20,10 +21,12 @@ void setup()
 {
   Serial.begin(9600);  // debug
   Serial1.begin(9600); // send data;
-  setupGps();
+  // setupGps();
   combSetup();
   setupVel();
   setupRpm();
+  setupDisplay();
+  cvtSetup();
 
   // Interval in unsigned long microseconds
   if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, TimerHandler))
@@ -33,6 +36,6 @@ void setup()
 }
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  //updateGps(); // ainda não implementado no receptor
+  // updateGps(); // ainda não implementado no receptor
+  mostrarDados();
 }
