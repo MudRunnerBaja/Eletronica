@@ -37,5 +37,5 @@ void setup()
 void loop()
 {
   // updateGps(); // ainda não implementado no receptor
-  mostrarDados();
+  mostraDados();
 }

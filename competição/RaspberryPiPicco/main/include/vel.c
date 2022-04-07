@@ -3,7 +3,7 @@
 
 int metersPerSignal = (WHEEL_RADIUS * 2 * PI) / (SENSOR_QUANTITY * 100);
 int velCounter = 0;
-int velRecieverPort = 3;
+int velRecieverPort = 28;
 float velGlobal;
 
 float getVel()

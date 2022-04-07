@@ -25,6 +25,11 @@ parser.on("data", (data) => {
   socket.emit("atualizaDados", dadosParaEnvio);
 });
 
+// Eventos do servidor
+socket.on("chamadaProBox", () => {
+  porta.write();
+});
+
 // Funções auxiliares
 function filtrarDados(data) {
   try {
@@ -61,17 +66,7 @@ function validarDado(valor, index) {
 }
 function printarErro(data) {
   console.log("Erro na recepção de dados: " + data);
+  // let date = new Date.now();
+  // fs.writeFileSync("./log/" + date, data + " -> " + date);
   return { erro: true };
 }
-
-// TESTE
-//filtrarDados("MR-22,21.4,3100,89.3,1");
-
-// const data = {
-//   nome: "MR-22",
-//   velocidade: 21.4,
-//   rpm: 3100,
-//   temperaturaCvt: 89.3,
-//   combustivel: 1,
-// };
-// socket.emit("atualizaDados", data);

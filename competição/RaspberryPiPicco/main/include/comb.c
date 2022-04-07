@@ -1,8 +1,8 @@
-int combYellowPort = 5;
-int combGreenPort = 6;
-int ledGreen = 12;
-int ledYellow = 13;
-int ledRed = 14;
+int combYellowPort = 26;
+int combGreenPort = 27;
+int ledGreen = 19;
+int ledYellow = 20;
+int ledRed = 21;
 
 void combSetup()
 {

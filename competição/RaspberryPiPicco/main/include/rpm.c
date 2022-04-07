@@ -1,4 +1,4 @@
-int rpmRecieverPort = 4;
+int rpmRecieverPort = 22;
 int rpmCounter = 0;
 int rpmGlobal;
 
