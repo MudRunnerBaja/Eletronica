@@ -9,8 +9,8 @@ void rpmCounterFunc()
 
 float getRpm()
 {
-    rpmGlobal = rpmCounter * 60;
-    rpmCounter = 0;
+    // rpmGlobal = rpmCounter * 60;
+    rpmGlobal = 1200;
     return rpmGlobal;
 }
 

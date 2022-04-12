@@ -3,26 +3,25 @@
 #define C 7
 #define D 10
 #define E 11
-#define F 12
+#define F_DISPLAY 12
 #define G 13
 
 byte cont = 0;
 int displays[] = {14, 15, 16, 17};
-int contadorDisplay = 0;
 
 const byte tabela_7seg[10][7] =
     {
         // A B C D E F G
-        {1, 1, 1, 1, 1, 1, 0}, // 0
-        {0, 1, 1, 0, 0, 0, 0}, // 1
-        {1, 1, 0, 1, 1, 0, 1}, // 2
-        {1, 1, 1, 1, 0, 0, 1}, // 3
-        {0, 1, 1, 0, 0, 1, 1}, // 4
-        {1, 0, 1, 1, 0, 1, 1}, // 5
-        {1, 0, 1, 1, 1, 1, 1}, // 6
-        {1, 1, 1, 0, 0, 0, 0}, // 7
-        {1, 1, 1, 1, 1, 1, 1}, // 8
-        {1, 1, 1, 1, 0, 1, 1}  // 9
+        {0, 0, 0, 0, 0, 0, 1}, // 0
+        {1, 0, 0, 1, 1, 1, 1}, // 1
+        {0, 0, 1, 0, 0, 1, 0}, // 2
+        {0, 0, 0, 0, 1, 1, 0}, // 3
+        {1, 0, 0, 1, 1, 0, 0}, // 4
+        {0, 1, 0, 0, 1, 0, 0}, // 5
+        {0, 1, 0, 0, 0, 0, 0}, // 6
+        {0, 0, 0, 1, 1, 1, 1}, // 7
+        {0, 0, 0, 0, 0, 0, 0}, // 8
+        {0, 0, 0, 0, 1, 0, 0}  // 9
 };
 
 void escolherDisplay(int contador)
@@ -30,16 +29,19 @@ void escolherDisplay(int contador)
     int i = 0;
     for (i = 0; i < 4; i++)
     {
-        digitalWrite(displays[i], HIGH);
+        if (i == contador)
+            digitalWrite(displays[contador], HIGH);
+        else
+            digitalWrite(displays[i], LOW);
     }
-    digitalWrite(displays[contador], LOW);
 }
 
-void converteValorDisplay(byte valor)
+void converteValorDisplay(int valor)
 {
-    byte pino = 5;
+    int pino = 5;
+    valor = valor > 9 ? 9 : valor;
 
-    for (byte x = 0; x < 6; x++)
+    for (int x = 0; x < 7; x++)
     {
         digitalWrite(pino, tabela_7seg[valor][x]);
         if (pino == 7)
@@ -54,7 +56,7 @@ void setupDisplay()
     int i = 0;
     for (i = 0; i < 4; i++)
     {
-        digitalWrite(displays[i], HIGH);
+        digitalWrite(displays[i], LOW);
         pinMode(displays[i], OUTPUT);
     }
     pinMode(A, OUTPUT);
@@ -62,37 +64,39 @@ void setupDisplay()
     pinMode(C, OUTPUT);
     pinMode(D, OUTPUT);
     pinMode(E, OUTPUT);
-    pinMode(F, OUTPUT);
+    pinMode(F_DISPLAY, OUTPUT);
     pinMode(G, OUTPUT);
 }
 
 void mostraDados()
 {
-    float vel = getVel();
-    int rpm = getRpm();
+    int contaDisplay = 0;
+    float vel = getVelValue();
+    int rpm = getRpmValue();
 
-    escolherDisplay(contadorDisplay);
-    // Milhar RPM
+    // RPM
     int milhar = rpm / 1000;
+    escolherDisplay(contaDisplay);
     converteValorDisplay(milhar);
-    contadorDisplay++;
+    contaDisplay++;
+    delay(1);
 
-    escolherDisplay(contadorDisplay);
-    // Centesimo RPM
     int centesimo = (rpm % 1000) / 100;
+    escolherDisplay(contaDisplay);
     converteValorDisplay(centesimo);
+    contaDisplay++;
+    delay(1);
 
-    escolherDisplay(contadorDisplay);
-    // Decimal velocidade
+    // Velocidade
     int decimal = vel / 10;
-    converteValorDisplay(decimal);
-    contadorDisplay++;
+    escolherDisplay(contaDisplay);
+    converteValorDisplay(vel);
+    contaDisplay++;
+    delay(1);
 
-    escolherDisplay(contadorDisplay);
-    // Unitário velocidade
     int unitario = int(vel) % 10;
+    escolherDisplay(contaDisplay);
     converteValorDisplay(unitario);
-    contadorDisplay++;
-
-    contadorDisplay = 0;
+    contaDisplay++;
+    delay(1);
 }
