@@ -1,6 +1,6 @@
 hc-12 => 0, 1 | 0, 1
 temperatura => 2, 3, 4 | 4, 5, 6
-velocidade => 28 | 34
+velocidade => 18 | 24
 combustivel cima => 27 | 32
 combustivel baixo => 26 | 31
 RPM => 22 | 29
@@ -8,7 +8,7 @@ led vermelho => 21 | 27
 led amarelo => 20 | 26
 led verde => => 19 | 25
 led chamada box => ? 18 | 24 ?
-led temperatura critica => 18 | 24 
+led temperatura critica => 28 | 34 
 Display ABCDEFG => 5, 6, 7, 10, 11, 12, 13 | 7, 9, 10, 14, 15, 16, 17
 Display RPM Milhar, centesimal => 14, 15 | 19, 20
 Display Velocidade Decimal, unitário => 16, 17 | 21, 22 

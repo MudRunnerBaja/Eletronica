@@ -8,7 +8,7 @@
 #define GPIO_CS 3
 #define GPIO_CLK 4
 
-int ledTempCvt = 16;
+int ledTempCvt = 28;
 
 /* Criação de objeto para comunicação com termopar */
 MAX6675 termopar(GPIO_CLK, GPIO_CS, GPIO_SO);
