@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "C:/Users/Felipe/Documents/Baja/sistemas/microcontrolador/KiCad-RP-Pico-main/KiCad-RP-Pico-main/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.kicad_sym")(options "")(descr ""))
+  (lib (name "Lucas")(type "KiCad")(uri "C:/Users/Felipe/Documents/Baja/sistemas/microcontrolador/KiCad-RP-Pico-main/KiCad-RP-Pico-main/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.pretty/Lucas.kicad_sym")(options "")(descr ""))
+)
