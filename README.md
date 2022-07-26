@@ -1,4 +1,4 @@
-![MR-LOGO](https://raw.githubusercontent.com/MudRunnerBaja/Eletronica/tree/master/.github/images/Logo-MudRunner.png)<br />
+![MR-LOGO](https://github.com/MudRunnerBaja/Eletronica/blob/master/.github/images/Logo-MudRunner.png)<br />
 
 # Eletronica
 Repositório a ser usado apenas pelos membros de eletrônica da equipe baja do Cefet-RJ <br />
