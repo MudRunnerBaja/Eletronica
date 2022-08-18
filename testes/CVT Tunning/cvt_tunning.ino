@@ -51,9 +51,13 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
     Ds1302::DateTime now;
     rtc.getDateTime(&now);
     myFile = SD.open(arq);
+    myFile.print("Data ");
     myFile.print(now.day);
     myFile.print("/");
     myFile.print(now.month);
+    myFile.print("/20");
+    myFile.print(now.year);
+    myFile.print(",RPM Motriz,RPM Movida");
     myFile.close();
 }
 
