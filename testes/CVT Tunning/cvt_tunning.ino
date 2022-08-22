@@ -12,9 +12,9 @@ contador1 = contador da motriz / contador2 = contador da movida
 File myFile;
 Ds1302 rtc(30, 32, 31); // 30 - RST ; 31 - DAT ; 32 - CLK
 
-int rpm1, rpm2, velo;
-int hall1, hall2, hall3;
-String arq = "cvt_tunning00.csv";
+int rpm1, rpm2, velo, falha;
+int hall1, hall2, hall3, chipSelect = 53;
+String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2, pulsos3, pulsohora;
 unsigned long timeold, timeold1;
 unsigned int pulsos_por_volta = 1;            //Quantidade de imas na polia
@@ -33,46 +33,108 @@ void contador3(){                            //Contador de pulsos da velocidade
     pulsos3++;
 }
 
+void error(){                               //Vai emitir um sinal no led da placa de acordo com o codigo do erro
+  switch (falha)
+  {
+  case 0:
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
+    break;
+  
+  case 1:
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(50);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(250);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(50);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(750);
+    break;
+
+  case 2:
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(50);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(200);
+  }
+  error();
+}
+
 void criarArquivo(){                        //Função para criar o arquivo e verificar o nome dele, caso o nome do arquivo ja exista
     int i = 0;                              //ele ira aumentar um numero no nome do arquivo, e ira verificar de novo, até que não haja um arquivo do mesmo nome
+    char unidade;
     while (SD.exists(arq) == 1)
     {
         i++;
+        if(i>99){
+          falha = 2;
+          Serial.print("Armazenamento cheio");
+          error();
+        }
+        int unidade, dezena;
         if (i > 9)
         {
-            arq[11] = char(i/10);
-            arq[12] = char(i%10);
+            char y[0];
+            int z;
+
+            z = (i/10);
+            itoa(z,y,10);                 //Converte Int em char
+            arq[4] = y[0];
+
+            z = (i%10);
+            itoa(z,y,10);                 //Converte Int em char
+            arq[5] = y[0];
         }
-        else arq[12] = char(i);
+        else{
+          char y[0];
+
+          itoa(i, y, 10);
+          arq[5] = y[0];
+        }
     }
     Serial.print("Arquivo ");
   	Serial.print(arq);
   	Serial.println(" criado");
     Ds1302::DateTime now;
     rtc.getDateTime(&now);
-    myFile = SD.open(arq);
+    File myFile = SD.open(arq, FILE_WRITE);
+    if (myFile){
+    }else{
+      Serial.print("Erro na abertua/criação do arquivo");
+      falha = 1;
+      error();
+    }
     myFile.print("Data ");
     myFile.print(now.day);
     myFile.print("/");
     myFile.print(now.month);
     myFile.print("/20");
     myFile.print(now.year);
-    myFile.print(",RPM Motriz,RPM Movida");
+    myFile.print(",RPM Motriz,RPM Movida,km/h");
+    myFile.println();
     myFile.close();
 }
 
 void setup()
 {
-  Serial.begin(500000);
+  Serial.begin(115200);
   Serial.println("Inicializando...");
-  Serial.println("CVT Tunning V 1.2");
+  Serial.println("CVT Tunning V 1.3.1");
   pinMode(LED_BUILTIN, OUTPUT);
-  SD.begin();
+  if (!SD.begin(chipSelect)) {
+    Serial.println("Inicialização do cartão falhou");
+    falha = 0;
+    error();
+  }
   rtc.init();
   criarArquivo();
-  hall1 = 2;                                // Define que o sensor hall da motriz sera ligado na porta 2
-  hall2 = 3;                                // Define que o sensor hall da movida sera ligado na porta 3
-  hall3 = 18;                               // Define que o sensor hall da velocidade sera ligado na porta 18
+  delay(1500);  
+  hall1 = 19;                                // Define que o sensor hall da motriz sera ligado na porta 19
+  hall2 = 20;                                // Define que o sensor hall da movida sera ligado na porta 20
+  hall3 = 21;                                // Define que o sensor hall da velocidade sera ligado na porta 21
   pulsos1 = 0;
   pulsos2 = 0;
   pulsos3 = 0;
@@ -81,9 +143,9 @@ void setup()
   velo = 0;
   timeold = 0;
   timeold1 = 0;
-  attachInterrupt(digitalPinToInterrupt(hall1), contador1, FALLING);
-  attachInterrupt(digitalPinToInterrupt(hall2), contador2, FALLING);
-  attachInterrupt(digitalPinToInterrupt(hall3), contador3, FALLING);
+  attachInterrupt(digitalPinToInterrupt(hall1), contador1, RISING);
+  attachInterrupt(digitalPinToInterrupt(hall2), contador2, RISING);
+  attachInterrupt(digitalPinToInterrupt(hall3), contador3, RISING);
   Serial.println("Finalizada a inicalizacao");
 }
 
@@ -94,6 +156,8 @@ void loop()
   {
     detachInterrupt(digitalPinToInterrupt(hall1));
     detachInterrupt(digitalPinToInterrupt(hall2));
+
+    digitalWrite(LED_BUILTIN, HIGH);
     
     rpm1 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos1;
     rpm2 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos2;
@@ -121,8 +185,14 @@ void loop()
     Serial.println(velo, DEC);
     Serial.println();
 
-    myFile = SD.open(arq, FILE_WRITE);      //Grava os dados no cartão SD
-    myFile.println(now.hour);
+    File myFile = SD.open(arq, FILE_WRITE);      //Grava os dados no cartão SD
+    if (myFile){
+    }else{
+      Serial.print("Erro na abertua/criação do arquivo");
+      falha = 1;
+      error();
+    }
+    myFile.print(now.hour);
     myFile.print(":");
     myFile.print(now.minute);
     myFile.print(":");
@@ -133,12 +203,11 @@ void loop()
     myFile.print(rpm2);
     myFile.print(",");
     myFile.print(velo);
+    myFile.println();
     myFile.close();
 
-    digitalWrite(LED_BUILTIN, HIGH);
-    attachInterrupt(digitalPinToInterrupt(hall1), contador1, FALLING);
-    attachInterrupt(digitalPinToInterrupt(hall2), contador2, FALLING);
-
+    attachInterrupt(digitalPinToInterrupt(hall1), contador1, RISING);
+    attachInterrupt(digitalPinToInterrupt(hall2), contador2, RISING);
   }
 
   if (millis() - timeold1 >= 1000)
@@ -150,7 +219,6 @@ void loop()
 
     timeold1 = millis();
     pulsos3 = 0; 
-
-    attachInterrupt(digitalPinToInterrupt(hall3), contador3, FALLING);
+    attachInterrupt(digitalPinToInterrupt(hall3), contador3, RISING);
   }
 }
