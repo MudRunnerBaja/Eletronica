@@ -12,7 +12,8 @@ contador1 = contador da motriz / contador2 = contador da movida
 File myFile;
 Ds1302 rtc(30, 32, 31); // 30 - RST ; 31 - DAT ; 32 - CLK
 
-float rpm1, rpm2, velo, pulsohora;
+int rpm1, rpm2, velo;
+float pulsohora;
 int hall1, hall2, hall3, falha, chipSelect = 53;
 String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2, pulsos3, pulsomin;
@@ -183,7 +184,6 @@ void loop()
     Serial.println(rpm2, DEC);
     Serial.print("Velocidade = ");
     Serial.println(velo, DEC);
-    Serial.println(pulsohora, DEC);
     Serial.println();
 
     File myFile = SD.open(arq, FILE_WRITE);      //Grava os dados no cartão SD
@@ -218,7 +218,6 @@ void loop()
     pulsomin = (60 * 1000 / pulsos_por_volta_velo ) / (millis() - timeold1) * pulsos3;
     pulsohora = pulsomin * 60;
     velo = (circunferencia_pneu / 100000) * pulsohora;                                    //transforma pulsos por hora em km/h
-
     timeold1 = millis();
     pulsos3 = 0; 
     attachInterrupt(digitalPinToInterrupt(hall3), contador3, RISING);
