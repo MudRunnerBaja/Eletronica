@@ -12,14 +12,15 @@ contador1 = contador da motriz / contador2 = contador da movida
 File myFile;
 Ds1302 rtc(30, 32, 31); // 30 - RST ; 31 - DAT ; 32 - CLK
 
-int rpm1, rpm2, velo, falha;
-int hall1, hall2, hall3, chipSelect = 53;
+float rpm1, rpm2;
+int hall1, hall2, hall3, falha, chipSelect = 53;
+int velo;
 String arq = "cvt_00.csv";
-volatile byte pulsos1, pulsos2, pulsos3, pulsohora;
+volatile byte pulsos1, pulsos2, pulsos3, pulsomin;
 unsigned long timeold, timeold1;
 unsigned int pulsos_por_volta = 1;            //Quantidade de imas na polia
 unsigned int pulsos_por_volta_velo = 4;       //Quantidade de imas no disco de freio
-unsigned long circunferencia_pneu = 167.4876; //EM CM
+const float circunferencia_pneu = 167.4876; //EM CM
 
 void contador1(){                             //Contador de pulsos da motriz
     pulsos1++;
@@ -214,8 +215,9 @@ void loop()
   {
     detachInterrupt(digitalPinToInterrupt(hall3)); 
 
-    pulsohora = (360 * 1000 / pulsos_por_volta_velo ) / (millis() - timeold1) * pulsos3;
-    velo = (circunferencia_pneu * 100000) * pulsohora;                                    //transforma pulsos por hora em km/h
+    pulsomin = (60 * 1000 / pulsos_por_volta_velo ) / (millis() - timeold1) * pulsos3;
+    int pulsohora = pulsomin * 60;
+    velo = (circunferencia_pneu / 100000) * pulsohora;                                    //transforma pulsos por hora em km/h
 
     timeold1 = millis();
     pulsos3 = 0; 
