@@ -1,8 +1,14 @@
+/*
+    Escrita de todos os dados no cartão sd
+    A ser revisado e testado
+
+    Earle F. Philhower, III Arduino-Pico Documentation
+    https://arduino-pico.readthedocs.io/_/downloads/en/latest/pdf/
+*/
 #include <SPI.h>
 #include <SD.h>
 
-// Earle F. Philhower, III Arduino-Pico Documentation
-// https://arduino-pico.readthedocs.io/_/downloads/en/latest/pdf/
+
  
  // Definindo os pinos da interface SPI
 #define RXPIN 0 // MISO

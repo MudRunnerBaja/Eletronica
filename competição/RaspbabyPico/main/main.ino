@@ -1,11 +1,13 @@
-#include "RPi_Pico_TimerInterrupt.h"
-#include "include/temp.c"
-#include "include/comb.c"
-#include "include/vel.c"
-#include "include/rpm.c"
-#include "include/gps.c"
-#include "include/display.c"
-#include "include/comunication.c"
+#include "RPi_Pico_TimerInterrupt.h" // Interrupção por tempo
+
+#include "include/temp.cpp" // Temperatura CVT
+#include "include/comb.cpp" // Níveis de combustível
+#include "include/vel.cpp" // Velocidade do carro
+#include "include/rpm.cpp" // RPM do carro
+#include "include/display.cpp" // Placa do display
+#include "include/comunication.cpp" // Comunicação entre bibliotecas e serial
+// #include "include/gps.cpp" // GPS (Não implementado)
+
 #define TIMER_INTERVAL_MS 1000
 
 RPI_PICO_Timer ITimer(0);
@@ -13,7 +15,7 @@ RPI_PICO_Timer ITimer(0);
 // Interrupt callback functions
 bool TimerHandler(struct repeating_timer *t)
 {
-  sendData();
+  sendData(); // communication.cpp <- atualiza os dados
   return true;
 }
 

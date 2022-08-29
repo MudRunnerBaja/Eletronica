@@ -1,21 +1,25 @@
+/* 
+    Implementação da contagem de rpm do carro
+*/
+
 #define WHEEL_RADIUS 26.67
 #define SENSOR_QUANTITY 4
 
 float metersPerSignal = (WHEEL_RADIUS * 2 * PI) / (SENSOR_QUANTITY * 100);
 int velCounter = 0;
-int velRecieverPort = 18;
+int velInputPin = 22;
 float velGlobal;
 
-float getVel()
+float setVel()
 {
     velGlobal = metersPerSignal * velCounter;
     velCounter = 0;
     return velGlobal;
 }
 
-float getVelValue()
+float getVel()
 {
-    return velGlobal;
+    return (velGlobal * (36/10));
 }
 
 void velCounterFunc()
@@ -25,5 +29,5 @@ void velCounterFunc()
 
 void setupVel()
 {
-    attachInterrupt(digitalPinToInterrupt(velRecieverPort), velCounterFunc, RISING);
+    attachInterrupt(digitalPinToInterrupt(velInputPin), velCounterFunc, RISING);
 }

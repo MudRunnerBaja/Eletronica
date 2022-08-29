@@ -1,3 +1,6 @@
+/* 
+    Implementação do led de temperatura crítica da CVT 
+*/
 
 #include <max6675.h>
 #define TEMPERATURA_CRITICA_CVT 80
@@ -8,7 +11,7 @@
 #define GPIO_CS 3
 #define GPIO_CLK 4
 
-int ledTempCvt = 28;
+int ledTempCvt = 18;
 
 /* Criação de objeto para comunicação com termopar */
 MAX6675 termopar(GPIO_CLK, GPIO_CS, GPIO_SO);
@@ -19,7 +22,7 @@ void cvtSetup()
     pinMode(ledTempCvt, OUTPUT);
 }
 
-float getCvtTemperature()
+float setCvtTemperature()
 {
     temperaturaCVT = termopar.readCelsius();
     if (temperaturaCVT > TEMPERATURA_CRITICA_CVT)

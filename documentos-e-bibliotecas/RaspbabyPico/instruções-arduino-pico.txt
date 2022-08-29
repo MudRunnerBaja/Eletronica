@@ -6,9 +6,11 @@ https://github.com/earlephilhower/arduino-pico/releases/download/global/package_
 
 Depois, clique em OK para retornar à tela principal da IDE. Agora clique em Ferramentas > Placa > Gerenciador de Placas.
 
-Na caixa de busca, digite RP2040. Clique em instalar e aguarde o procedimento ser finalizado; Depois clique em Fechar.
+Na caixa de busca, digite RP2040. Procure pelas placas de Earle F. Philhower, III chamada Raspberry Pi Pico/RP2040.
+Clique em instalar e aguarde o procedimento ser finalizado; Depois clique em Fechar.
 
-Logo depois, as placas com o microcontrolador RP2040 já estarão disponíveis na Arduino IDE. Para selecionar a Raspberry Pi Pico, vá novamente em Ferramentas > Placas > Raspberry Pi RP2040 Boards > Raspberry Pi Pico.
+Logo depois, as placas com o microcontrolador RP2040 já estarão disponíveis na Arduino IDE. 
+Para selecionar a Raspberry Pi Pico, vá novamente em Ferramentas > Placas > Raspberry Pi RP2040 Boards > Raspberry Pi Pico.
 
 Pronto! Agora você já pode programar a sua Raspberry Pi Pico utilizando a IDE Arduino.
 
