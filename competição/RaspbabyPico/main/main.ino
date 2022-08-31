@@ -1,5 +1,4 @@
 #include "RPi_Pico_TimerInterrupt.h" // Interrupção por tempo
-
 #include "include/temp.cpp" // Temperatura CVT
 #include "include/comb.cpp" // Níveis de combustível
 #include "include/vel.cpp" // Velocidade do carro
