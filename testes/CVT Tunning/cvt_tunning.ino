@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <Arduino.h>
+#include <LiquidCrystal.h>
 
 /*
 Variaveis e funções "1" são referentes a motriz, variaveis e funcões "2" são referente a movida e variaveis e funções "3" são referentes a velocidade
@@ -10,7 +11,9 @@ rpm1 = rpm da motriz / rpm2 = rpm da movida
 contador1 = contador da motriz / contador2 = contador da movida
 */
 File myFile;
-Ds1302 rtc(30, 32, 31); // 30 - RST ; 31 - DAT ; 32 - CLK
+Ds1302 rtc(28, 31, 30); // 28 - RST ; 30 - DAT ; 31 - CLK
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
 
 int rpm1, rpm2, velo;
 float pulsohora;
@@ -18,7 +21,7 @@ int hall1, hall2, hall3, falha, chipSelect = 53;
 String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2, pulsos3, pulsomin;
 unsigned long timeold, timeold1;
-unsigned int pulsos_por_volta = 1;            //Quantidade de imas na polia
+unsigned int pulsos_por_volta = 4;            //Quantidade de imas na polia
 unsigned int pulsos_por_volta_velo = 4;       //Quantidade de imas no disco de freio
 const float circunferencia_pneu = 167.4876; //EM CM
 
@@ -38,6 +41,8 @@ void error(){                               //Vai emitir um sinal no led da plac
   switch (falha)
   {
   case 0:
+    lcd.clear();
+    lcd.write("Erro no SD");
     digitalWrite(LED_BUILTIN, HIGH);
     delay(500);
     digitalWrite(LED_BUILTIN, LOW);
@@ -45,6 +50,8 @@ void error(){                               //Vai emitir um sinal no led da plac
     break;
   
   case 1:
+    lcd.clear();
+    lcd.write("Erro no arq.");
     digitalWrite(LED_BUILTIN, HIGH);
     delay(50);
     digitalWrite(LED_BUILTIN, LOW);
@@ -56,6 +63,8 @@ void error(){                               //Vai emitir um sinal no led da plac
     break;
 
   case 2:
+    lcd.clear();
+    lcd.write("SD Cheio");
     digitalWrite(LED_BUILTIN, HIGH);
     delay(50);
     digitalWrite(LED_BUILTIN, LOW);
@@ -100,6 +109,15 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
   	Serial.print(arq);
   	Serial.println(" criado");
     Ds1302::DateTime now;
+    /*//                    FUNCÃO PARA SETAR O HORARIO
+    now.year = 22;
+    now.month = 8;
+    now.day = 31;
+    now.hour = 18;
+    now.minute = 1;
+    now.second = 0;    
+    rtc.setDateTime(&now);
+    */
     rtc.getDateTime(&now);
     File myFile = SD.open(arq, FILE_WRITE);
     if (myFile){
@@ -117,13 +135,31 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
     myFile.print(",RPM Motriz,RPM Movida,km/h");
     myFile.println();
     myFile.close();
+
+    lcd.clear();
+    lcd.print(arq);
+    lcd.setCursor(0,2);
+    lcd.print(now.day);
+    lcd.write("/");
+    lcd.print(now.month);
+    lcd.write(" ");
+    lcd.print(now.hour);
+    lcd.write(":");
+    lcd.print(now.minute);
+    lcd.write(":");
+    lcd.print(now.second);
+    delay(3000);
 }
 
 void setup()
 {
   Serial.begin(115200);
+  lcd.begin(16,2);
   Serial.println("Inicializando...");
+  lcd.clear();
+  lcd.write("CVT Tunning");
   Serial.println("CVT Tunning V 1.3.1");
+  delay(500);
   pinMode(LED_BUILTIN, OUTPUT);
   if (!SD.begin(chipSelect)) {
     Serial.println("Inicialização do cartão falhou");
@@ -159,7 +195,7 @@ void loop()
     detachInterrupt(digitalPinToInterrupt(hall2));
 
     digitalWrite(LED_BUILTIN, HIGH);
-    
+
     rpm1 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos1;
     rpm2 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos2;
     
@@ -206,6 +242,13 @@ void loop()
     myFile.print(velo);
     myFile.println();
     myFile.close();
+
+    lcd.clear();
+    lcd.write("Motriz:     ");
+    lcd.print(rpm1);
+    lcd.setCursor(0,2);
+    lcd.write("Movida:     ");
+    lcd.print(rpm2);
 
     attachInterrupt(digitalPinToInterrupt(hall1), contador1, RISING);
     attachInterrupt(digitalPinToInterrupt(hall2), contador2, RISING);
