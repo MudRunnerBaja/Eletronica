@@ -1,12 +1,12 @@
 #include "RPi_Pico_TimerInterrupt.h" // Interrupção por tempo
 
-#include "include/temp.cpp" // Temperatura CVT
-#include "include/comb.cpp" // Níveis de combustível
-#include "include/vel.cpp" // Velocidade do carro
-#include "include/rpm.cpp" // RPM do carro
-#include "include/display.cpp" // Placa do display
-#include "include/comunication.cpp" // Comunicação entre bibliotecas e serial
-// #include "include/gps.cpp" // GPS (Não implementado)
+#include "include/temp.c" // Temperatura CVT
+#include "include/comb.c" // Níveis de combustível
+#include "include/vel.c" // Velocidade do carro
+#include "include/rpm.c" // RPM do carro
+#include "include/display.c" // Placa do display
+#include "include/comunication.c" // Comunicação entre bibliotecas e serial
+// #include "include/gps.c" // GPS (Não implementado)
 
 #define TIMER_INTERVAL_MS 1000
 
@@ -35,6 +35,11 @@ void setup()
     Serial.println("Starting ITimer OK, millis() = " + String(millis()));
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
+
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+
+    Serial.print("Funcionando...");
 }
 void loop()
 {

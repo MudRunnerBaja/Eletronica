@@ -47,6 +47,7 @@ void setarCombustivel(int nivel)
     }
 }
 
+
 int setComb()
 {
     /* 
@@ -59,13 +60,14 @@ int setComb()
     int sensorSup = digitalRead(combSup);
     int sensorInf = digitalRead(combInf);
 
-    if (sensorInf) // Se o inferior não detecta combustível
+
+    if (sensorInf == HIGH) // Se o inferior não detecta combustível
     {               
         setarCombustivel(VAZIO);
         return VAZIO;
     }
     
-    if (!sensorSup) // Se o superior detecta combustível
+    if (sensorSup == LOW) // Se o superior detecta combustível
     {                   // E o inferior TAMBÉM (1º if)
         setarCombustivel(CHEIO);
         return CHEIO;
