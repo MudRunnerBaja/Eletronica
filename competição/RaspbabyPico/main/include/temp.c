@@ -7,11 +7,11 @@
 
 /* Definições: GPIOs do Arduino utilizado na comunicação com o
    MAX6675 */
-#define GPIO_SO 2
-#define GPIO_CS 3
-#define GPIO_CLK 4
+#define GPIO_SO 4
+#define GPIO_CS 5
+#define GPIO_CLK 6
 
-int ledTempCvt = 18;
+int ledTempCvt = 24;
 
 /* Criação de objeto para comunicação com termopar */
 MAX6675 termopar(GPIO_CLK, GPIO_CS, GPIO_SO);

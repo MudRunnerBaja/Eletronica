@@ -6,7 +6,6 @@
 #include "include/rpm.c" // RPM do carro
 #include "include/display.c" // Placa do display
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
-// #include "include/gps.c" // GPS (Não implementado)
 
 #define TIMER_INTERVAL_MS 1000
 

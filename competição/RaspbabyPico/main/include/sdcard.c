@@ -11,10 +11,10 @@
 
  
  // Definindo os pinos da interface SPI
-#define RXPIN 0 // MISO
-#define CSPIN 1
-#define SCKPIN 2
-#define TXPIN 3 // MOSI
+#define RXPIN 16 // MISO
+#define CSPIN 17
+#define SCKPIN 14
+#define TXPIN 15 // MOSI
 
 File arquivoDados;
 

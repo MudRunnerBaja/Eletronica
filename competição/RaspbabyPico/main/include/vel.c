@@ -7,7 +7,7 @@
 
 float metersPerSignal = (WHEEL_RADIUS * 2 * PI) / (SENSOR_QUANTITY * 100);
 int velCounter = 0;
-int velInputPin = 22;
+int velInputPin = 29;
 float velGlobal;
 
 float setVel()

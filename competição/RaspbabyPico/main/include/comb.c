@@ -3,11 +3,11 @@
     !!   ALIMENTADOS COM 12V, PODEM QUEIMAR PICO   !!
 */
 
-int combSup = 27;
-int combInf = 26;
-int ledVerde = 19;
-int ledAmarelo = 20;
-int ledVermelho = 21;
+int combSup = 32;
+int combInf = 31;
+int ledVerde = 25;
+int ledAmarelo = 26;
+int ledVermelho = 27;
 
 enum nivel {
     VAZIO,
