@@ -3,11 +3,11 @@
     !!   ALIMENTADOS COM 12V, PODEM QUEIMAR PICO   !!
 */
 
-int combSup = 32;
-int combInf = 31;
-int ledVerde = 25;
-int ledAmarelo = 26;
-int ledVermelho = 27;
+int combSup = 27;
+int combInf = 26;
+int ledVerde = 19;
+int ledAmarelo = 20;
+int ledVermelho = 21;
 
 enum nivel {
     VAZIO,
@@ -64,18 +64,18 @@ int setComb()
     if (sensorInf == HIGH) // Se o inferior não detecta combustível
     {               
         setarCombustivel(VAZIO);
-        return VAZIO;
+        return (int) VAZIO;
     }
     
     if (sensorSup == LOW) // Se o superior detecta combustível
     {                   // E o inferior TAMBÉM (1º if)
         setarCombustivel(CHEIO);
-        return CHEIO;
+        return (int) CHEIO;
     }
 
     else // Se o superior não detecta e o inferior detecta
     {
         setarCombustivel(MEDIO);
-        return MEDIO;
+        return (int) MEDIO;
     }
 }

@@ -23,7 +23,7 @@ void rpmCounterFunc()
     rpmCounter++;
 }
 
-void setupRpm()
+void rpmSetup()
 {
     attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, RISING);
 }

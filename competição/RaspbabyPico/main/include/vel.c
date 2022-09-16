@@ -7,7 +7,7 @@
 
 float metersPerSignal = (WHEEL_RADIUS * 2 * PI) / (SENSOR_QUANTITY * 100);
 int velCounter = 0;
-int velInputPin = 29;
+int velInputPin = 22;
 float velGlobal;
 
 float setVel()
@@ -27,7 +27,7 @@ void velCounterFunc()
     velCounter++;
 }
 
-void setupVel()
+void velSetup()
 {
     attachInterrupt(digitalPinToInterrupt(velInputPin), velCounterFunc, RISING);
 }

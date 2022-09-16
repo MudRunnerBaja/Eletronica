@@ -1,3 +1,9 @@
+#include <RPi_Pico_TimerInterrupt.h>
+#include <RPi_Pico_ISR_Timer.h>
+#include <RPi_Pico_ISR_Timer.hpp>
+
+#include <max6675.h>
+
 #include "RPi_Pico_TimerInterrupt.h" // Interrupção por tempo
 
 #include "include/temp.c" // Temperatura CVT
@@ -20,23 +26,23 @@ bool TimerHandler(struct repeating_timer *t)
 
 void setup()
 {
-  Serial.begin(9600);  // debug
-  Serial1.begin(9600); // send data;
+  Serial.begin(9600);
+  Serial.print("Iniciando setup...");
   // setupGps();
   combSetup();
-  setupVel();
-  setupRpm();
-  setupDisplay();
+  velSetup();
+  rpmSetup();
+  displaySetup();
   cvtSetup();
+    
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   // Interval in unsigned long microseconds
   if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, TimerHandler))
     Serial.println("Starting ITimer OK, millis() = " + String(millis()));
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
-
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
 
     Serial.print("Funcionando...");
 }
