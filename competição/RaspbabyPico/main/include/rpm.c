@@ -15,7 +15,7 @@ float setRpm()
 
 float getRpm()
 {
-    return rpmGlobal;
+    return setRpm();
 }
 
 void rpmCounterFunc()

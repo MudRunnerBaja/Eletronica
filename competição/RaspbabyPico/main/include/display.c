@@ -45,6 +45,8 @@ void setLedBox()
 
 void escreverRegistrador(int valor)
 { 
+  if (valor > 9) valor = 9;
+
   for (int i = 7; i >= 0; i--) {
     int val = tabela_digitos[valor][i];
     digitalWrite(DS, val);
@@ -102,11 +104,11 @@ float rpm = 0;
 void mostraDados()
 {
     // Teste
-   vel += 0.01;
-   rpm += 10;
+   // vel += 0.01;
+   // rpm += 10;
 
-   // int vel = int(getVel());
-   // int rpm = getRpm();
+   int vel = int(getVel());
+   int rpm = getRpm();
 
    valores[0] = int(rpm / 1000); // RPM_Milhar
    valores[1] = (int(rpm) % 1000 / 100); // RPM_Centena
@@ -115,8 +117,6 @@ void mostraDados()
 
    for (int i = 0; i < 4; i++)
    {
-    if (valores[0] % 2 == 0) setLedBox();
-
     Serial.println("\nMostrando dados...");
     Serial.print("Valor: "); Serial.println(valores[i]);
     escolherDisplay(i);

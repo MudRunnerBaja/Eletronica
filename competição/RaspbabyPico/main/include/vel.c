@@ -19,7 +19,7 @@ float setVel()
 
 float getVel()
 {
-    return (velGlobal * (36/10));
+    return (setVel() * (36/10));
 }
 
 void velCounterFunc()

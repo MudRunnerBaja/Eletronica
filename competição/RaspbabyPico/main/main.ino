@@ -1,16 +1,12 @@
-#include <RPi_Pico_TimerInterrupt.h>
+#include <RPi_Pico_TimerInterrupt.h> // Interrupção por tempo
 #include <RPi_Pico_ISR_Timer.h>
 #include <RPi_Pico_ISR_Timer.hpp>
-
-#include <max6675.h>
-
-#include "RPi_Pico_TimerInterrupt.h" // Interrupção por tempo
 
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
-#include "include/display.c" // Placa do display
+#include "include/displayAlternativo.c" // Placa do display
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 #define TIMER_INTERVAL_MS 1000
