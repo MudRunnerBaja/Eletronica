@@ -78,7 +78,7 @@ void escolherDisplay(int display)
   {
     digitalWrite(displays[i], LOW);
   }
-  Serial.print("Display escolhido: "); Serial.println(display);
+ // Serial.print("Display escolhido: "); Serial.println(display);
   digitalWrite(displays[display], HIGH);
 }
 
@@ -123,10 +123,10 @@ void mostraDados()
 
    for (int i = 0; i < 4; i++)
    {
-    Serial.println("\nMostrando dados...");
-    Serial.print("Valor: "); Serial.println(valores[i]);
+    //Serial.println("\nMostrando dados...");
+    //Serial.print("Valor: "); Serial.println(valores[i]);
     escolherDisplay(i);
     escreverRegistrador(valores[i]);
-    delay(1);
+    delay(5);
    }
 }

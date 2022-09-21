@@ -14,12 +14,13 @@ float setVel()
 {
     velGlobal = metersPerSignal * velCounter;
     velCounter = 0;
+    Serial.println(velGlobal);
     return velGlobal;
 }
 
 float getVel()
 {
-    return (setVel() * (36/10));
+    return (velGlobal * (36/10));
 }
 
 void velCounterFunc()
