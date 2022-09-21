@@ -12,7 +12,7 @@ int SHCP = 7; // (SRCLK) Cada "pulso" capta o sinal em DS e armazena na memória
 
                 {RPM_Mil, RPM_Cent, Vel_Dez, Vel_Un} */
 int displays[4] = {14, 15, 16, 17};
-int valores[4] =  {0, 0, 0, 0};
+int valores[4] =  {8, 8, 8, 8};
 
 int LB = LOW;
 int tabela_digitos[11][8] =
@@ -95,11 +95,17 @@ void displaySetup()
   digitalWrite(STCP, LOW);
   digitalWrite(SHCP, LOW);
   digitalWrite(DS, LOW);
-}
 
-float cont = 0;
-float vel = 0;
-float rpm = 0;
+  for (int i = 0; i < 4; i++)
+   {
+    Serial.println("\nMostrando dados...");
+    Serial.print("Valor: "); Serial.println(valores[i]);
+    setLedBox();
+    escolherDisplay(i);
+    escreverRegistrador(valores[i]);
+    delay(500);
+   }
+}
 
 void mostraDados()
 {

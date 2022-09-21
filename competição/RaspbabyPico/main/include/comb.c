@@ -23,6 +23,10 @@ void combSetup()
     pinMode(ledVerde, OUTPUT);
     pinMode(ledAmarelo, OUTPUT);
     pinMode(ledVermelho, OUTPUT);
+
+    digitalWrite(ledVerde, HIGH);
+    digitalWrite(ledAmarelo, HIGH);
+    digitalWrite(ledVermelho, HIGH);
 }
 
 void setarCombustivel(int nivel)

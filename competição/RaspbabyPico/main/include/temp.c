@@ -20,6 +20,7 @@ float temperaturaCVT;
 void cvtSetup()
 {
     pinMode(ledTempCvt, OUTPUT);
+    digitalWrite(ledTempCvt, HIGH);
 }
 
 float setCvtTemperature()

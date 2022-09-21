@@ -6,7 +6,7 @@
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
-#include "include/displayAlternativo.c" // Placa do display
+#include "include/display.c" // Placa do display
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 #define TIMER_INTERVAL_MS 1000
@@ -26,10 +26,15 @@ void setup()
   Serial.print("Iniciando setup...");
   // setupGps();
   combSetup();
+  cvtSetup();
   velSetup();
   rpmSetup();
   displaySetup();
-  cvtSetup();
+  delay(1000);
+  digitalWrite(ledTempCvt, LOW);
+  digitalWrite(ledVerde, LOW);
+  digitalWrite(ledAmarelo, LOW);
+  digitalWrite(ledVermelho, LOW);
     
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
