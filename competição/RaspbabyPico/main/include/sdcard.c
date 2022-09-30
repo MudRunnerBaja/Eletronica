@@ -16,6 +16,10 @@
 #define SCKPIN 14
 #define TXPIN 15 // MOSI
 
+
+String arq = "dados00.csv";
+
+
 File arquivoDados;
 
 void sdcardSetup()
@@ -34,9 +38,41 @@ void sdcardSetup()
     t1 = millis();
 
     // Criando os arquivos txt
-    arquivoDados = SD.open("Dados.csv", FILE_WRITE);
+    int i = 0;                              //ele ira aumentar um numero no nome do arquivo, e ira verificar de novo, até que não haja um arquivo do mesmo nome
+    char unidade;
+    while (SD.exists(arq) == 1)
+    {
+        i++;
+        int unidade, dezena;
+        if (i > 9)
+        {
+            char y[0];
+            int z;
+
+            z = (i/10);
+            itoa(z,y,10);                 //Converte Int em char
+            arq[4] = y[0];
+
+            z = (i%10);
+            itoa(z,y,10);                 //Converte Int em char
+            arq[5] = y[0];
+        }
+        else{
+          char y[0];
+
+          itoa(i, y, 10);
+          arq[5] = y[0];
+        }
+    }
+    Serial.print("Arquivo ");
+  	Serial.print(arq);
+  	Serial.println(" criado");
+
+    arquivoDados = SD.open(arq, FILE_WRITE);
+
     if (arquivoDados) {
-        Serial.println("Criando Dados.csv...");
+        Serial.println("Criando ");
+        Serial.print(arq);
 
         arquivoDados.println("vel,rpm,tempcvt,comb");
         arquivoDados.close();
@@ -45,7 +81,7 @@ void sdcardSetup()
         dt = t2 - t1;
         Serial.println("Feito. Tempo para criar: " + dt);
     }
-    else    Serial.println("Erro ao abrir Dados.csv");
+    else    Serial.println("Erro ao abrir");
 }
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
@@ -62,9 +98,9 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     printData += ",";
     printData += comb;
 
-    arquivoDados = SD.open("Dados.csv", FILE_WRITE);
+    arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
-        Serial.println("Escrevendo em dados.csv...");
+        Serial.println("Escrevendo...");
 
         arquivoDados.println(printData);
         arquivoDados.close();

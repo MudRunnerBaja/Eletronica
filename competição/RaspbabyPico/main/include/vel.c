@@ -30,5 +30,5 @@ void velCounterFunc()
 
 void velSetup()
 {
-    attachInterrupt(digitalPinToInterrupt(velInputPin), velCounterFunc, RISING);
+    attachInterrupt(digitalPinToInterrupt(velInputPin), velCounterFunc, FALLING);
 }
