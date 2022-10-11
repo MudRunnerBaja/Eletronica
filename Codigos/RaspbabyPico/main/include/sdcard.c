@@ -1,20 +1,11 @@
-/*
-    Escrita de todos os dados no cartão sd
-    A ser revisado e testado
-
-    Earle F. Philhower, III Arduino-Pico Documentation
-    https://arduino-pico.readthedocs.io/_/downloads/en/latest/pdf/
-*/
-#include <SPI.h>
+ // Definindo os pinos da interface SPI
+#include <SPI.h>    
 #include <SD.h>
 
-
- 
- // Definindo os pinos da interface SPI
-#define RXPIN 16 // MISO
-#define CSPIN 17
-#define SCKPIN 14
-#define TXPIN 15 // MOSI
+pin_size_t RXPIN = 12; // MISO
+pin_size_t CSPIN = 13;
+pin_size_t SCKPIN = 10;
+pin_size_t TXPIN = 11; // MOSI
 
 
 String arq = "dados00.csv";
@@ -25,11 +16,11 @@ File arquivoDados;
 void sdcardSetup()
 {
     // Pinos e bibliotecas
-    SPI.setRX(RXPIN);
-    SPI.setTX(TXPIN);
-    SPI.setSCK(SCKPIN);
-    SPI.setCS(CSPIN);
-    // SPI.begin() // ??? Não consigo entender se é necessário
+    SPI1.setRX(RXPIN);
+    SPI1.setTX(TXPIN);
+    SPI1.setSCK(SCKPIN);
+    SPI1.setCS(CSPIN);
+    SPI1.begin(true); // ??? Não consigo entender se é necessário
     SD.begin(CSPIN);
 
     // Testes de velocidade de escrita
@@ -68,7 +59,7 @@ void sdcardSetup()
   	Serial.print(arq);
   	Serial.println(" criado");
 
-    arquivoDados = SD.open(arq, FILE_WRITE);
+    File arquivoDados = SD.open(arq, FILE_WRITE);
 
     if (arquivoDados) {
         Serial.println("Criando ");
@@ -82,6 +73,17 @@ void sdcardSetup()
         Serial.println("Feito. Tempo para criar: " + dt);
     }
     else    Serial.println("Erro ao abrir");
+}
+
+void falha(){
+    
+    for (int i = 0; i < 5; i++)
+    {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(100);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(100);
+    }
 }
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
@@ -98,7 +100,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     printData += ",";
     printData += comb;
 
-    arquivoDados = SD.open(arq, FILE_WRITE);
+    File arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
         Serial.println("Escrevendo...");
 
@@ -109,7 +111,10 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         dt = t2 - t1;
         Serial.println("Feito. Tempo total de escrita: " + dt);
     }
-    else    Serial.println("Erro ao abrir Dados.csv");
+    else  {
+        Serial.print("ERRO DE GRAVAÇÃO");
+        falha();
+    }
 }
 
 // https://docs.arduino.cc/learn/communication/spi

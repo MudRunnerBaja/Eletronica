@@ -3,11 +3,13 @@
 #include <RPi_Pico_ISR_Timer.hpp>
 
 #include "include/temp.c" // Temperatura CVT
+// #include "include/sdcard.c"
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
 #include "include/display.c" // Placa do display
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
+
 
 #define TIMER_INTERVAL_MS 1000
 
@@ -25,11 +27,13 @@ void setup()
   Serial.begin(9600);
   Serial.print("Iniciando setup...");
   // setupGps();
+  //sdcardSetup();
   combSetup();
   cvtSetup();
   velSetup();
   rpmSetup();
   displaySetup();
+  
   delay(1000);
   digitalWrite(ledTempCvt, LOW);
   digitalWrite(ledVerde, LOW);
