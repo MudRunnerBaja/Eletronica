@@ -1,23 +1,12 @@
 #include <SPI.h>
 #include <SD.h>
 
-<<<<<<< HEAD:codigos/Competição/RaspbabyPico/main/include/sdcard.c
 pin_size_t RXPIN = 12; // MISO
 pin_size_t CSPIN = 13;
 pin_size_t SCKPIN = 10;
 pin_size_t TXPIN = 11; // MOSI
 
 String arq = "dados000.csv";
-=======
-// Earle F. Philhower, III Arduino-Pico Documentation
-// https://arduino-pico.readthedocs.io/_/downloads/en/latest/pdf/
- 
- // Definindo os pinos da interface SPI
-#define RXPIN 0 // MISO
-#define CSPIN 1
-#define SCKPIN 2
-#define TXPIN 3 // MOSI
->>>>>>> 156ac38c535301b3f032e09ad6de754e6105ceb9:Codigos/RaspbabyPico/main/include/sdcard.c
 
 File arquivoDados;
 
@@ -28,7 +17,6 @@ void sdcardSetup()
     t1 = micros();
 
     // Pinos e bibliotecas
-<<<<<<< HEAD:codigos/Competição/RaspbabyPico/main/include/sdcard.c
     SPI1.setRX(RXPIN);
     SPI1.setTX(TXPIN);
     SPI1.setSCK(SCKPIN);
@@ -64,24 +52,6 @@ void sdcardSetup()
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
         Serial.println("vel,rpm,tempcvt,comb");
-=======
-    SPI.setRX(RXPIN);
-    SPI.setTX(TXPIN);
-    SPI.setSCK(SCKPIN);
-    SPI.setCS(CSPIN);
-    // SPI.begin() // ??? Não consigo entender se é necessário
-    SD.begin(CSPIN);
-
-    // Testes de velocidade de escrita
-    unsigned long t2, t1;
-    int dt;
-    t1 = millis();
-
-    // Criando os arquivos txt
-    arquivoDados = SD.open("Dados.csv", FILE_WRITE);
-    if (arquivoDados) {
-        Serial.println("Criando Dados.csv...");
->>>>>>> 156ac38c535301b3f032e09ad6de754e6105ceb9:Codigos/RaspbabyPico/main/include/sdcard.c
 
         arquivoDados.println("vel,rpm,tempcvt,comb");
         arquivoDados.close();
@@ -91,7 +61,6 @@ void sdcardSetup()
         String dt = String(t, DEC);
         Serial.println("Feito. Tempo para criar: " + dt);
     }
-<<<<<<< HEAD:codigos/Competição/RaspbabyPico/main/include/sdcard.c
     else Serial.println("Erro ao abrir o arquivo.");
 }
 
@@ -104,9 +73,6 @@ void falha(){
         digitalWrite(LED_BUILTIN, LOW);
         delay(100);
     }
-=======
-    else    Serial.println("Erro ao abrir Dados.csv");
->>>>>>> 156ac38c535301b3f032e09ad6de754e6105ceb9:Codigos/RaspbabyPico/main/include/sdcard.c
 }
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
@@ -122,9 +88,10 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     printData += ",";
     printData += comb;
 
-    arquivoDados = SD.open("Dados.csv", FILE_WRITE);
+    arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
-        Serial.println("Escrevendo em dados.csv...");
+        Serial.print("Escrevendo em ");
+        Serial.print(arq);Serial.println("...");
 
         arquivoDados.println(printData);
         arquivoDados.close();
@@ -136,7 +103,9 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         String dt = String(t, DEC);
         Serial.println("Feito. Tempo total de escrita (us): " + dt);
     }
-    else    Serial.println("Erro ao abrir Dados.csv");
+    else    {
+    Serial.println("Erro ao abrir "); Serial.println(arq);
+    }
 }
 
 // https://arduino-pico.readthedocs.io/en/latest/fs.html
