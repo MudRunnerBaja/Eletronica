@@ -1,26 +1,33 @@
-// Modificado
-int rpmRecieverPort = 22;
+/* 
+    Implementação da contagem de rpm do carro 
+*/
+
+int rpmInputPin = 28;
 int rpmCounter = 0;
 int rpmGlobal;
 
-void rpmCounterFunc()
-{
-    rpmCounter++;
-}
-
-float getRpm()
+float setRpm()
 {
     rpmGlobal = rpmCounter * 60;
     rpmCounter = 0;
     return rpmGlobal;
 }
 
-float getRpmValue()
+float getRpm()
 {
-    return rpmGlobal;
+    return setRpm();
+}
+
+<<<<<<< HEAD:codigos/Competição/RaspbabyPico/main/include/rpm.c
+void rpmSetup()
+=======
+void rpmCounterFunc()
+>>>>>>> parent of 156ac38 (Update SDCard):Codigos/RaspbabyPico/main/include/rpm.c
+{
+    rpmCounter++;
 }
 
 void rpmSetup()
 {
-    attachInterrupt(digitalPinToInterrupt(rpmRecieverPort), rpmCounterFunc, RISING);
+    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, RISING);
 }

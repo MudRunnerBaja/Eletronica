@@ -1,60 +1,84 @@
-int combYellowPort = 26;
-int combGreenPort = 27;
-int ledGreen = 19;
-int ledYellow = 20;
-int ledRed = 21;
+/*
+    Implementação dos níveis de combustível do carro
+    !!   ALIMENTADOS COM 12V, PODEM QUEIMAR PICO   !!
+*/
 
-// Necessário atualizar
+int combSup = 27;
+int combInf = 26;
+int ledVerde = 19;
+int ledAmarelo = 20;
+int ledVermelho = 21;
+
+enum nivel {
+    VAZIO,
+    MEDIO,
+    CHEIO
+};
 
 void combSetup()
 {
-    pinMode(combYellowPort, INPUT);
-    pinMode(combGreenPort, INPUT);
-    pinMode(ledGreen, OUTPUT);
-    pinMode(ledYellow, OUTPUT);
-    digitalWrite(ledRed, HIGH);
-    pinMode(ledRed, OUTPUT);
+    pinMode(combSup, INPUT);
+    pinMode(combInf, INPUT);
+
+    pinMode(ledVerde, OUTPUT);
+    pinMode(ledAmarelo, OUTPUT);
+    pinMode(ledVermelho, OUTPUT);
+
+    digitalWrite(ledVerde, HIGH);
+    digitalWrite(ledAmarelo, HIGH);
+    digitalWrite(ledVermelho, HIGH);
 }
 
 void setarCombustivel(int nivel)
 {
-    if (nivel == 2)
+    if (nivel == CHEIO)
     {
-        digitalWrite(ledGreen, HIGH);
-        digitalWrite(ledYellow, LOW);
-        digitalWrite(ledRed, LOW);
+        digitalWrite(ledVerde, HIGH);
+        digitalWrite(ledAmarelo, LOW);
+        digitalWrite(ledVermelho, LOW);
     }
-    else if (nivel == 1)
+    else if (nivel == MEDIO)
     {
-        digitalWrite(ledGreen, LOW);
-        digitalWrite(ledYellow, HIGH);
-        digitalWrite(ledRed, LOW);
+        digitalWrite(ledVerde, LOW);
+        digitalWrite(ledAmarelo, HIGH);
+        digitalWrite(ledVermelho, LOW);
     }
-    else
+    else // VAZIO
     {
-        digitalWrite(ledGreen, LOW);
-        digitalWrite(ledYellow, LOW);
-        digitalWrite(ledRed, HIGH);
+        digitalWrite(ledVerde, LOW);
+        digitalWrite(ledAmarelo, LOW);
+        digitalWrite(ledVermelho, HIGH);
     }
 }
 
-int getComb()
+
+int setComb()
 {
-    int yellowState = digitalRead(combYellowPort);
-    int greenState = digitalRead(combGreenPort);
+    /* 
+        !!  OS SENSORES CAPACITIVOS  !!
+        !!    SÃO NORMAL-FECHADOS    !!
+        TRUE/HIGH -> Combustível não detectado
+        FALSE/LOW -> Combustível detectado
+    */
 
-    if (greenState && yellowState)
-    {
-        setarCombustivel(2);
-        return 2;
+    int sensorSup = digitalRead(combSup);
+    int sensorInf = digitalRead(combInf);
+
+    if (sensorInf == HIGH) // Se o inferior não detecta combustível
+    {               
+        setarCombustivel(VAZIO);
+        return (int) VAZIO;
+    }
+    
+    if (sensorSup == LOW) // Se o superior detecta combustível
+    {                   // E o inferior TAMBÉM (1º if)
+        setarCombustivel(CHEIO);
+        return (int) CHEIO;
     }
 
-    else if (yellowState)
+    else // Se o superior não detecta e o inferior detecta
     {
-        setarCombustivel(1);
-        return 1;
+        setarCombustivel(MEDIO);
+        return (int) MEDIO;
     }
-
-    setarCombustivel(0);
-    return 0;
 }

@@ -1,11 +1,16 @@
+/* 
+    !! Comunicação entre as demais bibliotecas !!
+    Todo segundo o pico chama uma interrupção
+*/
+
 #define CAR_NAME "MV-22"
 
 void sendData()
 {
-    float vel = getVel();
-    int rpm = getRpm();
-    float tempCvt = getCvtTemperature();
-    int comb = getComb();
+    float vel = setVel();
+    int rpm = setRpm();
+    float tempCvt = setCvtTemperature();
+    int comb = setComb();
 
     // Escrita em cartao SD
     writeData(vel, rpm, tempCvt, comb);
@@ -36,7 +41,7 @@ void sendData()
     Serial.print(vel);
     Serial.print(",");
     Serial.print(tempCvt);
-    Serial.print(0);
+    Serial.print("°C");
     Serial.print(",");
     Serial.println(comb);
     */
