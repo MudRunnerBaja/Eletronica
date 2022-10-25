@@ -104,7 +104,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         Serial.println("Feito. Tempo total de escrita (us): " + dt);
     }
     else    {
-    Serial.print("Erro ao abrir "); Serial.println(arq);
+    Serial.println("Erro ao abrir "); Serial.println(arq);
     }
 }
 
