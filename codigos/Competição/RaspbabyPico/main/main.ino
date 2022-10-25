@@ -8,6 +8,7 @@
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
 #include "include/display.c" // Placa do display
+#include "include/sdcard.c"
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 
@@ -18,22 +19,37 @@ RPI_PICO_Timer ITimer(0);
 // Interrupt callback functions
 bool TimerHandler(struct repeating_timer *t)
 {
-  sendData(); // communication.cpp <- atualiza os dados
+  sendData();
   return true;
 }
 
 void setup()
 {
   Serial.begin(9600);
-  Serial.print("Iniciando setup...");
+
+      // Esperando pela resposta do monitor serial. 
+      // Comentar quando for para o carro.
+  /*
+  while (!Serial) {
+    yield();
+  }
+  delay(1000);
+
+  Serial.println(F("Type any character to start"));
+  while (!Serial.available()) {
+    yield();
+  }
+  */
+  
+  Serial.println("Iniciando setup...");
   // setupGps();
-  //sdcardSetup();
   combSetup();
+  displaySetup();
   cvtSetup();
   velSetup();
   rpmSetup();
-  displaySetup();
-  
+  sdcardSetup();
+    
   delay(1000);
   digitalWrite(ledTempCvt, LOW);
   digitalWrite(ledVerde, LOW);
@@ -49,7 +65,7 @@ void setup()
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
 
-    Serial.print("Funcionando...");
+    Serial.print("Setup finalizado.");
 }
 void loop()
 {

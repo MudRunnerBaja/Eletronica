@@ -14,7 +14,7 @@ float setVel()
 {
     velGlobal = metersPerSignal * velCounter;
     velCounter = 0;
-    Serial.println(velGlobal);
+    // Serial.println(velGlobal);
     return velGlobal;
 }
 

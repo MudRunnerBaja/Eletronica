@@ -1,19 +1,14 @@
-/* 
-    !! Comunicação entre as demais bibliotecas !!
-    Todo segundo o pico chama uma interrupção
-*/
-
 #define CAR_NAME "MV-22"
 
 void sendData()
 {
-    float vel = setVel();
-    int rpm = setRpm();
-    float tempCvt = setCvtTemperature();
-    int comb = setComb();
+    float vel = getVel();
+    int rpm = getRpm();
+    float tempCvt = getCvtTemperature();
+    int comb = getComb();
 
     // Escrita em cartao SD
-    // writeData(vel, rpm, tempCvt, comb);
+    writeData(vel, rpm, tempCvt, comb);
 
     // TinyGPSPlus gps = getGps();
     // Serial1.print(CAR_NAME);
@@ -31,6 +26,7 @@ void sendData()
 
     // // debug
     // // TinyGPSPlus gps = getGps();
+    /*
     Serial.print(CAR_NAME);
     Serial.print(",");
     Serial.print(vel);
@@ -40,9 +36,10 @@ void sendData()
     Serial.print(vel);
     Serial.print(",");
     Serial.print(tempCvt);
-    Serial.print("°C");
+    Serial.print(0);
     Serial.print(",");
     Serial.println(comb);
+    */
     // // Ainda não implementado no receptor
     // /*Serial1.print(",");
     // Serial1.print(gps.location.lat(), 6);
