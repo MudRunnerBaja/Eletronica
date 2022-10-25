@@ -27,10 +27,10 @@ void sdcardSetup()
     // Criando os arquivos txt
     int i = 0;                              //ele ira aumentar um numero no nome do arquivo, e ira verificar de novo, até que não haja um arquivo do mesmo nome
     char unidade;
-    while (SD.exists(arq))
+    while ((SD.exists(arq)) && (i < 1000))
     {
         i++;
-        int unidade = (i % 10), dezena = (i / 10), centena = (i/100);
+        int unidade = (i % 10), dezena = ((i / 10) % 10), centena = (i/100);
         char y[0];
         itoa(centena,y,10);
         arq[5] = y[0];
