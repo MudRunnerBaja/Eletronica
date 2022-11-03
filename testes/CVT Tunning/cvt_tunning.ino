@@ -21,9 +21,13 @@ int hall1, hall2, hall3, falha, chipSelect = 53;
 String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2, pulsos3, pulsomin;
 unsigned long timeold, timeold1;
-unsigned int pulsos_por_volta = 4;            //Quantidade de imas na polia
+unsigned int pulsos_por_volta_mtz = 1;            //Quantidade de imas na polia
+unsigned int pulsos_por_volta_mvd = 4;
 unsigned int pulsos_por_volta_velo = 4;       //Quantidade de imas no disco de freio
 const float circunferencia_pneu = 167.4876; //EM CM
+
+//REFRESH RATE EM ms
+const int refresh_rate = 250; //ms
 
 void contador1(){                             //Contador de pulsos da motriz
     pulsos1++;
@@ -132,7 +136,9 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
     myFile.print(now.month);
     myFile.print("/20");
     myFile.print(now.year);
-    myFile.print(",RPM Motriz,RPM Movida,km/h");
+    myFile.print(",RPM Motriz,RPM Movida,km/h, refresh rate: ");
+    myFile.print(refresh_rate);
+    myFile.print("ms");
     myFile.println();
     myFile.close();
 
@@ -189,15 +195,15 @@ void setup()
 
 void loop()
 { 
-  if (millis() - timeold >= 100)
+  if (millis() - timeold >= refresh_rate)
   {
     detachInterrupt(digitalPinToInterrupt(hall1));
     detachInterrupt(digitalPinToInterrupt(hall2));
 
     digitalWrite(LED_BUILTIN, HIGH);
 
-    rpm1 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos1;
-    rpm2 = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos2;
+    rpm1 = (60 * 1000 / pulsos_por_volta_mtz ) / (millis() - timeold) * pulsos1;
+    rpm2 = (60 * 1000 / pulsos_por_volta_mvd ) / (millis() - timeold) * pulsos2;
     
 
     Ds1302::DateTime now;                   //Coleta os dados do rtc      
