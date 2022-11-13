@@ -3,7 +3,6 @@
 #include <RPi_Pico_ISR_Timer.hpp>
 
 #include "include/temp.c" // Temperatura CVT
-#include "include/sdcard.c"
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
