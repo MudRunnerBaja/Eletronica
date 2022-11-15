@@ -10,6 +10,11 @@ String arq = "dados000.csv";
 
 File arquivoDados;
 
+void falha(){
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("==========FALHA==========");
+}
+
 void sdcardSetup()
 {
     // Testes de velocidade de escrita
@@ -45,6 +50,7 @@ void sdcardSetup()
     if (!SD.exists(arq))
     {
         Serial.println("Erro ao criar o arquivo.");
+        falha();
         return;
     }
     Serial.print("Arquivo "); Serial.print(arq); Serial.println(" criado.");
@@ -61,19 +67,12 @@ void sdcardSetup()
         String dt = String(t, DEC);
         Serial.println("Feito. Tempo para criar: " + dt);
     }
-    else Serial.println("Erro ao abrir o arquivo.");
+    else {
+        Serial.println("Erro ao abrir o arquivo.");
+        falha();
+        }
 }
 
-void falha(){
-    Serial.println("Erro ao abrir o arquivo.");
-    for (int i = 0; i < 5; i++)
-    {
-        digitalWrite(LED_BUILTIN, HIGH);
-        delay(100);
-        digitalWrite(LED_BUILTIN, LOW);
-        delay(100);
-    }
-}
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
 {
@@ -105,6 +104,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     }
     else    {
     Serial.println("Erro ao abrir "); Serial.println(arq);
+    falha();
     }
 }
 

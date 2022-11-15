@@ -39,7 +39,6 @@ void setup()
     yield();
   }
   */
-  
   Serial.println("Iniciando setup...");
   // setupGps();
   combSetup();
@@ -48,15 +47,15 @@ void setup()
   velSetup();
   rpmSetup();
   sdcardSetup();
-    
+
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  
   delay(1000);
   digitalWrite(ledTempCvt, LOW);
   digitalWrite(ledVerde, LOW);
   digitalWrite(ledAmarelo, LOW);
   digitalWrite(ledVermelho, LOW);
-    
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
 
   // Interval in unsigned long microseconds
   if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, TimerHandler))

@@ -21,9 +21,10 @@ float getRpm()
 void rpmCounterFunc()
 {
     rpmCounter++;
+    Serial.println("SINAL RPM");
 }
 
 void rpmSetup()
 {
-    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, RISING);
+    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, CHANGE);
 }
