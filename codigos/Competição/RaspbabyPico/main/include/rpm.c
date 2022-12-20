@@ -2,7 +2,7 @@
     Implementação da contagem de rpm do carro 
 */
 
-int rpmInputPin = 28;
+int rpmInputPin = 8;
 int rpmCounter = 0;
 int rpmGlobal;
 
@@ -15,16 +15,15 @@ float setRpm()
 
 float getRpm()
 {
-    return setRpm();
+    return rpmGlobal;
 }
 
 void rpmCounterFunc()
 {
     rpmCounter++;
-    Serial.println("SINAL RPM");
 }
 
 void rpmSetup()
 {
-    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, RISING);
 }
