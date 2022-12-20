@@ -7,6 +7,7 @@
 
 void sendData()
 {
+    updateGps();
     float vel = setVel();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();

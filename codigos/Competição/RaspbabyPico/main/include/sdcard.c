@@ -95,7 +95,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         arquivoDados.println(printData);
         arquivoDados.close();
 
-        Serial.println(printData);
+        Serial.println(printData);      
 
         t2 = micros();
         unsigned long t = t2 - t1;

@@ -3,11 +3,18 @@
     A ser revisado e testado
 */
 #include <TinyGPS++.h>
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
+
+static const int RXPin = 1, TXPin = 2;
+static const uint32_t GPSBaud = 4800;
+
 TinyGPSPlus gps;
+SoftwareSerial ss(RXPin, TXPin);
 
 void setupGps()
 {
-    Serial2.begin(9600);
+    ss.begin(GPSBaud);
 }
 
 TinyGPSPlus getGps()
@@ -15,16 +22,8 @@ TinyGPSPlus getGps()
     return gps;
 }
 
-// bool isGpsReady()
-// {
-//     while (Serial2.available() > 0)
-//         if (gps.encode(Serial2.read()))
-//             return true;
-//     return false;
-// }
-
 void updateGps()
 {
-    while (Serial2.available() > 0)
-        gps.encode(Serial2.read());
+    while (ss.available() > 0)
+        gps.encode(ss.read());
 }
