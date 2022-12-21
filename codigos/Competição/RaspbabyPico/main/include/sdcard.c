@@ -57,9 +57,9 @@ void sdcardSetup()
 
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
-        Serial.println("vel,rpm,tempcvt,comb");
+        Serial.println("vel,rpm,tempcvt,comb,satelites,latitude,longitude");
 
-        arquivoDados.println("vel,rpm,tempcvt,comb");
+        arquivoDados.println("vel,rpm,tempcvt,comb,satelites,latitude,longitude");
         arquivoDados.close();
 
         t2 = micros();
@@ -80,21 +80,25 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     unsigned long t2, t1;
     t1 = micros();
     String printData = String(vel);
-    printData += ",";
+    printData += ";";
     printData += rpm;
-    printData += ",";
+    printData += ";";
     printData += tempcvt;
-    printData += ",";
+    printData += ";";
     printData += comb;
+    printData += ";";
+    printData += gps.satellites(), TinyGPS::GPS_INVALID_SATELLITES, 5;
+    printData += ";";
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
         Serial.print("Escrevendo em ");
         Serial.print(arq);Serial.println("...");
 
-        arquivoDados.println(printData);
-        arquivoDados.close();
-
+        arquivoDados.print(printData);
+        arquivoDados.print(flat, 8);
+        arquivoDados.print(";");
+        arquivoDados.println(flon, 8);
         Serial.println(printData);      
 
         t2 = micros();

@@ -7,11 +7,10 @@
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
+#include "include/gps.c"
 #include "include/display.c" // Placa do display
 #include "include/sdcard.c"
-#include "include/gps.c"
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
-
 
 #define TIMER_INTERVAL_MS 1000
 

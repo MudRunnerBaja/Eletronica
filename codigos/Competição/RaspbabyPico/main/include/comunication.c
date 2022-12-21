@@ -16,7 +16,7 @@ void sendData()
     // Escrita em cartao SD
     writeData(vel, rpm, tempCvt, comb);
 
-    // TinyGPSPlus gps = getGps();
+    TinyGPS gps = getGps();
     // Serial1.print(CAR_NAME);
     // Serial1.print(",");
     // Serial1.print(vel);
@@ -48,7 +48,11 @@ void sendData()
     */
     // // Ainda não implementado no receptor
     // /*Serial1.print(",");
-    // Serial1.print(gps.location.lat(), 6);
-    // Serial1.print(gps.location.lng(), 6);
+    Serial.print("LAT=");
+    Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+    Serial.print(" LON=");
+    Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+    Serial.print(" SAT=");
+    Serial.println(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
     // */
 }
