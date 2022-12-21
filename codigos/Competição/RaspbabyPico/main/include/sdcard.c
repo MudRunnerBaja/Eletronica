@@ -57,9 +57,9 @@ void sdcardSetup()
 
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
-        Serial.println("vel,rpm,tempcvt,comb,satelites,latitude,longitude");
+        Serial.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
 
-        arquivoDados.println("vel,rpm,tempcvt,comb,satelites,latitude,longitude");
+        arquivoDados.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
         arquivoDados.close();
 
         t2 = micros();
@@ -95,6 +95,20 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         Serial.print("Escrevendo em ");
         Serial.print(arq);Serial.println("...");
 
+        arquivoDados.print(day);
+        arquivoDados.print(";");
+        arquivoDados.print(month);
+        arquivoDados.print(";");
+        arquivoDados.print(year);
+        arquivoDados.print(";");
+        arquivoDados.print(hour);
+        arquivoDados.print(";");
+        arquivoDados.print(minute);
+        arquivoDados.print(";");
+        arquivoDados.print(second);
+        arquivoDados.print(";");
+        arquivoDados.print(milsec);
+        arquivoDados.print(";");
         arquivoDados.print(printData);
         arquivoDados.print(flat, 8);
         arquivoDados.print(";");

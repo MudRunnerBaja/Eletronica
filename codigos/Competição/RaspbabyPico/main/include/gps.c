@@ -48,6 +48,5 @@ void updateGps()
     speed = gps.f_speed_kmph();
     altitude = gps.f_course();
     gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
-    
   }
 }
