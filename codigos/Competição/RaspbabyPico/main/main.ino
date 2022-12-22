@@ -20,6 +20,7 @@ RPI_PICO_Timer ITimer(0);
 bool TimerHandler(struct repeating_timer *t)
 {
   sendData();
+  Serial.println("Nucleo 0 - Dados Atualizados");
   return true;
 }
 
@@ -32,6 +33,7 @@ bool WriteSD(struct repeating_timer *t)
   int comb = getNivelComb();
   // Escrita em cartao SD
   writeData(vel, rpm, tempCvt, comb);
+  Serial.println("Nucleo 1 - Dados esritos");
   return true;
 }
 
