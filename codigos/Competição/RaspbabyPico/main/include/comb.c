@@ -86,7 +86,7 @@ int setComb()
     }
 }
 
-int getComb()
+int getNivelComb()
 {
     return nivelComb;
 }

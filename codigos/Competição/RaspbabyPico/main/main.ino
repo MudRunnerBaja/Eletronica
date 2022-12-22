@@ -26,6 +26,10 @@ bool TimerHandler(struct repeating_timer *t)
 // Interrupt callback functions Core1
 bool WriteSD(struct repeating_timer *t)
 {
+  int vel = getVel();
+  int rpm = getRpm();
+  float tempCvt = getTempCvt();
+  int comb = getNivelComb();
   // Escrita em cartao SD
   writeData(vel, rpm, tempCvt, comb);
   return true;
