@@ -10,8 +10,11 @@ String arq = "dados000.csv";
 
 File arquivoDados;
 
+bool falha = false;
+
 void falha(){
     digitalWrite(LED_BUILTIN, LOW);
+    falha = true;
     Serial.println("==========FALHA==========");
 }
 
@@ -70,12 +73,20 @@ void sdcardSetup()
     else {
         Serial.println("Erro ao abrir o arquivo.");
         falha();
+        return;
         }
+    falha = false;
 }
 
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
 {
+    if (falha)
+    {
+        sdcardSetup();
+        return;
+    }
+    
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
