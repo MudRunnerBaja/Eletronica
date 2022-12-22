@@ -32,3 +32,8 @@ float setCvtTemperature()
         digitalWrite(ledTempCvt, LOW);
     return temperaturaCVT;
 }
+
+float getTempCvt()
+{
+    return temperaturaCVT;
+}
