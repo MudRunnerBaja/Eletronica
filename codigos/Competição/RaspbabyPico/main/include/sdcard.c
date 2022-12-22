@@ -10,11 +10,11 @@ String arq = "dados000.csv";
 
 File arquivoDados;
 
-bool falha = false;
+bool erro = false;
 
 void falha(){
     digitalWrite(LED_BUILTIN, LOW);
-    falha = true;
+    erro = true;
     Serial.println("==========FALHA==========");
 }
 
@@ -75,13 +75,13 @@ void sdcardSetup()
         falha();
         return;
         }
-    falha = false;
+    erro = false;
 }
 
 
 void writeData(float vel, int rpm, float tempcvt, int comb)
 {
-    if (falha)
+    if (erro)
     {
         sdcardSetup();
         return;
