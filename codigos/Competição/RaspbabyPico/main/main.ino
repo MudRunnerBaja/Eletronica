@@ -10,6 +10,7 @@
 #include "include/sdcard.c"
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
+bool setupCompleto = false;
 
 #define TIMER_INTERVAL_MS 1000
 
@@ -64,9 +65,27 @@ void setup()
     Serial.println("Can't set ITimer. Select another freq. or timer");
 
     Serial.print("Setup finalizado.");
+  
+  setupCompleto = true;
 }
+
+void setup1()
+{
+  while (!setupCompleto)
+  {
+    delay(50);
+  }
+    Serial.print("Setup finalizado.");
+
+}
+
 void loop()
 {
   // updateGps(); // ainda não implementado no receptor
   mostraDados();
+}
+
+void loop1()
+{
+  
 }
