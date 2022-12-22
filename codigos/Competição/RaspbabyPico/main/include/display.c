@@ -127,6 +127,6 @@ void mostraDados()
     //Serial.print("Valor: "); Serial.println(valores[i]);
     escolherDisplay(i);
     escreverRegistrador(valores[i]);
-    delay(5);
+    delay(1);
    }
 }

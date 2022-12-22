@@ -12,9 +12,6 @@ void sendData()
     float tempCvt = setCvtTemperature();
     int comb = setComb();
 
-    // Escrita em cartao SD
-    writeData(vel, rpm, tempCvt, comb);
-
     // TinyGPSPlus gps = getGps();
     // Serial1.print(CAR_NAME);
     // Serial1.print(",");

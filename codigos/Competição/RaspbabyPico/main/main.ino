@@ -41,7 +41,6 @@ void setup()
 
       // Esperando pela resposta do monitor serial. 
       // Comentar quando for para o carro.
-  /*
   while (!Serial) {
     yield();
   }
@@ -51,7 +50,7 @@ void setup()
   while (!Serial.available()) {
     yield();
   }
-  */
+
   Serial.println("Iniciando setup...");
   // setupGps();
   combSetup();
@@ -94,7 +93,6 @@ void setup1()
     Serial.println("Can't set ITimer. Select another freq. or timer");
 
   Serial.print("Setup finalizado.");
-
 }
 
 void loop()
@@ -106,3 +104,9 @@ void loop1()
 {
   mostraDados();
 }
+
+// Programação Multicore
+// https://arduino-pico.readthedocs.io/en/latest/multicore.html
+// Loop e Loop1 são loops em núcleos separados;
+// Setup e Setup1 são setups separados;
+// Setups ocorrem simultaneamente;
