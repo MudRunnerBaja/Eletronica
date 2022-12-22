@@ -73,7 +73,7 @@ void setup1()
 {
   while (!setupCompleto)
   {
-    delay(50);
+    delay(1);
   }
     Serial.print("Setup finalizado.");
 

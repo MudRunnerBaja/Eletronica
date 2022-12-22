@@ -15,13 +15,12 @@ float setRpm()
 
 float getRpm()
 {
-    return setRpm();
+    return rpmGlobal;
 }
 
 void rpmCounterFunc()
 {
     rpmCounter++;
-    Serial.println("SINAL RPM");
 }
 
 void rpmSetup()
