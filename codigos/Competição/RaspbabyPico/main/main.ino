@@ -16,10 +16,18 @@ bool setupCompleto = false;
 
 RPI_PICO_Timer ITimer(0);
 
-// Interrupt callback functions
+// Interrupt callback functions Core0
 bool TimerHandler(struct repeating_timer *t)
 {
   sendData();
+  return true;
+}
+
+// Interrupt callback functions Core1
+bool WriteSD(struct repeating_timer *t)
+{
+  // Escrita em cartao SD
+  writeData(vel, rpm, tempCvt, comb);
   return true;
 }
 
@@ -64,8 +72,6 @@ void setup()
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
 
-    Serial.print("Setup finalizado.");
-  
   setupCompleto = true;
 }
 
@@ -75,17 +81,24 @@ void setup1()
   {
     delay(1);
   }
-    Serial.print("Setup finalizado.");
+
+  delay(50);
+
+  if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
+    Serial.println("Starting ITimer OK, millis() = " + String(millis()));
+  else
+    Serial.println("Can't set ITimer. Select another freq. or timer");
+
+  Serial.print("Setup finalizado.");
 
 }
 
 void loop()
 {
   // updateGps(); // ainda não implementado no receptor
-  mostraDados();
 }
 
 void loop1()
 {
-  
+  mostraDados();
 }

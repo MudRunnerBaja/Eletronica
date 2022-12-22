@@ -9,6 +9,8 @@ int ledVerde = 19;
 int ledAmarelo = 20;
 int ledVermelho = 21;
 
+int nivelComb = 0;
+
 enum nivel {
     VAZIO,
     MEDIO,
@@ -31,6 +33,7 @@ void combSetup()
 
 void setarCombustivel(int nivel)
 {
+    nivelComb = nivel;
     if (nivel == CHEIO)
     {
         digitalWrite(ledVerde, HIGH);
@@ -81,4 +84,9 @@ int setComb()
         setarCombustivel(MEDIO);
         return (int) MEDIO;
     }
+}
+
+int getComb()
+{
+    return nivelComb;
 }
