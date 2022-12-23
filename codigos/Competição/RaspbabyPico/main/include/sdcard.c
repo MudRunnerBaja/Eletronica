@@ -57,11 +57,10 @@ void sdcardSetup()
 
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
-        Serial.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
+        //Serial.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
 
-        arquivoDados.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
-        arquivoDados.close();
-
+        //arquivoDados.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");        arquivoDados.close();
+        arquivoDados.println("data;time;velo;rpm;tempcvt;comb;satelites;latitude;longitude");
         t2 = micros();
         unsigned long t = t2 - t1;
         String dt = String(t, DEC);
@@ -79,7 +78,11 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
-    String printData = String(vel);
+    String printData = String(date);
+    printData += ";";
+    printData += String(gpstime);
+    printData += ";";
+    printData += String(vel);
     printData += ";";
     printData += rpm;
     printData += ";";
@@ -95,7 +98,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         Serial.print("Escrevendo em ");
         Serial.print(arq);Serial.println("...");
 
-        arquivoDados.print(day);
+       /* arquivoDados.print(day);
         arquivoDados.print(";");
         arquivoDados.print(month);
         arquivoDados.print(";");
@@ -108,7 +111,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
         arquivoDados.print(second);
         arquivoDados.print(";");
         arquivoDados.print(milsec);
-        arquivoDados.print(";");
+        arquivoDados.print(";");*/
         arquivoDados.print(printData);
         arquivoDados.print(flat, 8);
         arquivoDados.print(";");

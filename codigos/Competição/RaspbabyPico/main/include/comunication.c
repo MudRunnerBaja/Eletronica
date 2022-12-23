@@ -48,6 +48,11 @@ void sendData()
     */
     // // Ainda não implementado no receptor
     // /*Serial1.print(",");
+    Serial.print(date);
+    Serial.print("  ");
+    Serial.print(gpstime);
+    Serial.print("  ");
+    Serial.println(milisec);
     Serial.print("LAT=");
     Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
     Serial.print(" LON=");

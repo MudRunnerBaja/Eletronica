@@ -8,9 +8,8 @@
 
 static const uint32_t GPSBaud = 9600;
 int year;
-byte month, day, hour, minute, second, milsec;
 float flat, flon, speed, altitude;
-unsigned long age;
+unsigned long age, date, gpstime, milisec;
 
 TinyGPS gps;
 
@@ -31,7 +30,7 @@ void updateGps()
   unsigned short sentences, failed;
 
   // For one second we parse GPS data and report some key values
-  for (unsigned long start = millis(); millis() - start < 1000;)
+  for (unsigned long start = millis(); millis() - start < 100;)
   {
     while (Serial1.available())
     {
@@ -47,6 +46,7 @@ void updateGps()
     gps.f_get_position(&flat, &flon, &age);
     speed = gps.f_speed_kmph();
     altitude = gps.f_course();
-    gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
+    gps.get_datetime(&date, &gpstime, &milisec);
+    //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
   }
 }
