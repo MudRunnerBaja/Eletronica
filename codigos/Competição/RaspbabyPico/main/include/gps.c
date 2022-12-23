@@ -26,17 +26,13 @@ TinyGPS getGps()
 void updateGps()
 {
   bool newData = false;
-  unsigned long chars;
-  unsigned short sentences, failed;
 
-  // For one second we parse GPS data and report some key values
   for (unsigned long start = millis(); millis() - start < 100;)
   {
     while (Serial1.available())
     {
       char c = Serial1.read();
-      // Serial.write(c); // uncomment this line if you want to see the GPS data flowing
-      if (gps.encode(c)) // Did a new valid sentence come in?
+      if (gps.encode(c)) 
         newData = true;
     }
   }

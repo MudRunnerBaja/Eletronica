@@ -46,8 +46,7 @@ void sendData()
     Serial.print(",");
     Serial.println(comb);
     */
-    // // Ainda não implementado no receptor
-    // /*Serial1.print(",");
+
     Serial.print(date);
     Serial.print("  ");
     Serial.print(gpstime);
