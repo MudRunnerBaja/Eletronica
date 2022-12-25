@@ -41,7 +41,7 @@ void updateGps()
   {
     gps.f_get_position(&flat, &flon, &age);
     speed = gps.f_speed_kmph();
-    altitude = gps.f_course();
+    altitude = gps.altitude();
     gps.get_datetime(&date, &gpstime, &milisec);
     //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
   }
