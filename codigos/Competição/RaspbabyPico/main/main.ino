@@ -15,6 +15,7 @@ bool setupCompleto = false;
 #define TIMER_INTERVAL_MS 1000
 
 RPI_PICO_Timer ITimer(0);
+RPI_PICO_Timer Core1Timer(1);
 
 // Interrupt callback functions Core0
 bool TimerHandler(struct repeating_timer *t)
@@ -89,7 +90,7 @@ void setup1()
 
   delay(50);
 
-  if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
+  if (Core1Timer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
     Serial.println("Starting ITimer OK, millis() = " + String(millis()));
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
