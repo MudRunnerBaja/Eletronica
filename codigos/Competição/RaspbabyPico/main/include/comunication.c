@@ -4,10 +4,13 @@
 */
 
 #define CAR_NAME "MV-22"
+#include "gps.c"
+void writeData(float vel, int rpm, float tempcvt, int comb);
+
 
 void sendData()
 {
-    updateGps();
+    bool gpsUpdated = updateGps();
     float vel = setVel();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
@@ -16,7 +19,6 @@ void sendData()
     // Escrita em cartao SD
     writeData(vel, rpm, tempCvt, comb);
 
-    TinyGPS gps = getGps();
     // Serial1.print(CAR_NAME);
     // Serial1.print(",");
     // Serial1.print(vel);
