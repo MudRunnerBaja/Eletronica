@@ -11,9 +11,11 @@ void sendData()
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
+    int runningTimer = timerEngine();
+    int movingTimer = timerMoving();
 
     // Escrita em cartao SD
-    writeData(vel, rpm, tempCvt, comb);
+    writeData(vel, rpm, tempCvt, comb, runningTimer, movingTimer);
 
     // TinyGPSPlus gps = getGps();
     // Serial1.print(CAR_NAME);

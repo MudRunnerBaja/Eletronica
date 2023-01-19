@@ -2,13 +2,14 @@
 #include <RPi_Pico_ISR_Timer.h>
 #include <RPi_Pico_ISR_Timer.hpp>
 
-#include "include/temp.c" // Temperatura CVT
-#include "include/comb.c" // Níveis de combustível
-#include "include/vel.c" // Velocidade do carro
-#include "include/rpm.c" // RPM do carro
-#include "include/display.c" // Placa do display
-#include "include/sdcard.c"
+#include "include/temp.c"         // Temperatura CVT
+#include "include/comb.c"         // Níveis de combustível
+#include "include/vel.c"          // Velocidade do carro
+#include "include/rpm.c"          // RPM do carro
+#include "include/display.c"      // Placa do display
+#include "include/sdcard.c"       // Gravação de dados no cartão SD
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
+#include "include/timers.c"        // Contagem do tempo de rodagem do carro e do motor
 
 
 #define TIMER_INTERVAL_MS 1000

@@ -57,9 +57,9 @@ void sdcardSetup()
 
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
-        Serial.println("vel,rpm,tempcvt,comb");
+        Serial.println("vel,rpm,tempcvt,comb,EngineRunningTime,MovingTime");
 
-        arquivoDados.println("vel,rpm,tempcvt,comb");
+        arquivoDados.println("vel,rpm,tempcvt,comb,EngineRunningTime,MovingTime");
         arquivoDados.close();
 
         t2 = micros();
@@ -74,7 +74,7 @@ void sdcardSetup()
 }
 
 
-void writeData(float vel, int rpm, float tempcvt, int comb)
+void writeData(float vel, int rpm, float tempcvt, int comb, int runningTimer, int movingTimer)
 {
     // Testes de velocidade de escrita
     unsigned long t2, t1;
@@ -86,6 +86,10 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     printData += tempcvt;
     printData += ",";
     printData += comb;
+    printData += ",";
+    printData += runningTimer;
+    printData += ",";
+    printData += movingTimer;
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
