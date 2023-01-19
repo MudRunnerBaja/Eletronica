@@ -23,6 +23,14 @@ TinyGPS getGps()
     return gps;
 }
 
+int gpsSpdInt(){
+  return int(speed);
+}
+
+float gpsSpdFloat(){
+  return speed;
+}
+
 void updateGps()
 {
   bool newData = false;
