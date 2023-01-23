@@ -37,7 +37,7 @@ float gpsSpdFloat(){
 bool updateGps()
 {
   unsigned int t0 = millis(); unsigned int tf = millis();
-  unsigned int tTotal;
+  unsigned int tTotal = 0;
   while (newData == false && tTotal < 100) {
     char c = Serial2.read();
     if (gps.encode(c)) newData = true;
