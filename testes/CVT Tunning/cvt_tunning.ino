@@ -1,4 +1,3 @@
-#include <Ds1302.h>
 #include <SPI.h>
 #include <SD.h>
 #include <Arduino.h>
@@ -21,6 +20,7 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 int rpm1, rpm2, velo;
 int hall1, hall2, falha, chipSelect = 53;
+int peso, mola, correia, rampa;
 String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2;
 unsigned long timeold;
@@ -133,6 +133,80 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
     delay(3000);
 }
 
+//MENU DE SETAGEM DOS PESOS E PARAMETROS
+//PESOS CVT, RAMPA MOTRIZ, PRE CARGA MOVIDA E CORREIA
+void config(){
+  int botao = 0;
+
+  //INTERFACE DE COFINGURAÇÃO DOS PESOS DA MOTRIZ DA CVT
+  while (bool done = false)   
+  {
+    lcd.clear();
+    lcd.print("Peso CVT:");
+
+    int vlr = analogRead(botao);
+    if(vlr < 250){peso = peso + 5;}
+    if(vlr < 450){peso = peso - 5;}
+    if(vlr < 920){done = true;}
+
+    lcd.setCursor(0,1);
+    lcd.print(peso);
+    lcd.print(" g");
+    delay(75);
+  }
+
+//INTERFACE DE CONFIGURAÇÃO DAS RAMPAS DO MOTRIZ
+  while (bool done = false)
+  {
+    lcd.clear();
+    lcd.print("Rampa CVT:");
+
+    int vlr = analogRead(botao);
+    if(vlr < 250){rampa++;}
+    if(vlr < 450){rampa--;}
+    if(vlr < 920){done = true;}
+
+    lcd.setCursor(0,1);
+    lcd.print("Rampa N: ");
+    lcd.print(rampa);
+    delay(75);
+  }
+  
+  //INTERFACE DE COFINGURAÇÃO DA PRECARGA DA MOLA DA CVT
+  while (bool done = false)
+  {
+    lcd.clear();
+    lcd.print("PreCarga CVT");
+
+    int vlr = ananlogRead(botao);
+    if(vlr < 250){mola++;}
+    if(vlr < 450){mola--;}
+    if(vlr < 920){done = true;}
+
+    lcd.setCursor(0,1);
+    lcd.print("Mola N: ");
+    lcd.print(mola);
+    delay(75);
+  }
+
+  //INTERFACE DE COFINGURAÇÃO DA CORREIA UTILIZADA
+  while (bool done = false)
+  {
+    lcd.clear();
+    lcd.print("Correia CVT");
+
+    int vlr = ananlogRead(botao);
+    if(vlr < 250){correia++;}
+    if(vlr < 450){correia--;}
+    if(vlr < 920){done = true;}
+
+    lcd.setCursor(0,1);
+    lcd.print("Correia N: ");
+    lcd.print(correia);
+    delay(75);
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -152,6 +226,9 @@ void setup()
     falha = 0;
     error();
   }
+
+  
+  config();
 
   criarArquivo();
   delay(1500);  
