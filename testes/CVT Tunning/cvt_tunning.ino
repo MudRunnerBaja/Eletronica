@@ -14,16 +14,15 @@ contador1 = contador da motriz / contador2 = contador da movida
 File myFile;
 TinyGPS gps;
 
-SoftwareSerial ss(30, 31);
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 
 int rpm1, rpm2, velo;
 int hall1, hall2, falha, chipSelect = 53;
-int peso, mola, correia, rampa;
+int cfg;
 String arq = "cvt_00.csv";
 volatile byte pulsos1, pulsos2;
-unsigned long timeold;
+unsigned long timeold, date, gpstime, milisec;
 unsigned int pulsos_por_volta_mtz = 1;            
 unsigned int pulsos_por_volta_mvd = 4;          //Quantidade de imas na polia
 
@@ -122,9 +121,10 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
       error();
     }
 
-    myFile.print(",RPM Motriz,RPM Movida,km/h, refresh rate: ");
+    myFile.print("Time;Milisec;RPM Motriz;RPM Movida;km/h; refresh rate: ");
     myFile.print(refresh_rate);
-    myFile.print("ms");
+    myFile.print("ms, Config. N: ");
+    myFile.print(cfg);
     myFile.println();
     myFile.close();
 
@@ -133,76 +133,23 @@ void criarArquivo(){                        //Função para criar o arquivo e ve
     delay(3000);
 }
 
-//MENU DE SETAGEM DOS PESOS E PARAMETROS
-//PESOS CVT, RAMPA MOTRIZ, PRE CARGA MOVIDA E CORREIA
+//MENU DE SELEÇÃO DAS CONFIGURAÇÕES
 void config(){
   int botao = 0;
 
-  //INTERFACE DE COFINGURAÇÃO DOS PESOS DA MOTRIZ DA CVT
+  //INTERFACE DE SELECIONAR AS CONFIGURAÇÕES DA CVT
   while (bool done = false)   
   {
     lcd.clear();
-    lcd.print("Peso CVT:");
+    lcd.print("Config N:");
 
     int vlr = analogRead(botao);
-    if(vlr < 250){peso = peso + 5;}
-    if(vlr < 450){peso = peso - 5;}
+    if(vlr < 250){cfg++;}
+    if(vlr < 450){cfg--;}
     if(vlr < 920){done = true;}
 
     lcd.setCursor(0,1);
-    lcd.print(peso);
-    lcd.print(" g");
-    delay(75);
-  }
-
-//INTERFACE DE CONFIGURAÇÃO DAS RAMPAS DO MOTRIZ
-  while (bool done = false)
-  {
-    lcd.clear();
-    lcd.print("Rampa CVT:");
-
-    int vlr = analogRead(botao);
-    if(vlr < 250){rampa++;}
-    if(vlr < 450){rampa--;}
-    if(vlr < 920){done = true;}
-
-    lcd.setCursor(0,1);
-    lcd.print("Rampa N: ");
-    lcd.print(rampa);
-    delay(75);
-  }
-  
-  //INTERFACE DE COFINGURAÇÃO DA PRECARGA DA MOLA DA CVT
-  while (bool done = false)
-  {
-    lcd.clear();
-    lcd.print("PreCarga CVT");
-
-    int vlr = ananlogRead(botao);
-    if(vlr < 250){mola++;}
-    if(vlr < 450){mola--;}
-    if(vlr < 920){done = true;}
-
-    lcd.setCursor(0,1);
-    lcd.print("Mola N: ");
-    lcd.print(mola);
-    delay(75);
-  }
-
-  //INTERFACE DE COFINGURAÇÃO DA CORREIA UTILIZADA
-  while (bool done = false)
-  {
-    lcd.clear();
-    lcd.print("Correia CVT");
-
-    int vlr = ananlogRead(botao);
-    if(vlr < 250){correia++;}
-    if(vlr < 450){correia--;}
-    if(vlr < 920){done = true;}
-
-    lcd.setCursor(0,1);
-    lcd.print("Correia N: ");
-    lcd.print(correia);
+    lcd.print(cfg);
     delay(75);
   }
 }
@@ -210,7 +157,7 @@ void config(){
 void setup()
 {
   Serial.begin(115200);
-  ss.begin(4800);
+  Serial1.begin(9600);
   lcd.begin(16,2);
 
   Serial.println("Inicializando...");
@@ -249,7 +196,11 @@ void loop()
     detachInterrupt(digitalPinToInterrupt(hall1));
     detachInterrupt(digitalPinToInterrupt(hall2));
 
+    while (Serial1.available() > 0)
+      gps.encode(Serial1.read());
+
     velo = gps.f_speed_kmph();
+    gps.get_datetime(&date, &gpstime, &milisec);
 
     digitalWrite(LED_BUILTIN, HIGH);
 
@@ -275,11 +226,14 @@ void loop()
       falha = 1;
       error();
     }
-
+    myFile.print(gpstime);
+    myFile.print(";");
+    myFile.print(milisec);
+    myFile.print(";");
     myFile.print(rpm1);
-    myFile.print(",");
+    myFile.print(";");
     myFile.print(rpm2);
-    myFile.print(",");
+    myFile.print(";");
     myFile.print(velo);
     myFile.println();
     myFile.close();
