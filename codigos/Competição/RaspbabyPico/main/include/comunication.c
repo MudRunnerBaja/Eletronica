@@ -1,17 +1,15 @@
 /* 
     !! Comunicação entre as demais bibliotecas !!
-    Todo segundo o pico chama uma interrupção
 */
 
 #define CAR_NAME "MV-22"
-#include "gps.c"
 void writeData(float vel, int rpm, float tempcvt, int comb);
 
 
 void sendData()
 {
     bool gpsUpdated = updateGps();
-    float vel = setVel();
+    float vel = gpsSpdFloat();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();

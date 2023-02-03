@@ -27,7 +27,7 @@ TinyGPS getGps()
 }
 
 int gpsSpdInt(){
-  return int(speed);
+  return (int)speed;
 }
 
 float gpsSpdFloat(){
@@ -36,15 +36,7 @@ float gpsSpdFloat(){
 
 bool updateGps()
 {
-  unsigned int t0 = millis(); unsigned int tf = millis();
-  unsigned int tTotal = 0;
-  while (newData == false && tTotal < 100) {
-    char c = Serial2.read();
-    if (gps.encode(c)) newData = true;
-
-    tf = millis();
-    tTotal = tf - t0;
-  }
+  gpsencoding(100);
 
   Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
 
@@ -58,4 +50,17 @@ bool updateGps()
     newData = false;
     return true;
   } else { return false; }
+}
+
+void gpsencoding(unsigned int timeout)
+{
+  unsigned int t0 = millis(); unsigned int tf = millis();
+  unsigned int tTotal = tf - t0;
+  while (Serial2.available() && !newData) {
+    char c = Serial2.read();
+    if (gps.encode(c)) newData true;
+
+    tf = millis();
+    tTotal = tf - t0;
+  }
 }

@@ -7,10 +7,10 @@
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
-// #include "include/gps.c" // GPS - included in comunication.c
+#include "include/gps.c" // GPS 
 #include "include/display.c" // Placa do display
+#include "include/sdcard.c" // Modulo SD
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
-#include "include/sdcard.c"
 
 #define TIMER_INTERVAL_MS 1000
 
@@ -47,7 +47,7 @@ void setup()
   combSetup();
   displaySetup();
   cvtSetup();
-  velSetup();
+  // velSetup();
   rpmSetup();
   sdcardSetup();
 
