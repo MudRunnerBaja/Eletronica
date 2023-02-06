@@ -34,11 +34,22 @@ float gpsSpdFloat(){
   return speed;
 }
 
+void gpsencoding(unsigned int timeout)
+{
+  unsigned int t0 = millis(); unsigned int tf = millis();
+  unsigned int tTotal = tf - t0;
+  while (Serial2.available() && !newData) {
+    char c = Serial2.read();
+    if (gps.encode(c)) { newData = true; }
+
+    tf = millis();
+    tTotal = tf - t0;
+  }
+}
+
 bool updateGps()
 {
   gpsencoding(100);
-
-  Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
 
   if (newData)
   {
@@ -50,17 +61,4 @@ bool updateGps()
     newData = false;
     return true;
   } else { return false; }
-}
-
-void gpsencoding(unsigned int timeout)
-{
-  unsigned int t0 = millis(); unsigned int tf = millis();
-  unsigned int tTotal = tf - t0;
-  while (Serial2.available() && !newData) {
-    char c = Serial2.read();
-    if (gps.encode(c)) newData true;
-
-    tf = millis();
-    tTotal = tf - t0;
-  }
 }

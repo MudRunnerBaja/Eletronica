@@ -20,7 +20,7 @@ RPI_PICO_Timer ITimer(0);
 // Interrupt callback functions
 bool TimerHandler(struct repeating_timer *t)
 {
-  //sendData();
+  sendData();
   return true;
 }
 
@@ -70,7 +70,7 @@ void setup()
 }
 void loop()
 {
-  // updateGps(); // ainda não implementado no receptor
-  sendData();
+  updateGps(); // ainda não implementado no receptor
+  // sendData();
   mostraDados();
 }
