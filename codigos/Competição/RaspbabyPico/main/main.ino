@@ -2,17 +2,20 @@
 #include <RPi_Pico_ISR_Timer.h>
 #include <RPi_Pico_ISR_Timer.hpp>
 
+
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
 #include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
+#include "include/gps.c" // GPS 
 #include "include/display.c" // Placa do display
-#include "include/sdcard.c"
+#include "include/sdcard.c" // Modulo SD
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 bool setupCompleto = false;
 
 #define TIMER_INTERVAL_MS 1000
+
 
 RPI_PICO_Timer ITimer(0);
 RPI_PICO_Timer Core1Timer(1);
@@ -42,6 +45,7 @@ void setup()
 {
   Serial.begin(9600);
 
+
       // Esperando pela resposta do monitor serial. 
       // Comentar quando for para o carro.
   while (!Serial) {
@@ -55,11 +59,11 @@ void setup()
   }
 
   Serial.println("Iniciando setup...");
-  // setupGps();
+  setupGps();
   combSetup();
   displaySetup();
   cvtSetup();
-  velSetup();
+  // velSetup();
   rpmSetup();
   sdcardSetup();
 
@@ -105,6 +109,8 @@ void loop()
 
 void loop1()
 {
+  updateGps(); // ainda não implementado no receptor
+  // sendData();
   mostraDados();
 }
 

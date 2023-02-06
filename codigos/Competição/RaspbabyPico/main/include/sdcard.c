@@ -60,11 +60,10 @@ void sdcardSetup()
 
     if (arquivoDados) {
         Serial.println("Nomeando colunas como:");
-        Serial.println("vel,rpm,tempcvt,comb");
+        //Serial.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
 
-        arquivoDados.println("vel,rpm,tempcvt,comb");
-        arquivoDados.close();
-
+        //arquivoDados.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");        arquivoDados.close();
+        arquivoDados.println("data;time;velo;rpm;tempcvt;comb;satelites;latitude;longitude");
         t2 = micros();
         unsigned long t = t2 - t1;
         String dt = String(t, DEC);
@@ -90,23 +89,45 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
-    String printData = String(vel);
-    printData += ",";
+    String printData = String(date);
+    printData += ";";
+    printData += String(gpstime);
+    printData += ";";
+    printData += String(vel);
+    printData += ";";
     printData += rpm;
-    printData += ",";
+    printData += ";";
     printData += tempcvt;
-    printData += ",";
+    printData += ";";
     printData += comb;
+    printData += ";";
+    printData += gps.satellites(), TinyGPS::GPS_INVALID_SATELLITES, 5;
+    printData += ";";
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
         Serial.print("Escrevendo em ");
         Serial.print(arq);Serial.println("...");
 
-        arquivoDados.println(printData);
-        arquivoDados.close();
-
-        Serial.println(printData);
+       /* arquivoDados.print(day);
+        arquivoDados.print(";");
+        arquivoDados.print(month);
+        arquivoDados.print(";");
+        arquivoDados.print(year);
+        arquivoDados.print(";");
+        arquivoDados.print(hour);
+        arquivoDados.print(";");
+        arquivoDados.print(minute);
+        arquivoDados.print(";");
+        arquivoDados.print(second);
+        arquivoDados.print(";");
+        arquivoDados.print(milsec);
+        arquivoDados.print(";");*/
+        arquivoDados.print(printData);
+        arquivoDados.print(flat, 8);
+        arquivoDados.print(";");
+        arquivoDados.println(flon, 8);
+        Serial.println(printData);      
 
         t2 = micros();
         unsigned long t = t2 - t1;

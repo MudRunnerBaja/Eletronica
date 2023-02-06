@@ -1,18 +1,22 @@
 /* 
     !! Comunicação entre as demais bibliotecas !!
-    Todo segundo o pico chama uma interrupção
 */
 
 #define CAR_NAME "MV-22"
+void writeData(float vel, int rpm, float tempcvt, int comb);
+
 
 void sendData()
 {
-    float vel = setVel();
+    bool gpsUpdated = updateGps();
+    float vel = gpsSpdFloat();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
 
-    // TinyGPSPlus gps = getGps();
+    // Escrita em cartao SD
+    writeData(vel, rpm, tempCvt, comb);
+
     // Serial1.print(CAR_NAME);
     // Serial1.print(",");
     // Serial1.print(vel);
@@ -42,9 +46,17 @@ void sendData()
     Serial.print(",");
     Serial.println(comb);
     */
-    // // Ainda não implementado no receptor
-    // /*Serial1.print(",");
-    // Serial1.print(gps.location.lat(), 6);
-    // Serial1.print(gps.location.lng(), 6);
+
+    Serial.print(date);
+    Serial.print("  ");
+    Serial.print(gpstime);
+    Serial.print("  ");
+    Serial.println(milisec);
+    Serial.print("LAT=");
+    Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+    Serial.print(" LON=");
+    Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+    Serial.print(" SAT=");
+    Serial.println(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
     // */
 }

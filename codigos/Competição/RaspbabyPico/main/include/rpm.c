@@ -2,7 +2,7 @@
     Implementação da contagem de rpm do carro 
 */
 
-int rpmInputPin = 28;
+int rpmInputPin = 8;
 int rpmCounter = 0;
 int rpmGlobal;
 
@@ -25,5 +25,5 @@ void rpmCounterFunc()
 
 void rpmSetup()
 {
-    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(rpmInputPin), rpmCounterFunc, RISING);
 }
