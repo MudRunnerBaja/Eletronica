@@ -5,7 +5,6 @@
 
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
-#include "include/vel.c" // Velocidade do carro
 #include "include/rpm.c" // RPM do carro
 #include "include/gps.c" // GPS 
 #include "include/display.c" // Placa do display
@@ -31,13 +30,13 @@ bool TimerHandler(struct repeating_timer *t)
 // Interrupt callback functions Core1
 bool WriteSD(struct repeating_timer *t)
 {
-  int vel = getVel();
+  float vel = gpsSpdFloat();
   int rpm = getRpm();
   float tempCvt = getTempCvt();
   int comb = getNivelComb();
   // Escrita em cartao SD
   writeData(vel, rpm, tempCvt, comb);
-  Serial.println("Nucleo 1 - Dados esritos");
+  Serial.println("Nucleo 1 - Dados escritos");
   return true;
 }
 
@@ -64,7 +63,6 @@ void setup()
   combSetup();
   displaySetup();
   cvtSetup();
-  // velSetup();
   rpmSetup();
   sdcardSetup();
 
@@ -105,12 +103,12 @@ void setup1()
 
 void loop()
 {
-  UpdateData();
+  gpsencoding();
 }
 
 void loop1()
 {
-  gpsencoding();
+  
 }
 
 // Programação Multicore

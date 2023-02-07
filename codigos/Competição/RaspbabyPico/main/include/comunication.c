@@ -12,6 +12,7 @@ byte data[12];  // I2C data transfer
 #define CAR_NAME "MV-22"
 
 void writeData(float vel, int rpm, float tempcvt, int comb);
+void SendI2CDataTo(int slave);
 
 #pragma endregion
 
@@ -27,6 +28,9 @@ void UpdateData()
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
+
+    // Envia os dados por i2c
+    SendI2CDataTo(UnoLCD);
 
     // Escrita em cartao SD -> Feita por interrupção
     // writeData(speed, rpm, tempCvt, comb);

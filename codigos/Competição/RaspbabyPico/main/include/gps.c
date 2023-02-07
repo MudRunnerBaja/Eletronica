@@ -1,5 +1,5 @@
 /*
-    Implementação (não implementada) do GPS no carro
+    Implementação do GPS no carro
     A ser revisado e testado
 */
 //#include <TinyGPS++.h>
