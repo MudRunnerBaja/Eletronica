@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <Wire.h>
 
+  // xbm da imagem usada na tela;
 static unsigned char mr_logo_bits[] ={
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
@@ -92,12 +93,13 @@ static unsigned char mr_logo_bits[] ={
   0x00, 0x00, 0x00, 0x00, };
 
 
-bool hello = true;
-unsigned int t0, tf;
-char tvel[10] = "VEL: ";
-char trpm[10] = "RPM: ";
-int vel = 55, rpm = 2700;
-byte receivedData[32];
+unsigned int t0, tf; // Timers
+char tvel[10] = "VEL: "; // String responsável por mostrar o valor da velocidade
+char trpm[10] = "RPM: "; // String responsável por mostrar o valor do RPM
+int vel = 55, rpm = 2700; // Valores arbitrários de teste
+byte receivedData[32]; // Buffer de dados recebidos. Tamanho máximo de 32 bytes.
+
+// Funções de inicialização do objeto u8g2 do display. Quando usando HW_SPI, apenas o SS precisa ser passado.
 
 //U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, 18, 19, 17);
 U8G2_ST7920_128X64_1_HW_SPI u8g2(U8G2_R2, 10);
@@ -108,11 +110,12 @@ void setup(void)
   t0 = tf = millis();
   
   Wire.begin(9);
-  Wire.onReceive(receiveEvent);
-  SPI.begin();
+  Wire.onReceive(receiveEvent); // Evento -> chama a função receiveEvent quando recebe uma transmissão pelo i2c
+  SPI.begin(); // Não sei se é necessário
   Serial.begin(9600);
   u8g2.begin();
   
+  // Converte os valores de int para char e insere os chars nas strings declaradas no início.
   itoa(vel/10, &tvel[4], 10);
   itoa(vel%10, &tvel[5], 10);
   itoa(rpm/1000, &trpm[4], 10);
@@ -124,32 +127,35 @@ void setup(void)
 void loop(void) {
   int test = millis();
 
-    fvel();
+    UpdateDisplay();
     int timetest = millis() - test;
     Serial.print("\nTempo Trocando:");Serial.println(timetest);
     Serial.print("vel:");Serial.println(vel);
 }
 
-void fvel() {
+void UpdateDisplay() {
   u8g2.firstPage();
   do {
     u8g2.setFont(u8g2_font_12x6LED_tf);
     u8g2.drawXBM(0, 0, 124, 64, mr_logo_bits);
     u8g2.drawStr(10,54,tvel);
-    u8g2.drawStr(10,26,trpm);  
+    u8g2.drawStr(10,26,trpm);
   } while (u8g2.nextPage());
-  
 }
 
-void receiveEvent(int bytesReceived) { 
-  int b = 0;
+void receiveEvent(int bytesReceived) {  // É requisito que essas funções de evento tenham um parâmetro int.
+  int b = 0; // Contador de bytes recebidos. Útil pra testar ou limitar a transmissão.
   while(Wire.available()) {
     receivedData[b] = Wire.read();
     b++;
   }
-  vel = (int)receivedData[0] << 8 | (int)receivedData[1];
+   // Como recebemos em bytes e int são data types de 2 bytes, precisamos transformar o byte mais alto em int e movê-lo para a esquerda. Um byte são 8 bits.
+   // Depois, recebemos o byte mais baixo.
+  vel = (int)receivedData[0] << 8 | (int)receivedData[1]; // Transforma byte receivedData[0] em int e o move 8 bits para a esquerda, e depois transforma e recebe o byte receivedData[1].
   rpm = (int)receivedData[2] << 8 | (int)receivedData[3];
   rpm = rpm / 100;
+
+  // Converte os valores de int para char e insere os chars nas strings declaradas no início.
   itoa(vel/10, &tvel[4], 10);
   itoa(vel%10, &tvel[5], 10);
   itoa(rpm/10, &trpm[4], 10);
