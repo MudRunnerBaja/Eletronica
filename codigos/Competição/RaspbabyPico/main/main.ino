@@ -23,7 +23,7 @@ RPI_PICO_Timer Core1Timer(1);
 // Interrupt callback functions Core0
 bool TimerHandler(struct repeating_timer *t)
 {
-  sendData();
+  UpdateData();
   Serial.println("Nucleo 0 - Dados Atualizados");
   return true;
 }
@@ -45,7 +45,6 @@ void setup()
 {
   Serial.begin(9600);
 
-
       // Esperando pela resposta do monitor serial. 
       // Comentar quando for para o carro.
   while (!Serial) {
@@ -59,6 +58,8 @@ void setup()
   }
 
   Serial.println("Iniciando setup...");
+
+  DisplaySetup();
   setupGps();
   combSetup();
   displaySetup();
@@ -104,14 +105,12 @@ void setup1()
 
 void loop()
 {
-  // updateGps(); // ainda não implementado no receptor
+  sendData();
 }
 
 void loop1()
 {
-  updateGps(); // ainda não implementado no receptor
-  // sendData();
-  mostraDados();
+  gpsencoding();
 }
 
 // Programação Multicore

@@ -2,11 +2,26 @@
     !! Comunicação entre as demais bibliotecas !!
 */
 
+#pragma region DECLARATIONS
+
+#include <Wire.h>
+int UnoLCD = 9, SDApin = 8, SCLpin = 9; // Pico-Uno I2C
+byte data[4]; // I2C data transfer
+
 #define CAR_NAME "MV-22"
+
 void writeData(float vel, int rpm, float tempcvt, int comb);
 
 
-void sendData()
+#pragma endregion
+
+void DisplaySetup() {
+    Wire.setSDA(SDApin);
+    Wire.setSCL(SCLpin);
+    Wire.begin(); // Enter i2c0 comm as master
+}
+
+void UpdateData()
 {
     bool gpsUpdated = updateGps();
     float vel = gpsSpdFloat();
@@ -15,7 +30,7 @@ void sendData()
     int comb = setComb();
 
     // Escrita em cartao SD
-    writeData(vel, rpm, tempCvt, comb);
+    writeData(speed, rpm, tempCvt, comb);
 
     // Serial1.print(CAR_NAME);
     // Serial1.print(",");
@@ -59,4 +74,8 @@ void sendData()
     Serial.print(" SAT=");
     Serial.println(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
     // */
+}
+
+void SendI2CDataTo(int slave) {
+    
 }
