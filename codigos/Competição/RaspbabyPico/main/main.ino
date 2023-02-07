@@ -105,7 +105,7 @@ void setup1()
 
 void loop()
 {
-  sendData();
+  UpdateData();
 }
 
 void loop1()

@@ -58,7 +58,7 @@ void gpsencoding()
     char c = Serial2.read();
     if (gps.encode(c)) newData = true;
 
-    tf = millis();
+    // tf = millis();
     // tTotal = tf - t0;
   }
   // Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
