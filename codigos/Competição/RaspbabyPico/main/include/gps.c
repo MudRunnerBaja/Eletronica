@@ -7,8 +7,8 @@
 #include <TinyGPS.h> // Documentação original: http://arduiniana.org/libraries/tinygps/
 
 static const uint32_t GPSBaud = 9600;
-int year;
-float flat, flon, speed, altitude;
+int year, speedInt = 0;
+float flat, flon, speed = 0, altitude;
 unsigned long age, date, gpstime, milisec;
 bool newData = false;
 
@@ -27,27 +27,11 @@ TinyGPS getGps()
 }
 
 int gpsSpdInt(){
-  return (int)speed;
+  return speedInt;
 }
 
 float gpsSpdFloat(){
   return speed;
-}
-
-bool updateGps()
-{
-  gpsencoding();
-
-  if (newData)
-  {
-    gps.f_get_position(&flat, &flon, &age);
-    speed = gps.f_speed_kmph();
-    altitude = gps.altitude();
-    gps.get_datetime(&date, &gpstime, &milisec);
-    //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
-    newData = false;
-    return true;
-  } else { return false; }
 }
 
 void gpsencoding()
@@ -62,4 +46,21 @@ void gpsencoding()
     // tTotal = tf - t0;
   }
   // Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
+}
+
+bool updateGps()
+{
+  gpsencoding();
+
+  if (newData)
+  {
+    gps.f_get_position(&flat, &flon, &age);
+    speed = gps.f_speed_kmph();
+    speedInt = (int) speed;
+    altitude = gps.altitude();
+    gps.get_datetime(&date, &gpstime, &milisec);
+    //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
+    newData = false;
+    return true;
+  } else { return false; }
 }

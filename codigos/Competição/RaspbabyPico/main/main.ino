@@ -7,7 +7,6 @@
 #include "include/comb.c" // Níveis de combustível
 #include "include/rpm.c" // RPM do carro
 #include "include/gps.c" // GPS 
-#include "include/display.c" // Placa do display
 #include "include/sdcard.c" // Modulo SD
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
@@ -61,7 +60,6 @@ void setup()
   DisplaySetup();
   setupGps();
   combSetup();
-  displaySetup();
   cvtSetup();
   rpmSetup();
   sdcardSetup();
@@ -92,23 +90,23 @@ void setup1()
   }
 
   delay(50);
-
+  /*
   if (Core1Timer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
     Serial.println("Starting ITimer OK, millis() = " + String(millis()));
   else
     Serial.println("Can't set ITimer. Select another freq. or timer");
-
+  */
   Serial.print("Setup finalizado.");
 }
 
 void loop()
 {
-  gpsencoding();
+
 }
 
 void loop1()
 {
-  
+  gpsencoding();
 }
 
 // Programação Multicore

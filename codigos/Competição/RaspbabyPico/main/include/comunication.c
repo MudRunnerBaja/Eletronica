@@ -5,9 +5,9 @@
 #pragma region DECLARATIONS
 
 #include <Wire.h>
-int UnoLCD = 9, SDApin = 8, SCLpin = 9; // Pico-Uno I2C
-byte data[12];  // I2C data transfer
-                // (0-3 vel) (4-5 rpm) (6-9 tempCvt) (10-11 comb)
+int UnoLCD = 9, SDApin = 4, SCLpin = 5; // Pico I2C0             
+byte data[5];  // I2C data transfer
+                // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
 
 #define CAR_NAME "MV-22"
 
@@ -24,11 +24,14 @@ void DisplaySetup() {
 
 void UpdateData()
 {
+    /*
     float vel = gpsSpdFloat();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
-
+    */
+    float vel = 37;
+    Serial.println("Enviando i2c:\nSOCORRO\n");
     // Envia os dados por i2c
     SendI2CDataTo(UnoLCD);
 
@@ -69,16 +72,22 @@ void UpdateData()
 void SendI2CDataTo(int slave) {
     unsigned int tmp = millis();
 
-    // (0-3 vel) (4-5 rpm) (6-9 tempCvt) (10-11 comb)
-    memcpy(data, &speed, sizeof(data));
-    memcpy(&data[4], &rpmGlobal, sizeof(data));
-    memcpy(&data[6], &temperaturaCVT, sizeof(data));
-    memcpy(&data[10], &nivelComb, sizeof(data));
-
+    // (0-1 vel) (2-3 rpm) (4 Comb + CVT)
+    memcpy(data, &speedInt, sizeof(data));  
+    data[2] = highByte(rpmGlobal);
+    data[3] = lowByte(rpmGlobal);
+    data[4] = 0;
+    if (temperaturaCVT > TEMPERATURA_CRITICA_CVT)
+        data[4] = 0 + 0x04;
+    else { data[4] = 0; }
+    data[4] += nivelComb;
+    Serial.println("Comecando transmissao");
     Wire.beginTransmission(slave);
-    int c = Wire.write(data, 12);
+    int c = Wire.write(data, 5);
     Wire.endTransmission();
+    Serial.println("Terminando transmissao");
     
     tmp = millis() - tmp;
-    Serial.print(c); Serial.print(" bytes done in");Serial.println(tmp);
+    Serial.print(c); Serial.print(" bytes done in ");
+    Serial.println(tmp);
 }

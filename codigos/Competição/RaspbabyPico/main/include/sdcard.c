@@ -89,7 +89,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
-    String printData = String(date);
+    String printData = sString(date);
     printData += ";";
     printData += String(gpstime);
     printData += ";";
