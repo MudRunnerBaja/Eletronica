@@ -71,17 +71,20 @@ void UpdateData()
 
 void SendI2CDataTo(int slave) {
     unsigned int tmp = millis();
-
+    int vel = speedInt;
+    int rpm = rpmGlobal;
     // (0-1 vel) (2-3 rpm) (4 Comb + CVT)
-    memcpy(data, &speedInt, sizeof(data));  
-    data[2] = highByte(rpmGlobal);
-    data[3] = lowByte(rpmGlobal);
-    data[4] = 0;
+    data[0] = highByte(vel);
+    data[1] = lowByte(vel);
+    data[2] = highByte(rpm);
+    data[3] = lowByte(rpm);
+
     if (temperaturaCVT > TEMPERATURA_CRITICA_CVT)
         data[4] = 0 + 0x04;
     else { data[4] = 0; }
     data[4] += nivelComb;
-    Serial.println("Comecando transmissao");
+
+    Serial.print("Comecando transmissao");Serial.println(slave);
     Wire.beginTransmission(slave);
     int c = Wire.write(data, 5);
     Wire.endTransmission();

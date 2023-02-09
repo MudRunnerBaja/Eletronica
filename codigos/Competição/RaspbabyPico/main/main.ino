@@ -42,7 +42,7 @@ bool WriteSD(struct repeating_timer *t)
 void setup()
 {
   Serial.begin(9600);
-
+  /*
       // Esperando pela resposta do monitor serial. 
       // Comentar quando for para o carro.
   while (!Serial) {
@@ -54,7 +54,7 @@ void setup()
   while (!Serial.available()) {
     yield();
   }
-
+  */
   Serial.println("Iniciando setup...");
 
   DisplaySetup();

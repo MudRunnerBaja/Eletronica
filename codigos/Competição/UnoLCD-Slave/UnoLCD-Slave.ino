@@ -182,6 +182,10 @@ void receiveEvent(int bytesReceived) {  // É requisito que essas funções de e
   itoa(vel%10, &tvel[5], 10);
   itoa(rpm/10, &trpm[4], 10);
   itoa(rpm%10, &trpm[5], 10);
+
+  Serial.print("Recebido. Vel: ");Serial.println(tvel);
+  Serial.print("Recebido. RPM: ");Serial.println(trpm);
+
 }
 
 void setarCombustivel(int nivel)
