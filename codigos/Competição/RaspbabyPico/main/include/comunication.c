@@ -5,7 +5,7 @@
 #pragma region DECLARATIONS
 
 #include <Wire.h>
-int UnoLCD = 9, SDApin = 4, SCLpin = 5; // Pico I2C0             
+int UnoLCD = 9, SDApin = 2, SCLpin = 3; // Pico I2C0             
 byte data[5];  // I2C data transfer
                 // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
 
@@ -17,21 +17,19 @@ void SendI2CDataTo(int slave);
 #pragma endregion
 
 void DisplaySetup() {
-    Wire.setSDA(SDApin);
-    Wire.setSCL(SCLpin);
-    Wire.begin(); // Inicia a comunicação i2c0 como master
+    Wire1.setSDA(SDApin);
+    Wire1.setSCL(SCLpin);
+    Wire1.begin(); // Inicia a comunicação i2c0 como master
 }
 
 void UpdateData()
 {
-    /*
     float vel = gpsSpdFloat();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
-    */
-    float vel = 37;
-    Serial.println("Enviando i2c:\nSOCORRO\n");
+    Serial.println("Enviando i2c:\n");
+
     // Envia os dados por i2c
     SendI2CDataTo(UnoLCD);
 
@@ -69,13 +67,18 @@ void UpdateData()
     // */
 }
 
+int testVel = 0;
+
 void SendI2CDataTo(int slave) {
     unsigned int tmp = millis();
-    int vel = speedInt;
+    // int vel = speedInt;
+    testVel++;
     int rpm = rpmGlobal;
     // (0-1 vel) (2-3 rpm) (4 Comb + CVT)
-    data[0] = highByte(vel);
-    data[1] = lowByte(vel);
+    // data[0] = highByte(vel);
+    // data[1] = lowByte(vel);
+    data[0] = highByte(testVel);
+    data[1] = lowByte(testVel);
     data[2] = highByte(rpm);
     data[3] = lowByte(rpm);
 
@@ -84,10 +87,10 @@ void SendI2CDataTo(int slave) {
     else { data[4] = 0; }
     data[4] += nivelComb;
 
-    Serial.print("Comecando transmissao");Serial.println(slave);
-    Wire.beginTransmission(slave);
-    int c = Wire.write(data, 5);
-    Wire.endTransmission();
+    Serial.print("Comecando transmissao ");Serial.println(slave);
+    Wire1.beginTransmission(slave);
+    int c = Wire1.write(data, 5);
+    Wire1.endTransmission();
     Serial.println("Terminando transmissao");
     
     tmp = millis() - tmp;

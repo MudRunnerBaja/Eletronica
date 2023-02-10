@@ -15,12 +15,13 @@ bool setupCompleto = false;
 #define TIMER_INTERVAL_MS 1000
 
 
-RPI_PICO_Timer ITimer(0);
-RPI_PICO_Timer Core1Timer(1);
+RPI_PICO_Timer Core0Timer0(0);
+RPI_PICO_Timer Core1Timer1(1);
 
 // Interrupt callback functions Core0
-bool TimerHandler(struct repeating_timer *t)
+bool UpdateTimer(struct repeating_timer *t)
 {
+  Serial.println("Nucleo 0 - Iniciando interrupcao");
   UpdateData();
   Serial.println("Nucleo 0 - Dados Atualizados");
   return true;
@@ -29,6 +30,7 @@ bool TimerHandler(struct repeating_timer *t)
 // Interrupt callback functions Core1
 bool WriteSD(struct repeating_timer *t)
 {
+  Serial.println("Nucleo 1 - Iniciando interrupcao");
   float vel = gpsSpdFloat();
   int rpm = getRpm();
   float tempCvt = getTempCvt();
@@ -42,7 +44,7 @@ bool WriteSD(struct repeating_timer *t)
 void setup()
 {
   Serial.begin(9600);
-  /*
+  
       // Esperando pela resposta do monitor serial. 
       // Comentar quando for para o carro.
   while (!Serial) {
@@ -54,7 +56,7 @@ void setup()
   while (!Serial.available()) {
     yield();
   }
-  */
+  
   Serial.println("Iniciando setup...");
 
   DisplaySetup();
@@ -74,12 +76,13 @@ void setup()
   digitalWrite(ledVermelho, LOW);
 
   // Interval in unsigned long microseconds
-  if (ITimer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, TimerHandler))
-    Serial.println("Starting ITimer OK, millis() = " + String(millis()));
+  if (Core0Timer0.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, UpdateTimer))
+    Serial.println("Starting Core0Timer0 OK, millis() = " + String(millis()));
   else
-    Serial.println("Can't set ITimer. Select another freq. or timer");
+    Serial.println("Can't set Core0Timer0. Select another freq. or timer");
 
   setupCompleto = true;
+  Serial.print("Setup core0 finalizado.");
 }
 
 void setup1()
@@ -90,23 +93,24 @@ void setup1()
   }
 
   delay(50);
-  /*
-  if (Core1Timer.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
-    Serial.println("Starting ITimer OK, millis() = " + String(millis()));
+  
+  if (Core1Timer1.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
+    Serial.println("Starting Core1Timer1 OK, millis() = " + String(millis()));
   else
-    Serial.println("Can't set ITimer. Select another freq. or timer");
-  */
-  Serial.print("Setup finalizado.");
+    Serial.println("Can't set UpdateTimer. Select another freq. or timer");
+  
+  Serial.print("Setup core1 finalizado.");
 }
 
 void loop()
 {
-
+ updateGps();
+  
 }
 
 void loop1()
 {
-  gpsencoding();
+
 }
 
 // Programação Multicore

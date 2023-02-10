@@ -119,12 +119,15 @@ enum nivel {
     CHEIO
 };
 
+void receiveEvent(int bytesReceived);
+
 void setup(void) 
 { 
   t0 = tf = millis();
   
   Wire.begin(9);
   Wire.onReceive(receiveEvent); // Evento -> chama a função receiveEvent quando recebe uma transmissão pelo i2c
+  
   SPI.begin(); // Não sei se é necessário
   Serial.begin(9600);
   u8g2.begin();
@@ -138,15 +141,6 @@ void setup(void)
   itoa(rpm%10, &trpm[7], 10);
   delay(500);
   Serial.println("Funcionando aqui");
-}
-
-void loop(void) {
-  int test = millis();
-
-    int timetest = millis() - test;
-    UpdateDisplay();
-    Serial.print("\nTempo Trocando:");Serial.println(timetest);
-    Serial.print("vel:");Serial.println(vel);
 }
 
 void UpdateDisplay() {
@@ -167,6 +161,7 @@ void receiveEvent(int bytesReceived) {  // É requisito que essas funções de e
   int b = 0; // Contador de bytes recebidos. Útil pra testar ou limitar a transmissão.
   while(Wire.available()) {
     receivedData[b] = Wire.read();
+    Serial.println("receivedData[b]");
     b++;
   }
    // Como recebemos em bytes e int são data types de 2 bytes, precisamos transformar o byte mais alto em int e movê-lo para a esquerda. Um byte são 8 bits.
@@ -208,4 +203,13 @@ void setarCombustivel(int nivel)
         digitalWrite(ledAmarelo, LOW);
         digitalWrite(ledVermelho, HIGH);
     }
+}
+
+void loop(void) {
+  int test = millis();
+    UpdateDisplay();
+    int timetest = millis() - test;
+    
+    Serial.print("\nTempo Trocando:");Serial.println(timetest);
+    Serial.print("vel:");Serial.println(vel);
 }

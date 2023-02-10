@@ -7,18 +7,18 @@
 #include <TinyGPS.h> // Documentação original: http://arduiniana.org/libraries/tinygps/
 
 static const uint32_t GPSBaud = 9600;
-int year, speedInt = 0;
-float flat, flon, speed = 0, altitude;
+int year = 0, speedInt = 0;
+float flat = 0, flon = 0, speed = 0, altitude = 0;
 unsigned long age, date, gpstime, milisec;
 bool newData = false;
 
 TinyGPS gps;
 
 void setupGps()
-{
-  Serial2.setTX(8);
-  Serial2.setRX(9);
-  Serial2.begin(GPSBaud);
+{ // CHECAR PINAGEM
+  Serial1.setTX(0);
+  Serial1.setRX(1);
+  Serial1.begin(GPSBaud);
 }
 
 TinyGPS getGps()
@@ -36,16 +36,15 @@ float gpsSpdFloat(){
 
 void gpsencoding()
 {
-  // unsigned int t0 = millis(); unsigned int tf = millis();
-  // unsigned int tTotal = tf - t0;
-  while (Serial2.available()) {
-    char c = Serial2.read();
+  while (Serial1.available()) {
+    unsigned int t0 = millis(); unsigned int tf;
+    char c = Serial1.read();
     if (gps.encode(c)) newData = true;
 
-    // tf = millis();
-    // tTotal = tf - t0;
+    tf = millis();
+    unsigned int tTotal = tf - t0;
+    //Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
   }
-  // Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
 }
 
 bool updateGps()
