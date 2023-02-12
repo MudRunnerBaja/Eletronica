@@ -1,41 +1,38 @@
-#include <SPI.h>
-#include <SD.h>
-#include <Arduino.h>
-#include <LiquidCrystal.h>
-#include <SoftwareSerial.h>
-#include <TinyGPS.h>
-
 /*
-Variaveis e funções "1" são referentes a motriz, variaveis e funcões "2" são referente a movida e variaveis e funções "3" são referentes a velocidade
-Exemplo: 
-rpm1 = rpm da motriz / rpm2 = rpm da movida
-contador1 = contador da motriz / contador2 = contador da movida
+      Implementação da contagem de rpm da movida
 */
-File myFile;
-TinyGPS gps;
-
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
-
-
-int rpm1, rpm2, velo;
-int hall1, hall2, falha, chipSelect = 53;
+int rpmMovida;
+int hallMovida = 22, falha;
 int cfg;
-String arq = "cvt_00.csv";
-volatile byte pulsos1, pulsos2;
-unsigned long timeold, date, gpstime, milisec;
-unsigned int pulsos_por_volta_mtz = 1;            
-unsigned int pulsos_por_volta_mvd = 4;          //Quantidade de imas na polia
+volatile byte pulsos = 0;
+unsigned int pulsos_por_volta_mvd = 4; // Quantidade de imas na polia
+unsigned int minuto = 60 * (1000 / TIMER_INTERVAL_MS); // 60000 ms (1 minuto) em funcao do timer da interrupcao
 
-
-//REFRESH RATE EM ms
+// REFRESH RATE EM ms
 const int refresh_rate = 250; //ms
 
-void contador1(){                             //Contador de pulsos da motriz
-    pulsos1++;
+void contador(); // Contador de pulsos da motriz
+void error(); // Vai emitir um sinal no led da placa de acordo com o codigo do erro
+void criarArquivo(); // Função para criar o arquivo e verificar o nome dele, caso o nome do arquivo ja exista
+void config();
+
+
+void TuningSetup()
+{
+  attachInterrupt(digitalPinToInterrupt(hallMovida), contador2, RISING);
+
+  Serial.println("CVT Tuning inicializado");
 }
 
-void contador2(){                             //Contador de pulsos da movida
-    pulsos2++;
+int setRpmMovida()
+{ 
+  rpmMovida = (pulsos * minuto) / pulsos_por_volta_mvd;
+  pulsos = 0;
+  return rpmMovida;
+}
+
+void contador(){                             //Contador de pulsos da motriz
+    pulsos++;
 }
 
 
@@ -151,101 +148,5 @@ void config(){
     lcd.setCursor(0,1);
     lcd.print(cfg);
     delay(75);
-  }
-}
-
-void setup()
-{
-  Serial.begin(115200);
-  Serial1.begin(9600);
-  lcd.begin(16,2);
-
-  Serial.println("Inicializando...");
-  lcd.clear();
-  lcd.write("CVT Tunning");
-  Serial.println("CVT Tunning V 1.3.1");
-  delay(500);
-
-  pinMode(LED_BUILTIN, OUTPUT);
-
-  if (!SD.begin(chipSelect)) {
-    Serial.println("Inicialização do cartão falhou");
-    falha = 0;
-    error();
-  }
-
-  
-  config();
-
-  criarArquivo();
-  delay(1500);  
-  hall1 = 19;                                // Define que o sensor hall da motriz sera ligado na porta 19
-  hall2 = 20;                                // Define que o sensor hall da movida sera ligado na porta 20
-
-  attachInterrupt(digitalPinToInterrupt(hall1), contador1, RISING);
-  attachInterrupt(digitalPinToInterrupt(hall2), contador2, RISING);
-
-  Serial.println("Finalizada a inicalizacao");
-}
-
-
-void loop()
-{ 
-  if (millis() - timeold >= refresh_rate)
-  {
-    detachInterrupt(digitalPinToInterrupt(hall1));
-    detachInterrupt(digitalPinToInterrupt(hall2));
-
-    while (Serial1.available() > 0)
-      gps.encode(Serial1.read());
-
-    velo = gps.f_speed_kmph();
-    gps.get_datetime(&date, &gpstime, &milisec);
-
-    digitalWrite(LED_BUILTIN, HIGH);
-
-    rpm1 = (60 * 1000 / pulsos_por_volta_mtz ) / (millis() - timeold) * pulsos1;
-    rpm2 = (60 * 1000 / pulsos_por_volta_mvd ) / (millis() - timeold) * pulsos2;
-
-    timeold = millis();
-    pulsos1 = 0;
-    pulsos2 = 0;
-  
-    Serial.print("RPM Motriz = ");          //Imprime os dados de rpm no serial
-    Serial.println(rpm1, DEC);
-    Serial.print("RPM Movida = ");
-    Serial.println(rpm2, DEC);
-    Serial.print("Velocidade = ");
-    Serial.println(velo, DEC);
-    Serial.println();
-
-    File myFile = SD.open(arq, FILE_WRITE);      //Grava os dados no cartão SD
-    if (myFile){
-    }else{
-      Serial.print("Erro na abertua/criação do arquivo");
-      falha = 1;
-      error();
-    }
-    myFile.print(gpstime);
-    myFile.print(";");
-    myFile.print(milisec);
-    myFile.print(";");
-    myFile.print(rpm1);
-    myFile.print(";");
-    myFile.print(rpm2);
-    myFile.print(";");
-    myFile.print(velo);
-    myFile.println();
-    myFile.close();
-
-    lcd.clear();
-    lcd.write("Motriz:     ");
-    lcd.print(rpm1);
-    lcd.setCursor(0,2);
-    lcd.write("Movida:     ");
-    lcd.print(rpm2);
-
-    attachInterrupt(digitalPinToInterrupt(hall1), contador1, RISING);
-    attachInterrupt(digitalPinToInterrupt(hall2), contador2, RISING);
   }
 }

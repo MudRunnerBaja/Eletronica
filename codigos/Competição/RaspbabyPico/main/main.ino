@@ -1,13 +1,14 @@
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção por tempo
 #include <RPi_Pico_ISR_Timer.h>
 #include <RPi_Pico_ISR_Timer.hpp>
-
+#include <Arduino.h>
 
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
 #include "include/rpm.c" // RPM do carro
 #include "include/gps.c" // GPS 
 #include "include/sdcard.c" // Modulo SD
+#include "include/cvt_tunning.c" // CVT Tuning
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 bool setupCompleto = false;
@@ -36,6 +37,7 @@ void setup()
   cvtSetup();
   rpmSetup();
   sdcardSetup();
+  TuningSetup();
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);

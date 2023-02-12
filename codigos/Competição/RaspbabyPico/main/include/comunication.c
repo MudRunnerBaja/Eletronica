@@ -28,6 +28,7 @@ void UpdateData()
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
+    int mvd = setRpmMovida();
 
     // Envia os dados por i2c
     SendI2CDataTo(UnoLCD);
