@@ -28,7 +28,8 @@ TinyGPS getGps()
     return gps;
 }
 
-int gpsSpdInt(){
+int gpsSpdInt()
+{
   return speedInt;
 }
 
@@ -45,7 +46,6 @@ void gpsencoding()
 
     tf = millis();
     unsigned int tTotal = tf - t0;
-    //Serial.print("\nTempo total de encoding: ");Serial.println(tTotal);
   }
 }
 

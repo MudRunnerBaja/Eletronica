@@ -15,7 +15,7 @@ bool erro = false;
 void falha(){
     digitalWrite(LED_BUILTIN, LOW);
     erro = true;
-    Serial.println("==========FALHA==========");
+    Serial.println("======FALHA SD CARD======");
 }
 
 void sdcardSetup()

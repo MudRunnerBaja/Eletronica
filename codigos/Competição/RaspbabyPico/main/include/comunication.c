@@ -28,13 +28,12 @@ void UpdateData()
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
     int comb = setComb();
-    Serial.println("Enviando i2c:\n");
 
     // Envia os dados por i2c
     SendI2CDataTo(UnoLCD);
 
     // Escrita em cartao SD -> Feita por interrupção
-    // writeData(speed, rpm, tempCvt, comb);
+    writeData(speed, rpm, tempCvt, comb);
 
     // // debug
     // // TinyGPSPlus gps = getGps();
@@ -68,18 +67,14 @@ void UpdateData()
     // */
 }
 
-int testVel = 0;
 
 void SendI2CDataTo(int slave) {
     unsigned int tmp = millis();
-    // int vel = speedInt;
-    testVel++;
+    int vel = speedInt;
     int rpm = rpmGlobal;
     // (0-1 vel) (2-3 rpm) (4 Comb + CVT)
-    // data[0] = highByte(vel);
-    // data[1] = lowByte(vel);
-    data[0] = highByte(testVel);
-    data[1] = lowByte(testVel);
+    data[0] = highByte(vel);
+    data[1] = lowByte(vel);
     data[2] = highByte(rpm);
     data[3] = lowByte(rpm);
 
@@ -92,9 +87,8 @@ void SendI2CDataTo(int slave) {
     Wire1.beginTransmission(slave);
     int c = Wire1.write(data, 5);
     Wire1.endTransmission();
-    Serial.println("Terminando transmissao");
     
     tmp = millis() - tmp;
-    Serial.print(c); Serial.print(" bytes done in ");
+    Serial.print(c); Serial.print(" bytes enviados em ");
     Serial.println(tmp);
 }
