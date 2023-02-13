@@ -3,6 +3,9 @@
 #include <RPi_Pico_ISR_Timer.hpp>
 #include <Arduino.h>
 
+#define TIMER_INTERVAL_MS 1000
+bool setupCompleto = false;
+
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
 #include "include/rpm.c" // RPM do carro
@@ -11,9 +14,6 @@
 #include "include/cvt_tunning.c" // CVT Tuning
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
-bool setupCompleto = false;
-
-#define TIMER_INTERVAL_MS 1000
 
 void WaitSerial(bool wait);
 bool UpdateTimer(struct repeating_timer *t);
