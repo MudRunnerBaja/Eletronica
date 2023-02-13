@@ -11,6 +11,7 @@ int year = 0, speedInt = 0;
 float flat = 0, flon = 0, speed = 0, altitude = 0;
 unsigned long age, date, gpstime, milisec;
 short dia = 0, mes = 0, ano = 0;
+String datahj;
 
 bool newData = false;
 
@@ -21,6 +22,9 @@ void setupGps()
   Serial1.setTX(0);
   Serial1.setRX(1);
   Serial1.begin(GPSBaud);
+  datahj = String(dia); datahj += "/"; 
+  datahj += String(mes); datahj += "/";
+  datahj += String(ano);
 }
 
 TinyGPS getGps()
@@ -62,6 +66,8 @@ bool updateGps()
     gps.get_datetime(&date, &gpstime, &milisec);
     //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
     dia = date /1000; mes = (date /100) % 10; ano = date % 10;
+    datahj = String(dia + "/"); datahj += String(mes + "/");
+    datahj += String(ano);
     newData = false;
     return true;
   } else { return false; }

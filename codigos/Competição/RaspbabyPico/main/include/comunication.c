@@ -5,13 +5,13 @@
 #pragma region DECLARATIONS
 
 #include <Wire.h>
-int UnoLCD = 9, SDApin = 16, SCLpin = 17; // Pico I2C0             
+int UnoLCD = 9, SDApin = 14, SCLpin = 15; // Pico I2C0             
 byte data[5];  // I2C data transfer
                 // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
 
 #define CAR_NAME "MV-22"
 
-void writeData(float vel, int rpm, float tempcvt, int comb);
+void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd);
 void SendI2CDataTo(int slave);
 
 #pragma endregion
@@ -24,6 +24,7 @@ void DisplaySetup() {
 
 void UpdateData()
 {
+    tempo = millis() - tempobase;
     float vel = gpsSpdFloat();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
@@ -34,7 +35,7 @@ void UpdateData()
     SendI2CDataTo(UnoLCD);
 
     // Escrita em cartao SD -> Feita por interrupção
-    writeData(speed, rpm, tempCvt, comb);
+    // writeData(speed, rpm, tempCvt, comb, mvd);
 
     // // debug
     // // TinyGPSPlus gps = getGps();
@@ -56,9 +57,6 @@ void UpdateData()
     Serial.print(dia);Serial.print("/");
     Serial.print(mes);Serial.print("/");
     Serial.println(ano);
-    Serial.print(gpstime);
-    Serial.print("  ");
-    Serial.println(milisec);
     Serial.print("LAT=");
     Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
     Serial.print(" LON=");

@@ -3,15 +3,15 @@
 #include <RPi_Pico_ISR_Timer.hpp>
 #include <Arduino.h>
 
-#define TIMER_INTERVAL_MS 1000
+#define TIMER_INTERVAL_MS 200
 bool setupCompleto = false;
 
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
 #include "include/rpm.c" // RPM do carro
 #include "include/gps.c" // GPS 
-#include "include/sdcard.c" // Modulo SD
 #include "include/cvt_tunning.c" // CVT Tuning
+#include "include/sdcard.c" // Modulo SD
 #include "include/comunication.c" // Comunicação entre bibliotecas e serial
 
 
@@ -24,6 +24,8 @@ RPI_PICO_Timer Core1Timer1(1);
 
 void setup()
 {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
   Serial.begin(9600);
   
   // Esperar pela resposta do monitor serial?
@@ -32,15 +34,19 @@ void setup()
   Serial.println("Iniciando setup...");
 
   DisplaySetup();
+  Serial.println("DisplaySetup ok");
   setupGps();
+  Serial.println("GPS ok");
   combSetup();
+  Serial.println("comb ok");
   cvtSetup();
+  Serial.println("cvt ok");
   rpmSetup();
+  Serial.println("rpm ok");
   sdcardSetup();
+  Serial.println("sdcard ok");
   TuningSetup();
-
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
+  Serial.println("cvt tuning ok");
   
   delay(1000);
   digitalWrite(ledTempCvt, LOW);
@@ -65,7 +71,7 @@ void setup1()
     delay(1);
   }
 
-  delay(50);
+  delay(5);
   
   if (Core1Timer1.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
     Serial.println("Core1Timer1 OK. Timer de: " + TIMER_INTERVAL_MS);
@@ -73,6 +79,7 @@ void setup1()
     Serial.println("Falha no Core1Timer1. Sem timer de escrita no SD");
   
   Serial.print("Setup core1 finalizado.");
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop()
@@ -127,8 +134,10 @@ bool WriteSD(struct repeating_timer *t)
   int rpm = getRpm();
   float tempCvt = getTempCvt();
   int comb = getNivelComb();
+  int mvd = getRpmMovida();
+
   // Escrita em cartao SD
-  writeData(vel, rpm, tempCvt, comb);
+  writeData(vel, rpm, tempCvt, comb, mvd);
   Serial.println("Nucleo 1 - Dados escritos");
   return true;
 }

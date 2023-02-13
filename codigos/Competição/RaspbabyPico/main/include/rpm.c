@@ -5,10 +5,11 @@
 int rpmInputPin = 28;
 int rpmCounter = 0;
 int rpmGlobal;
+long minuto = 60 * (1000 / TIMER_INTERVAL_MS);
 
 float setRpm()
 {
-    rpmGlobal = rpmCounter * 60;
+    rpmGlobal = rpmCounter * minuto;
     rpmCounter = 0;
     return rpmGlobal;
 }
