@@ -106,12 +106,21 @@ byte receivedData[5]; // Buffer de dados recebidos. Tamanho máximo de 32 bytes.
 
 // Funções de inicialização do objeto u8g2 do display. Quando usando HW_SPI, apenas o SS precisa ser passado.
 
-//U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, 18, 19, 17);
-U8G2_ST7920_128X64_1_HW_SPI u8g2(U8G2_R2, 10);
+void WaitSerial(bool wait);
+
+// I2C
+int sdaPin = 20, sclPin = 21;
+
+// LCD
+int SCKPIN = 10, CSPIN = 13;
+int TXPIN = 11; // MOSI
+int RXPIN = 12; // MISO
+U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, SCKPIN, TXPIN, CSPIN);
+//U8G2_ST7920_128X64_1_HW_SPI u8g2(U8G2_R2, 10);
 //U8G2_ST7920_128X64_1_2ND_HW_SPI u8g2(U8G2_R0, 17);
 
 // Setup dos leds do display
-int ledVerde = 19, ledAmarelo = 20, ledVermelho = 21, ledCVT = 18;
+int ledVerde = 2, ledAmarelo = 1, ledVermelho = 0, ledCVT = 18;
 
 enum nivel {
     VAZIO,
@@ -123,14 +132,30 @@ void receiveEvent(int bytesReceived);
 
 void setup(void) 
 { 
+  pinMode(ledVermelho,OUTPUT);
+  pinMode(ledAmarelo,OUTPUT);
+  pinMode(ledVerde,OUTPUT);
+
+  digitalWrite(ledVermelho, HIGH);
+  digitalWrite(ledAmarelo, HIGH);
+  digitalWrite(ledVerde, HIGH);
+
+  WaitSerial(true);
   t0 = tf = millis();
+  Wire.setSDA(sdaPin);
+  Wire.setSCL(sclPin);
+
+  SPI1.setRX(RXPIN);
+  SPI1.setTX(TXPIN);
+  SPI1.setSCK(SCKPIN);
+  SPI1.setCS(CSPIN);
+  SPI1.begin();
+  
+  Serial.begin(9600);
+  u8g2.begin();
   
   Wire.begin(9);
   Wire.onReceive(receiveEvent); // Evento -> chama a função receiveEvent quando recebe uma transmissão pelo i2c
-  
-  SPI.begin(); // Não sei se é necessário
-  Serial.begin(9600);
-  u8g2.begin();
   
   // Converte os valores de int para char e insere os chars nas strings declaradas no início.
   itoa(vel/10, &tvel[4], 10);
@@ -212,4 +237,21 @@ void loop(void) {
     
     Serial.print("\nTempo Trocando:");Serial.println(timetest);
     Serial.print("vel:");Serial.println(vel);
+}
+
+void WaitSerial(bool wait)
+{
+  if (wait)
+  {
+    while (!Serial) {
+      yield();
+    }
+    delay(100);
+
+    Serial.println(F("Type any character to start"));
+    while (!Serial.available()) {
+      yield();
+    }
+  }
+  return;
 }

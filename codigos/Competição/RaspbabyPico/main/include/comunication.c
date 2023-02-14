@@ -5,7 +5,7 @@
 #pragma region DECLARATIONS
 
 #include <Wire.h>
-int UnoLCD = 9, SDApin = 14, SCLpin = 15; // Pico I2C0             
+int UnoLCD = 9, SDApin = 16, SCLpin = 17; // Pico I2C0             
 byte data[5];  // I2C data transfer
                 // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
 
@@ -17,9 +17,9 @@ void SendI2CDataTo(int slave);
 #pragma endregion
 
 void DisplaySetup() {
-    Wire1.setSDA(SDApin);
-    Wire1.setSCL(SCLpin);
-    Wire1.begin(); // Inicia a comunicação i2c0 como master
+    Wire.setSDA(SDApin);
+    Wire.setSCL(SCLpin);
+    Wire.begin(); // Inicia a comunicação i2c0 como master
 }
 
 void UpdateData()
@@ -83,9 +83,9 @@ void SendI2CDataTo(int slave) {
     data[4] += nivelComb;
 
     Serial.print("Comecando transmissao ");Serial.println(slave);
-    Wire1.beginTransmission(slave);
-    int c = Wire1.write(data, 5);
-    Wire1.endTransmission();
+    Wire.beginTransmission(slave);
+    int c = Wire.write(data, 5);
+    Wire.endTransmission();
     
     tmp = millis() - tmp;
     Serial.print(c); Serial.print(" bytes enviados em ");

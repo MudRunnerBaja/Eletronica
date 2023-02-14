@@ -85,7 +85,7 @@ void setup1()
 void loop()
 {
  updateGps();
-  
+ digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop1()
