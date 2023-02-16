@@ -25,12 +25,22 @@ void DisplaySetup() {
 void UpdateData()
 {
     tempo = millis() - tempobase;
-    float vel = gpsSpdFloat();
-    int rpm = setRpm();
-    float tempCvt = setCvtTemperature();
-    int comb = setComb();
-    int mvd = setRpmMovida();
+    float vel = random(60); //gpsSpdFloat();
+    int ivel = vel;
+    int rpm = random(4000);//setRpm();
+    float tempCvt = random(100);//setCvtTemperature();
+    int comb = random(3);//setComb();
+    int mvd = 250;//setRpmMovida();
+    
+    data[0] = highByte(ivel);
+    data[1] = lowByte(ivel);
+    data[2] = highByte(rpm);
+    data[3] = lowByte(rpm);
 
+    if (temperaturaCVT > TEMPERATURA_CRITICA_CVT)
+        data[4] = 0 + 0x04;
+    else { data[4] = 0; }
+    data[4] += nivelComb;
     // Envia os dados por i2c
     SendI2CDataTo(UnoLCD);
 
@@ -69,18 +79,6 @@ void UpdateData()
 
 void SendI2CDataTo(int slave) {
     unsigned int tmp = millis();
-    int vel = speedInt;
-    int rpm = rpmGlobal;
-    // (0-1 vel) (2-3 rpm) (4 Comb + CVT)
-    data[0] = highByte(vel);
-    data[1] = lowByte(vel);
-    data[2] = highByte(rpm);
-    data[3] = lowByte(rpm);
-
-    if (temperaturaCVT > TEMPERATURA_CRITICA_CVT)
-        data[4] = 0 + 0x04;
-    else { data[4] = 0; }
-    data[4] += nivelComb;
 
     Serial.print("Comecando transmissao ");Serial.println(slave);
     Wire.beginTransmission(slave);

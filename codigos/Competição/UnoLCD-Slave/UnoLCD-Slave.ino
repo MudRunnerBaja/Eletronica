@@ -116,7 +116,7 @@ int sdaPin = 20, sclPin = 21;
 int SCKPIN = 10, CSPIN = 13;
 int TXPIN = 11; // MOSI
 int RXPIN = 12; // MISO
-U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, SCKPIN, TXPIN, CSPIN);
+U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R2, SCKPIN, TXPIN, CSPIN);
 //U8G2_ST7920_128X64_1_HW_SPI u8g2(U8G2_R2, 10);
 //U8G2_ST7920_128X64_1_2ND_HW_SPI u8g2(U8G2_R0, 17);
 
@@ -143,7 +143,7 @@ void setup(void)
   digitalWrite(ledAmarelo, HIGH);
   digitalWrite(ledVerde, HIGH);
 
-  WaitSerial(true);
+  WaitSerial(false);
   t0 = tf = millis();
   Wire.setSDA(sdaPin);
   Wire.setSCL(sclPin);
@@ -170,6 +170,11 @@ void setup(void)
   itoa((rpm%100)/10, &trpm[6], 10);
   itoa(rpm%10, &trpm[7], 10);
   delay(500);
+
+  digitalWrite(ledVermelho, LOW);
+  digitalWrite(ledAmarelo, LOW);
+  digitalWrite(ledVerde, LOW);
+  
   Serial.println("Funcionando aqui");
 }
 
@@ -191,7 +196,7 @@ void receiveEvent(int bytesReceived) {  // É requisito que essas funções de e
   int b = 0; // Contador de bytes recebidos. Útil pra testar ou limitar a transmissão.
   while(Wire.available()) {
     receivedData[b] = Wire.read();
-    Serial.println("receivedData[b]");
+    Serial.print("byte ");Serial.print(b + " ");Serial.println(receivedData[b]);
     b++;
   }
    // Como recebemos em bytes e int são data types de 2 bytes, precisamos transformar o byte mais alto em int e movê-lo para a esquerda. Um byte são 8 bits.
