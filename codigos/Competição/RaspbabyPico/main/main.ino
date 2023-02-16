@@ -5,6 +5,7 @@
 
 #define TIMER_INTERVAL_MS 200
 bool setupCompleto = false;
+unsigned long tempoTotal, tempoInicial = 0;
 
 #include "include/temp.c" // Temperatura CVT
 #include "include/comb.c" // Níveis de combustível
@@ -80,6 +81,7 @@ void setup1()
   
   Serial.print("Setup core1 finalizado.");
   digitalWrite(LED_BUILTIN, HIGH);
+  tempoInicial = millis();
 }
 
 void loop()
@@ -123,6 +125,8 @@ bool UpdateTimer(struct repeating_timer *t)
   Serial.println("Nucleo 0 - Iniciando interrupcao");
   UpdateData();
   Serial.println("Nucleo 0 - Dados Atualizados");
+  tempoTotal = ((millis() - tempoInicial) / 100) * 100;
+  Serial.print("Tempo total de execução: ");Serial.println(tempoTotal);
   return true;
 }
 
