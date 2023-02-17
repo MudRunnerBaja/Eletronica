@@ -4,7 +4,8 @@
 #ifndef CARTAO_SD
 #define CARTAO_SD
 
-#include <declarations.h>
+#include <SPI.h>    // SPI para cartão SD
+#include <SD.h>     // SD Filesystem
 
         // CARTAO SD
 #define SCKPIN 10

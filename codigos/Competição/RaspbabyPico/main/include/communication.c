@@ -4,7 +4,7 @@
 #ifndef COMMUNICATION
 #define COMMUNICATION
 
-#include <declarations.h>
+#include <Wire.h>   // Comunicação I2C
 
 #define SLAVE_LCD 9
 #define SDApin 16

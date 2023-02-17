@@ -7,7 +7,7 @@
 
 //#include <TinyGPS++.h>
 //#include <TinyGPSPlus.h>
-#include <declarations.h>
+#include <TinyGPS.h> // Documentação: http://arduiniana.org/libraries/tinygps/
 
 #define GPS_TX 0 // PINO TX UART GPS
 #define GPS_RX 1 // PINO RX UART GPS

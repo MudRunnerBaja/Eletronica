@@ -4,7 +4,7 @@
 #ifndef TEMPERATURA_CVT
 #define TEMPERATURA_CVT
 
-#include <declarations.h>
+#include <max6675.h>
 
 #define CVT_SO 2 // DATA PIN
 #define CVT_CS 3 // CHIP SELECT

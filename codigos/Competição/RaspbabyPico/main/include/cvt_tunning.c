@@ -4,7 +4,6 @@
 #ifndef CVT_TUNING
 #define CVT_TUNING
 
-#include <declarations.h>
 
 #define HALL_MOVIDA 22 // PINO SENSOR HALL MOVIDA (TORQUE)
 
