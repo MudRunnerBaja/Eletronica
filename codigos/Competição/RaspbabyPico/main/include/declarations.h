@@ -5,7 +5,7 @@
 #pragma region BIBLIOTECAS
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
 #include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
-#include <RPi_Pico_ISR_Timer.hpp>
+#include <RPi_Pico_ISR_Timer.hpp> // Manipuladores de Interrupção
 #include <Arduino.h>
 #include <max6675.h>    // Modulo Termopar
 #include <TinyGPS.h> // Documentação: http://arduiniana.org/libraries/tinygps/
@@ -16,31 +16,26 @@
 
     // CONSTANTES
 #pragma region CONSTANTES
+
 #define TIMER_INTERVAL_MS 200
 #define TEMPERATURA_CRITICA_CVT 80
 #define CAR_NAME "MV-22"
-const long minuto = 60 * (1000 / TIMER_INTERVAL_MS);
+const long MINUTO = 60 * (1000 / TIMER_INTERVAL_MS); // Valor referente a um minuto em função do intervalo de atualização
+const long GPSBaud = 9600;
+
 #pragma endregion
 
     // VARIÁVEIS GLOBAIS
 #pragma region VARIAVEIS GLOBAIS
 
 bool setupCompleto = false; // Flag Setup core 0
-unsigned long tempoTotal, tempoInicial = 0;
-
-        // TEMPERATURA DA CVT
-float temperaturaCVT;
-
-        // NIVEL DE COMBUSTIVEL
-int nivelComb = 0;
-enum nivel { VAZIO, MEDIO, CHEIO };
-
+unsigned long tempoTotal = 0, tempoInicial = 0;
 
         // RPM DO MOTOR
 int rpmCounter = 0; int rpmGlobal;
 
         // GPS
-static const uint32_t GPSBaud = 9600;
+
 int year = 0, speedInt = 0;
 float flat = 0, flon = 0, speed = 0, altitude = 0;
 unsigned long age, date, gpstime, milisec;
@@ -62,8 +57,6 @@ bool erro = false;
 unsigned long tempo = 0, tempobase = 0;
 unsigned long t2, t1;
 
-
-
         // I2C  
 byte data[5];  // I2C data transfer
                 // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
@@ -72,16 +65,6 @@ byte data[5];  // I2C data transfer
 
     // PINAGEM
 #pragma region PINAGEM
-        // TEMPERATURA DA CVT
-        /* Definições: GPIOs do Arduino utilizado na comunicação com o
-   MAX6675 */
-#define CVT_SO 2 // DATA PIN
-#define CVT_CS 3 // CHIP SELECT
-#define CVT_CLK 4 // CLOCK
-
-        // NIVEL DE COMBUSTIVEL
-#define COMB_SUPERIOR 27 // PINO COMBUSTIVEL SUPERIOR
-#define COMB_INFERIOR 26 // PINO COMBUSTIVEL INFERIOR
 
         // RPM DO MOTOR
 #define RPM_INPUT_PIN 28 // PINO DE SINAL DO RPM
@@ -109,7 +92,6 @@ byte data[5];  // I2C data transfer
 
     // OBJETOS/CONSTRUTORES
 #pragma region OBJETOS
-MAX6675 termopar(CVT_CLK, CVT_CS, CVT_SO); // Objeto para o termopar
 TinyGPS gps;
 
 #pragma endregion

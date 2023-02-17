@@ -1,10 +1,11 @@
 /* 
     Implementação da contagem de rpm do carro 
 */
+#ifndef RPM_MOTOR
+#define RPM_MOTOR
 
 int rpmCounter = 0;
 int rpmGlobal;
-long minuto = 60 * (1000 / TIMER_INTERVAL_MS);
 
 float setRpm()
 {
@@ -25,5 +26,7 @@ void rpmCounterFunc()
 
 void rpmSetup()
 {
+    pinMode(RPM_INPUT_PIN, INPUT);
     attachInterrupt(digitalPinToInterrupt(RPM_INPUT_PIN), rpmCounterFunc, RISING);
 }
+#endif

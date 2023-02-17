@@ -2,23 +2,13 @@
     Implementação do GPS no carro
     A ser revisado e testado
 */
+
 //#include <TinyGPS++.h>
 //#include <TinyGPSPlus.h>
-#include <TinyGPS.h> // Documentação original: http://arduiniana.org/libraries/tinygps/
-
-static const uint32_t GPSBaud = 9600;
-int year = 0, speedInt = 0;
-float flat = 0, flon = 0, speed = 0, altitude = 0;
-unsigned long age, date, gpstime, milisec;
-short dia = 0, mes = 0, ano = 0;
-String datahj;
-
-bool newData = false;
-
-TinyGPS gps;
+#include <declarations.h>
 
 void setupGps()
-{ // CHECAR PINAGEM
+{ // CHECAR PINAGEM     Serial1 -> UART0 // Serial2 -> UART1
   Serial1.setTX(GPS_TX);
   Serial1.setRX(GPS_RX);
   Serial1.begin(GPSBaud);

@@ -2,19 +2,10 @@
     !! Comunicação entre as demais bibliotecas !!
 */
 
-#pragma region DECLARATIONS
-
-#include <Wire.h>
-int UnoLCD = 9, SDApin = 16, SCLpin = 17; // Pico I2C0             
-byte data[5];  // I2C data transfer
-                // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
-
-#define CAR_NAME "MV-22"
+#include <declarations.h>
 
 void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd);
 void SendI2CDataTo(int slave);
-
-#pragma endregion
 
 void DisplaySetup() {
     Wire.setSDA(SDApin);

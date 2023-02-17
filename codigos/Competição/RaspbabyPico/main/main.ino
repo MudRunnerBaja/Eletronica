@@ -1,20 +1,4 @@
-#include <RPi_Pico_TimerInterrupt.h> // Interrupção por tempo
-#include <RPi_Pico_ISR_Timer.h>
-#include <RPi_Pico_ISR_Timer.hpp>
-#include <Arduino.h>
-
-#define TIMER_INTERVAL_MS 200
-bool setupCompleto = false;
-unsigned long tempoTotal, tempoInicial = 0;
-
-#include "include/temp.c" // Temperatura CVT
-#include "include/comb.c" // Níveis de combustível
-#include "include/rpm.c" // RPM do carro
-#include "include/gps.c" // GPS 
-#include "include/cvt_tunning.c" // CVT Tuning
-#include "include/sdcard.c" // Modulo SD
-#include "include/comunication.c" // Comunicação entre bibliotecas e serial
-
+#include <declarations.h>
 
 void WaitSerial(bool wait);
 bool UpdateTimer(struct repeating_timer *t);
@@ -40,8 +24,6 @@ void setup()
   Serial.println("GPS ok");
   combSetup();
   Serial.println("comb ok");
-  cvtSetup();
-  Serial.println("cvt ok");
   rpmSetup();
   Serial.println("rpm ok");
   sdcardSetup();
@@ -50,10 +32,6 @@ void setup()
   Serial.println("cvt tuning ok");
   
   delay(1000);
-  digitalWrite(ledTempCvt, LOW);
-  digitalWrite(ledVerde, LOW);
-  digitalWrite(ledAmarelo, LOW);
-  digitalWrite(ledVermelho, LOW);
 
   // Interval in unsigned long microseconds
   if (Core0Timer0.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, UpdateTimer))

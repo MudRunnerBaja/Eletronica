@@ -1,22 +1,8 @@
-#include <Arduino.h>
-#include <SPI.h>
-#include <SD.h>
+/*
+        Implementação do módulo do cartão SD
+*/
 
-int SCKPIN = 10;
-int TXPIN = 11; // MOSI
-int RXPIN = 12; // MISO
-int CSPIN = 13;
-
-String arq = "dados000.csv";
-String checkCard = "check.txt";
-byte tipoFalha = 0;
-
-File arquivoDados;
-
-bool erro = false;
-unsigned long tempo = 0, tempobase = 0;
-unsigned long t2, t1;
-
+#include <declarations.h>
 
 void falha(int i);
 void CriarArquivoDados();
