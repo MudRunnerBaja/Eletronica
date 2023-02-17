@@ -8,7 +8,6 @@ int combInf = 26;
 int ledVerde = 19;
 int ledAmarelo = 20;
 int ledVermelho = 21;
-
 int nivelComb = 0;
 
 enum nivel {
@@ -19,8 +18,8 @@ enum nivel {
 
 void combSetup()
 {
-    pinMode(combSup, INPUT);
-    pinMode(combInf, INPUT);
+    pinMode(COMB_SUPERIOR, INPUT);
+    pinMode(COMB_INFERIOR, INPUT);
 
     pinMode(ledVerde, OUTPUT);
     pinMode(ledAmarelo, OUTPUT);
@@ -64,8 +63,8 @@ int setComb()
         FALSE/LOW -> Combustível detectado
     */
 
-    int sensorSup = digitalRead(combSup);
-    int sensorInf = digitalRead(combInf);
+    int sensorSup = digitalRead(COMB_SUPERIOR);
+    int sensorInf = digitalRead(COMB_INFERIOR);
 
     if (sensorInf == HIGH) // Se o inferior não detecta combustível
     {               

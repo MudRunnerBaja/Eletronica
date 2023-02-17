@@ -19,8 +19,8 @@ TinyGPS gps;
 
 void setupGps()
 { // CHECAR PINAGEM
-  Serial1.setTX(0);
-  Serial1.setRX(1);
+  Serial1.setTX(GPS_TX);
+  Serial1.setRX(GPS_RX);
   Serial1.begin(GPSBaud);
   datahj = String(dia); datahj += "/"; 
   datahj += String(mes); datahj += "/";
