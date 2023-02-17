@@ -1,8 +1,17 @@
 /* 
     !! Comunicação entre as demais bibliotecas !!
 */
+#ifndef COMMUNICATION
+#define COMMUNICATION
 
 #include <declarations.h>
+
+#define SLAVE_LCD 9
+#define SDApin 16
+#define SCLpin 17 // Pico I2C0
+
+byte data[5];  // I2C data transfer
+                // (0-1 vel) (2-3 rpm) (4 Comb + tempCvt)
 
 void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd);
 void SendI2CDataTo(int slave);
@@ -33,7 +42,7 @@ void UpdateData()
     else { data[4] = 0; }
     data[4] += nivelComb;
     // Envia os dados por i2c
-    SendI2CDataTo(UnoLCD);
+    SendI2CDataTo(SLAVE_LCD);
 
     // Escrita em cartao SD -> Feita por interrupção
     // writeData(speed, rpm, tempCvt, comb, mvd);
@@ -80,3 +89,4 @@ void SendI2CDataTo(int slave) {
     Serial.print(c); Serial.print(" bytes enviados em ");
     Serial.println(tmp);
 }
+#endif

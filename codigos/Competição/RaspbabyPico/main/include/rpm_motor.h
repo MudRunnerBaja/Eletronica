@@ -4,12 +4,16 @@
 #ifndef RPM_MOTOR
 #define RPM_MOTOR
 
+#include <declarations.h>
+
+#define RPM_INPUT_PIN 28 // PINO DE SINAL DO RPM
+
 int rpmCounter = 0;
 int rpmGlobal;
 
 float setRpm()
 {
-    rpmGlobal = rpmCounter * minuto;
+    rpmGlobal = rpmCounter * MINUTO;
     rpmCounter = 0;
     return rpmGlobal;
 }

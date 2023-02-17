@@ -1,8 +1,25 @@
 /*
         Implementação do módulo do cartão SD
 */
+#ifndef CARTAO_SD
+#define CARTAO_SD
 
 #include <declarations.h>
+
+        // CARTAO SD
+#define SCKPIN 10
+#define TXPIN 11 // MOSI
+#define RXPIN 12 // MISO
+#define CSPIN 13
+
+String arq = "dados000.csv";
+String checkCard = "check.txt";
+byte tipoFalha = 0;
+File arquivoDados;
+
+bool erro = false;
+unsigned long tempo = 0, tempobase = 0;
+unsigned long t2, t1;
 
 void falha(int i);
 void CriarArquivoDados();
@@ -124,7 +141,7 @@ void CriarArquivoDados()
         {
             i++;
             int unidade = (i % 10), dezena = ((i / 10) % 10), centena = (i/100);
-            char y[0];
+            char y[1];
             itoa(centena,y,10);
             arq[5] = y[0];
             itoa(dezena,y,10);
@@ -159,8 +176,8 @@ void CriarArquivoDados()
     if (!tipoFalha) erro = false;
 
 }
+#endif
 
 // https://arduino-pico.readthedocs.io/en/latest/fs.html
 // https://docs.arduino.cc/learn/communication/spi
 // Checar datasheet da placa SD
-// SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE0));

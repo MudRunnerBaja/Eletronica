@@ -2,10 +2,26 @@
     Implementação do GPS no carro
     A ser revisado e testado
 */
+#ifndef GPS_LIB
+#define GPS_LIB
 
 //#include <TinyGPS++.h>
 //#include <TinyGPSPlus.h>
 #include <declarations.h>
+
+#define GPS_TX 0 // PINO TX UART GPS
+#define GPS_RX 1 // PINO RX UART GPS
+
+const unsigned long GPSBaud = 9600;
+
+int year = 0, speedInt = 0;
+float flat = 0, flon = 0, speed = 0, altitude = 0;
+unsigned long age, date, gpstime, milisec;
+short dia = 0, mes = 0, ano = 0;
+String datahj;
+bool newData = false;
+
+TinyGPS gps;
 
 void setupGps()
 { // CHECAR PINAGEM     Serial1 -> UART0 // Serial2 -> UART1
@@ -62,3 +78,4 @@ bool updateGps()
     return true;
   } else { return false; }
 }
+#endif
