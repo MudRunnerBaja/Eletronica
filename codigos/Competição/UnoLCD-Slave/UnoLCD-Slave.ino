@@ -181,10 +181,18 @@ void setup(void)
 void UpdateDisplay() {
   u8g2.firstPage();
   do {
-    u8g2.setFont(u8g2_font_12x6LED_tf);
-    u8g2.drawXBM(0, 0, 124, 64, mr_logo_bits);
-    u8g2.drawStr(10,54,tvel);
-    u8g2.drawStr(10,26,trpm);
+    u8g2.setFont(u8g2_font_t0_22b_te);
+    //u8g2.drawXBM(0, 0, 124, 64, mr_logo_bits);
+    //u8g2.drawStr(10,54,tvel);
+    //u8g2.drawStr(10,26,trpm);
+    u8g2.drawButtonUTF8(2, 20 , U8G2_BTN_INV|U8G2_BTN_BW2, 0, 0, 0, trpm);
+    u8g2.setFont(u8g2_font_t0_15b_te);
+    u8g2.drawButtonUTF8(2, 36 , U8G2_BTN_INV|U8G2_BTN_BW2, 0, 0, 0, tvel);
+    //if (CVT){
+      u8g2.setFont(u8g2_font_t0_11b_te);
+      u8g2.drawButtonUTF8(100, 62, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "!CVT");
+    //}
+
   } while (u8g2.nextPage());
   setarCombustivel(comb);
   if (CVT) digitalWrite(ledCVT, HIGH);
