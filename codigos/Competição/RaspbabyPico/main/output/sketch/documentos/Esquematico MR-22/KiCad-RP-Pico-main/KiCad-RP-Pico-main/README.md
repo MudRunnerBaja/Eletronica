@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\documentos\\Esquematico MR-22\\KiCad-RP-Pico-main\\KiCad-RP-Pico-main\\README.md"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\documentos\\Esquematico MR-22\\KiCad-RP-Pico-main\\KiCad-RP-Pico-main\\README.md"
 # KiCad-RP-Pico
 A simple repository of files needed to add a 3D footprint of the Raspberry Pi Pico board to KiCad.
 

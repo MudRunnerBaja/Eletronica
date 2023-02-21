@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\documentos\\Esquematico MR-22\\KiCad-RP-Pico-main\\KiCad-RP-Pico-main\\Install instructions.md"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\documentos\\Esquematico MR-22\\KiCad-RP-Pico-main\\KiCad-RP-Pico-main\\Install instructions.md"
 # Install instructions
 
 ## 1. Copy the files locally

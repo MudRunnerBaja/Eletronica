@@ -1,22 +1,23 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\include\\sdcard.c"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\include\\sdcard.c"
 #include <SPI.h>
 #include <SD.h>
 
-pin_size_t RXPIN = 12; // MISO
-pin_size_t CSPIN = 13;
-pin_size_t SCKPIN = 10;
-pin_size_t TXPIN = 11; // MOSI
+int SCKPIN = 10;
+int TXPIN = 11; // MOSI
+int RXPIN = 12; // MISO
+int CSPIN = 13;
 
 String arq = "dados000.csv";
 
 File arquivoDados;
 
 bool erro = false;
+unsigned long tempo = 0, tempobase = 0;
 
 void falha(){
     digitalWrite(LED_BUILTIN, LOW);
     erro = true;
-    Serial.println("==========FALHA==========");
+    Serial.println("======FALHA SD CARD======");
 }
 
 void sdcardSetup()
@@ -30,7 +31,7 @@ void sdcardSetup()
     SPI1.setTX(TXPIN);
     SPI1.setSCK(SCKPIN);
     SPI1.setCS(CSPIN);
-    SPI1.begin();
+    SPI1.begin(true);
     SD.begin(CSPIN, SPI1);
 
     // Criando os arquivos txt
@@ -60,11 +61,11 @@ void sdcardSetup()
     Serial.print("Arquivo "); Serial.print(arq); Serial.println(" criado.");
 
     if (arquivoDados) {
-        Serial.println("Nomeando colunas como:");
-        //Serial.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");
+        // Serial.println("Nomeando colunas como:");
+        //Serial.println("data;tempo;vel;rpm;tempcvt;comb;movida;latitude;longitude");
 
         //arquivoDados.println("data;month;year;hour;min;seconds;milisecvel;rpm;tempcvt;comb;satelites;latitude;longitude");        arquivoDados.close();
-        arquivoDados.println("data;time;velo;rpm;tempcvt;comb;satelites;latitude;longitude");
+        arquivoDados.println("data;tempo(ms);velo;rpm;tempcvt;comb;movida;latitude;longitude");
         t2 = micros();
         unsigned long t = t2 - t1;
         String dt = String(t, DEC);
@@ -76,10 +77,11 @@ void sdcardSetup()
         return;
         }
     erro = false;
+    tempo = tempobase = millis();
 }
 
 
-void writeData(float vel, int rpm, float tempcvt, int comb)
+void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd)
 {
     if (erro)
     {
@@ -90,50 +92,35 @@ void writeData(float vel, int rpm, float tempcvt, int comb)
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
-    String printData = String(date);
-    printData += ";";
-    printData += String(gpstime);
-    printData += ";";
-    printData += String(vel);
-    printData += ";";
-    printData += rpm;
-    printData += ";";
-    printData += tempcvt;
-    printData += ";";
-    printData += comb;
-    printData += ";";
-    printData += gps.satellites(), TinyGPS::GPS_INVALID_SATELLITES, 5;
-    printData += ";";
+
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
         Serial.print("Escrevendo em ");
         Serial.print(arq);Serial.println("...");
 
-       /* arquivoDados.print(day);
+        arquivoDados.print(datahj);
         arquivoDados.print(";");
-        arquivoDados.print(month);
+        arquivoDados.print(tempo);
         arquivoDados.print(";");
-        arquivoDados.print(year);
+        arquivoDados.print(vel);
         arquivoDados.print(";");
-        arquivoDados.print(hour);
+        arquivoDados.print(rpm);
         arquivoDados.print(";");
-        arquivoDados.print(minute);
+        arquivoDados.print(tempcvt);
         arquivoDados.print(";");
-        arquivoDados.print(second);
+        arquivoDados.print(comb);
         arquivoDados.print(";");
-        arquivoDados.print(milsec);
-        arquivoDados.print(";");*/
-        arquivoDados.print(printData);
+        arquivoDados.print(rpmMvd);
         arquivoDados.print(flat, 8);
         arquivoDados.print(";");
         arquivoDados.println(flon, 8);
-        Serial.println(printData);      
 
         t2 = micros();
         unsigned long t = t2 - t1;
         String dt = String(t, DEC);
-        Serial.println("Feito. Tempo total de escrita (us): " + dt);
+        // Serial.println("Feito. Tempo total de escrita (us): " + dt);
+        arquivoDados.close();
     }
     else    {
     Serial.println("Erro ao abrir "); Serial.println(arq);

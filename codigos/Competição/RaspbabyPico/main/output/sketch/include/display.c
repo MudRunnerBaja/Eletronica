@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\include\\display.c"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\include\\display.c"
 /*
     Implementação displays de 7 segmentos 
     e do [futuro] led de chamada do box

@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\libs\\RPI_PICO_TimerInterrupt\\Packages_Patches\\rp2040\\hardware\\rp2040\\1.3.1\\cores\\rp2040\\Arduino.h"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\libs\\RPI_PICO_TimerInterrupt\\Packages_Patches\\rp2040\\hardware\\rp2040\\1.3.1\\cores\\rp2040\\Arduino.h"
 /*
  * Arduino header for the Raspberry Pi Pico RP2040
  *

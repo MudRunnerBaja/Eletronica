@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\libs\\MAX6675-library-master\\code-of-conduct.md"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\libs\\MAX6675-library-master\\code-of-conduct.md"
 # Adafruit Community Code of Conduct
 
 ## Our Pledge

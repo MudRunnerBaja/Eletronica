@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\include\\comb.c"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\include\\comb.c"
 /*
     Implementação dos níveis de combustível do carro
     !!   ALIMENTADOS COM 12V, PODEM QUEIMAR PICO   !!

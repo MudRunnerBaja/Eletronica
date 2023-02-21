@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\libs\\RPI_PICO_TimerInterrupt\\CONTRIBUTING.md"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\libs\\RPI_PICO_TimerInterrupt\\CONTRIBUTING.md"
 ## Contributing to RPI_PICO_TimerInterrupt
 
 ### Reporting Bugs

@@ -1,4 +1,4 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\libs\\ShiftRegister74HC595-master\\README.md"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\libs\\ShiftRegister74HC595-master\\README.md"
 # ShiftRegister 74HC595 Arduino Library
 
 This library simplifies the usage of shift registers. For instance, it allows to set pins of the shift register just like normal Arduino pins: 

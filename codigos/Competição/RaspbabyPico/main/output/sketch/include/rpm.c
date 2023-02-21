@@ -1,15 +1,16 @@
-#line 1 "d:\\lucas\\Documents\\GitHub\\Eletronica\\codigos\\Competição\\RaspbabyPico\\main\\include\\rpm.c"
+#line 1 "D:\\lucas\\Documents\\GitHub\\Eletronica\\Codigos\\Competição\\RaspbabyPico\\main\\include\\rpm.c"
 /* 
     Implementação da contagem de rpm do carro 
 */
 
-int rpmInputPin = 8;
+int rpmInputPin = 28;
 int rpmCounter = 0;
 int rpmGlobal;
+long minuto = 60 * (1000 / TIMER_INTERVAL_MS);
 
 float setRpm()
 {
-    rpmGlobal = rpmCounter * 60;
+    rpmGlobal = rpmCounter * minuto;
     rpmCounter = 0;
     return rpmGlobal;
 }
