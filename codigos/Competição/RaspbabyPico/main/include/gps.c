@@ -2,29 +2,31 @@
     Implementação do GPS no carro
     A ser revisado e testado
 */
+#ifndef GPS_LIB
+#define GPS_LIB
+
 //#include <TinyGPS++.h>
 //#include <TinyGPSPlus.h>
-#include <TinyGPS.h> // Documentação original: http://arduiniana.org/libraries/tinygps/
+#include <TinyGPS.h> // Documentação: http://arduiniana.org/libraries/tinygps/
 
-static const uint32_t GPSBaud = 9600;
-int year = 0, speedInt = 0;
+#define GPS_TX 0 // PINO TX UART GPS
+#define GPS_RX 1 // PINO RX UART GPS
+
+const unsigned long GPSBaud = 9600;
+
 float flat = 0, flon = 0, speed = 0, altitude = 0;
 unsigned long age, date, gpstime, milisec;
-short dia = 0, mes = 0, ano = 0;
+unsigned int dia = 0, mes = 0, ano = 0;
 String datahj;
-
 bool newData = false;
 
 TinyGPS gps;
 
 void setupGps()
-{ // CHECAR PINAGEM
-  Serial1.setTX(0);
-  Serial1.setRX(1);
+{ // CHECAR PINAGEM     Serial1 -> UART0 // Serial2 -> UART1
+  Serial1.setTX(GPS_TX);
+  Serial1.setRX(GPS_RX);
   Serial1.begin(GPSBaud);
-  datahj = String(dia); datahj += "/"; 
-  datahj += String(mes); datahj += "/";
-  datahj += String(ano);
 }
 
 TinyGPS getGps()
@@ -34,7 +36,7 @@ TinyGPS getGps()
 
 int gpsSpdInt()
 {
-  return speedInt;
+  return (int) speed;
 }
 
 float gpsSpdFloat(){
@@ -61,14 +63,16 @@ bool updateGps()
   {
     gps.f_get_position(&flat, &flon, &age);
     speed = gps.f_speed_kmph();
-    speedInt = (int) speed;
     altitude = gps.altitude();
     gps.get_datetime(&date, &gpstime, &milisec);
-    //gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &milsec);
-    dia = date /1000; mes = (date /100) % 10; ano = date % 10;
+
+    dia = date / 100000; mes = (date /10000) % 100; ano = date % 10000;
+
     datahj = String(dia + "/"); datahj += String(mes + "/");
     datahj += String(ano);
+
     newData = false;
     return true;
   } else { return false; }
 }
+#endif
