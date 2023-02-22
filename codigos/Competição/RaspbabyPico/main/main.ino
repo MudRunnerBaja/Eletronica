@@ -102,7 +102,7 @@ bool UpdateTimer(struct repeating_timer *t)
   UpdateData();
   Serial.println("Nucleo 0 - Dados Atualizados");
   tempoTotal = ((millis() - tempoInicial) / 100) * 100;
-  Serial.print("Tempo total de execução: ");Serial.println(tempoTotal);
+  Serial.print("Tempo total de execucao: ");Serial.println(tempoTotal);
   return true;
 }
 
