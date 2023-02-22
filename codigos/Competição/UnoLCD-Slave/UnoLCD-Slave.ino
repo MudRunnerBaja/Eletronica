@@ -339,19 +339,14 @@ void setarCombustivel(int nivel)
 
 void loop(void) {
     int test = millis();
-    
-// REMOVER, PARTE SOMENTE PARA TESTE #####################################    
-    rpm   = random(rpmmax);
-    vel   = random(42);
-    comb  = random(3);
-    ///////////////////////////////////////////////////////////////////////////
+    /*
     itoa(vel/10, &tvel[0], 10);
     itoa(vel%10, &tvel[1], 10);
     itoa(rpm/1000, &trpm[0], 10);
     itoa((rpm/100)%10, &trpm[1], 10);
     itoa((rpm%100)/10, &trpm[2], 10);
     itoa(rpm%10, &trpm[3], 10);
-
+    */
     UpdateDisplay();
     int timetest = millis() - test;
     
