@@ -28,7 +28,7 @@ void UpdateData()
     int ivel = gpsSpdInt();
     int rpm = setRpm();
     float tempCvt = setCvtTemperature();
-    byte comb = setComb();
+    short comb = setComb();
     int mvd = setRpmMovida();
     
         // Converte vel e rpm em bytes para transferência
