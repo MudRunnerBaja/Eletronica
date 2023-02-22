@@ -8,7 +8,7 @@
 #define COMB_SUPERIOR 27 // PINO COMBUSTIVEL SUPERIOR
 #define COMB_INFERIOR 26 // PINO COMBUSTIVEL INFERIOR
 
-int nivelComb = 0;
+byte nivelComb = 0;
 enum nivel { VAZIO, MEDIO, CHEIO };
 
 void combSetup()
@@ -17,7 +17,7 @@ void combSetup()
     pinMode(COMB_INFERIOR, INPUT);
 }
 
-int setComb()
+byte setComb()
 {
     /* 
         !!  OS SENSORES CAPACITIVOS  !!
@@ -51,7 +51,7 @@ int setComb()
     }
 }
 
-int getNivelComb()
+byte getNivelComb()
 {
     return nivelComb;
 }

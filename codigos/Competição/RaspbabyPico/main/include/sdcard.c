@@ -73,8 +73,8 @@ void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd)
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
-        Serial.print("Escrevendo em ");
-        Serial.print(arq);Serial.println("...");
+        // Serial.print("Escrevendo em ");
+        // Serial.print(arq);Serial.println("...");
 
         arquivoDados.print(datahj);
         arquivoDados.print(";");

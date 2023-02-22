@@ -9,14 +9,14 @@
 int rpmCounter = 0;
 int rpmGlobal;
 
-float setRpm()
+int setRpm()
 {
     rpmGlobal = rpmCounter * MINUTO;
     rpmCounter = 0;
     return rpmGlobal;
 }
 
-float getRpm()
+int getRpm()
 {
     return rpmGlobal;
 }
