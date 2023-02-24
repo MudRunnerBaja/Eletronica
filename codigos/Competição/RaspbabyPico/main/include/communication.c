@@ -4,7 +4,7 @@
 #ifndef COMMUNICATION
 #define COMMUNICATION
 
-#include <Wire.h>   // Comunicação I2C
+#include <Wire.h>   // Comunicação I2C]
 
 #define SLAVE_LCD 9
 #define SDApin 16
@@ -42,6 +42,8 @@ void UpdateData()
         data[4] = 0 + 0x04;
     else { data[4] = 0; }
     data[4] += nivelComb;
+    if (gpsOn) data[4] += 0x08;
+    if (tipoFalha == 0) data[4] += 0x10; 
 
     // Envia os dados por i2c
     SendI2CDataTo(SLAVE_LCD);
@@ -54,11 +56,11 @@ void UpdateData()
         Serial.print(mes);Serial.print("/");
         Serial.println(ano);
         Serial.print("LAT=");
-        Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+        Serial.print(flat, 6);
         Serial.print(" LON=");
-        Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        Serial.print(flon, 6);
         Serial.print(" SAT=");
-        Serial.println(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
+        Serial.println(sat);
     }
 }
 

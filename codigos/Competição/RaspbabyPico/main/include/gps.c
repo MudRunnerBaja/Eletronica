@@ -5,31 +5,37 @@
 #ifndef GPS_LIB
 #define GPS_LIB
 
-//#include <TinyGPS++.h>
+#include <TinyGPS++.h>
 //#include <TinyGPSPlus.h>
-#include <TinyGPS.h> // Documentação: http://arduiniana.org/libraries/tinygps/
+//#include <TinyGPS.h> // Documentação: http://arduiniana.org/libraries/tinygps/
 
 #define GPS_TX 0 // PINO TX UART GPS
 #define GPS_RX 1 // PINO RX UART GPS
 
 const unsigned long GPSBaud = 9600;
 
-float flat = 0, flon = 0, speed = 0, altitude = 0;
-unsigned long age, date, gpstime, milisec;
+float  speed = 0;
+double flat = 0, flon = 0;
+uint32_t age, gpstime, date, sat;
+unsigned long milisec;
 unsigned int dia = 0, mes = 0, ano = 0;
 String datahj;
 bool newData = false;
+bool gpsOn = false;
 
-TinyGPS gps;
+TinyGPSPlus gps;
 
 void setupGps()
 { // CHECAR PINAGEM     Serial1 -> UART0 // Serial2 -> UART1
   Serial1.setTX(GPS_TX);
   Serial1.setRX(GPS_RX);
   Serial1.begin(GPSBaud);
+  flat = gps.location.lat();
+  flon = gps.location.lng();
+  age = gps.location.age();
 }
 
-TinyGPS getGps()
+TinyGPSPlus getGps()
 {
     return gps;
 }
@@ -61,10 +67,14 @@ bool updateGps()
 
   if (newData)
   {
-    gps.f_get_position(&flat, &flon, &age);
-    speed = gps.f_speed_kmph();
-    altitude = gps.altitude();
-    gps.get_datetime(&date, &gpstime, &milisec);
+    gpsOn = true;
+    flat = gps.location.lat();
+    flon = gps.location.lng();
+    age = gps.location.age();
+    speed = gps.speed.kmph();
+    sat = gps.satellites.value();
+    gpstime = gps.time.value();
+    date = gps.date.value();
 
     dia = date / 100000; mes = (date /10000) % 100; ano = date % 10000;
 
@@ -73,6 +83,16 @@ bool updateGps()
 
     newData = false;
     return true;
-  } else { return false; }
+  } else { 
+    /*if (age == TinyGPSPlus::GPS_INVALID_AGE) {
+      gpsOn = false;
+     // Serial.println("No fix detected");
+    }
+    else*/ if (age > 5000) {
+      gpsOn = false;
+    //  Serial.println("Warning: possible stale data!");
+    }
+    else { gpsOn = true; }
+    return false; }
 }
 #endif
