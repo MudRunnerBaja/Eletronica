@@ -10,6 +10,8 @@ char trpm[10]; // String responsável por mostrar o valor do RPM
 int vel = 00, rpm = 0000; // Valores arbitrários de teste
 float rpmmax = 4100, wprpm, w;
 bool CVT = true, reserva = false, gps_conn = false, sd_rw = false, conn = false, intialized = false;
+bool I2C = false;
+unsigned long ti2c;
 short comb = 0;
 byte receivedData[5]; // Buffer de dados recebidos. Tamanho máximo de 32 bytes.
 
@@ -222,7 +224,7 @@ void UpdateDisplay() {
 
 
     //######### CONECTADO AO MASTER #########
-    if(conn){
+    if(I2C){
       u8g2.setDrawColor(0);
       u8g2.setFont(u8g2_font_siji_t_6x10);
       u8g2.drawGlyph(77, 20, 0xe20e);
@@ -295,8 +297,12 @@ void receiveEvent(int bytesReceived) {  // É requisito que essas funções de e
    // Depois, recebemos o byte mais baixo.
   vel = (int)receivedData[0] << 8 | (int)receivedData[1]; // Transforma byte receivedData[0] em int e o move 8 bits para a esquerda, e depois transforma e recebe o byte receivedData[1].
   rpm = (int)receivedData[2] << 8 | (int)receivedData[3];
-  CVT = receivedData[4] >> 2;
+  CVT = receivedData[4] & 0x04;
   comb = receivedData[4] & 0x03;
+  gps_conn = (receivedData[4] & 0x08);
+  sd_rw = (receivedData[4] >> 4);
+  I2C = true;
+  ti2c = millis();
 
   // Converte os valores de int para char e insere os chars nas strings declaradas no início.
   itoa(vel/10, &tvel[0], 10);
@@ -339,6 +345,10 @@ void setarCombustivel(int nivel)
 
 void loop(void) {
     int test = millis();
+
+    if((millis() - ti2c) >  1000){
+      I2C = false;
+    }
     /*
     itoa(vel/10, &tvel[0], 10);
     itoa(vel%10, &tvel[1], 10);
