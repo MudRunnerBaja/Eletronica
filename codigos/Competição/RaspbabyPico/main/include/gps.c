@@ -78,7 +78,8 @@ bool updateGps()
 
     dia = date / 100000; mes = (date /10000) % 100; ano = date % 10000;
 
-    datahj = String(dia + "/"); datahj += String(mes + "/");
+    datahj = String(dia); datahj += "/";
+    datahj += String(mes); datahj += "/";
     datahj += String(ano);
 
     newData = false;
