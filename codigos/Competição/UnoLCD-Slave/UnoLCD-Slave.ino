@@ -8,7 +8,7 @@ unsigned int t0, tf; // Timers
 char tvel[10]; // String responsável por mostrar o valor da velocidade
 char trpm[10]; // String responsável por mostrar o valor do RPM
 int vel = 00, rpm = 0000; // Valores arbitrários de teste
-float rpmmax = 4100, wprpm, w;
+float rpmmax = 4500, wprpm, w;
 bool CVT = true, reserva = false, gps_conn = false, sd_rw = false, conn = false, intialized = false;
 bool I2C = false;
 unsigned long ti2c;
@@ -138,10 +138,7 @@ void setup(void)
   pinMode(ledAmarelo,OUTPUT);
   pinMode(ledVerde,OUTPUT);
 
-  digitalWrite(ledVermelho, HIGH);
-  digitalWrite(ledAmarelo, HIGH);
-  digitalWrite(ledVerde, HIGH);
-
+  
   
 
   WaitSerial(false);
@@ -173,15 +170,43 @@ void setup(void)
 
   wprpm = 128/rpmmax;
   loadScreen();
-  delay(2000);
 
-  digitalWrite(ledVermelho, LOW);
-  digitalWrite(ledAmarelo, LOW);
-  digitalWrite(ledVerde, LOW);
+  for (size_t i = 0; i < 255; i++)
+  {
+    analogWrite(ledVermelho, i);
+    delay(5);
+  }
+  for (size_t i = 0; i < 255; i++)
+  {
+    analogWrite(ledAmarelo , i);
+    delay(5);
+  }
+  for (size_t i = 0; i < 255; i++)
+  {
+    analogWrite(ledVerde , i);
+    delay(5);
+  }
+  
+  delay(100);
   
   Serial.println("Funcionando aqui");
   loadScreen();
-  delay(2000);
+  
+  for (size_t i = 255; i > 0; i--)
+  {
+    analogWrite(ledVerde, i);
+    delay(3);
+  }
+  for (size_t i = 255; i > 0; i--)
+  {
+    analogWrite(ledAmarelo , i);
+    delay(3);
+  }
+  for (size_t i = 255; i > 0; i--)
+  {
+    analogWrite(ledVermelho , i);
+    delay(3);
+  }
 }
 
 
@@ -212,7 +237,6 @@ void UpdateDisplay() {
     if (reserva){
       u8g2.setFont(u8g2_font_t0_11b_te);
       u8g2.drawButtonUTF8(98, 62, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "!FUEL");
-      warning = true;
     }
 
     //######### TEMPERATURA CVT ALTA #########
@@ -321,24 +345,24 @@ void setarCombustivel(int nivel)
 {
     if (nivel == CHEIO)
     {
-        digitalWrite(ledVerde, HIGH);
-        digitalWrite(ledAmarelo, LOW);
-        digitalWrite(ledVermelho, LOW);
+        analogWrite(ledVerde, 255);
+        analogWrite(ledAmarelo, 0);
+        analogWrite(ledVermelho, 0);
         reserva = false;
 
     }
     else if (nivel == MEDIO)
     {
-        digitalWrite(ledVerde, LOW);
-        digitalWrite(ledAmarelo, HIGH);
-        digitalWrite(ledVermelho, LOW);
+        analogWrite(ledVerde, 0);
+        analogWrite(ledAmarelo, 255);
+        analogWrite(ledVermelho, 0);
         reserva = false;
     }
     else // VAZIO
     {
-        digitalWrite(ledVerde, LOW);
-        digitalWrite(ledAmarelo, LOW);
-        digitalWrite(ledVermelho, HIGH);
+        analogWrite(ledVerde, 0);
+        analogWrite(ledAmarelo, 0);
+        analogWrite(ledVermelho, 255);
         reserva = true;
     }
 }
@@ -349,14 +373,7 @@ void loop(void) {
     if((millis() - ti2c) >  1000){
       I2C = false;
     }
-    /*
-    itoa(vel/10, &tvel[0], 10);
-    itoa(vel%10, &tvel[1], 10);
-    itoa(rpm/1000, &trpm[0], 10);
-    itoa((rpm/100)%10, &trpm[1], 10);
-    itoa((rpm%100)/10, &trpm[2], 10);
-    itoa(rpm%10, &trpm[3], 10);
-    */
+
     UpdateDisplay();
     int timetest = millis() - test;
     
@@ -389,7 +406,7 @@ void loadScreen(){
   if (intialized){
     u8g2.setDrawColor(1);
     u8g2.setFont(u8g2_font_t0_13_te);
-    u8g2.drawButtonUTF8(16, 62, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Inicializando!");
+    u8g2.drawButtonUTF8(16, 62, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Inicializado!");
     u8g2.setFont(u8g2_font_5x8_tf);
     u8g2.drawButtonUTF8(2, 7, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Eletronica MudRunner 2023");
   } else {
