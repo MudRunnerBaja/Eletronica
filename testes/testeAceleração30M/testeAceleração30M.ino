@@ -7,6 +7,7 @@ OS SENSORES USADOS DEVEM SER NORMALMENTE ABERTO (QUANDO O FEIXE DE LUZ NÃO ESTA
 
 long startTime, finalTime, elapsedTime;
 int botao = 0;
+bool ready = true, finish = false;
 
 const int StartSensorPort = 18;
 const int FinishSensorPort = 19;
@@ -39,13 +40,23 @@ void setup(){
 
     Serial.print("Inicializado");
 
-    attachInterrupt(digitalPinToInterrupt(StartSensorPort), start, FALLING);
-    
+    pinMode(StartSensorPort, INPUT);
+    pinMode(FinishSensorPort, INPUT);
 }
 
 void loop(){
 
     int vlr = analogRead(botao);
+    int StartSensor = digitalRead(StartSensorPort);
+    int FinalSensor = digitalRead(FinishSensorPort);
+
+    if (StartSensor == 1 && ready == true){
+        start();
+    }
+
+    if (FinalSensor == 1 && finish == true){
+        finishTime();
+    }
 
     if (vlr < 300 && vlr > 200){
         delay(200);
@@ -54,14 +65,13 @@ void loop(){
 }
 
 void start(){
-    detachInterrupt(digitalPinToInterrupt(StartSensorPort));                  //DESATIVA A INTERRUPÇÃO DE INICIO PARA QUANDO PASSAR AS RODAS TRASEIRAS NÃO ATIVE A INTERRUPÇÃO NOVAMENTE
-    attachInterrupt(digitalPinToInterrupt(FinishSensorPort), finishTime, FALLING);
-
     Serial.println("SENSOR INICIAL INTERROMPIDO. Millis inical:");
-
 
     startTime = millis();
     Serial.println(startTime);
+
+    ready = false;
+    finish = true;
 
     lcd.clear();
     lcd.print("DETECTADO!");
@@ -70,10 +80,12 @@ void start(){
 }
 
 void finishTime(){
-    detachInterrupt(digitalPinToInterrupt(FinishSensorPort));                   //DESATIVA A INTERRUPÇÃO DO FINAL PARA QUANDO PASSAR AS RODAS TRASEIRAS NÃO ATIVE A INTERRUPÇÃO NOVAMENTE
     
     finalTime = millis();
     elapsedTime = finalTime - startTime;
+
+    finish = false;
+    ready = true;
 
     Serial.println("SENSOR FINAL INTERROMPIDO. Millis final:");
     Serial.println(finalTime);
@@ -95,15 +107,12 @@ void finishTime(){
             lcd.clear();
             lcd.print("Aguardando Pass...");
             delay(500);
-            attachInterrupt(digitalPinToInterrupt(StartSensorPort), start, FALLING);
         }
     }
 
 }
 
 void sensorTest(){
-    detachInterrupt(digitalPinToInterrupt(StartSensorPort));
-    detachInterrupt(digitalPinToInterrupt(FinishSensorPort));
 
     bool done = false;
 
@@ -138,7 +147,6 @@ void sensorTest(){
             lcd.print("Aguardando");
             lcd.setCursor(0,2);
             lcd.print("1st passagem");
-            attachInterrupt(digitalPinToInterrupt(StartSensorPort), start, FALLING);
             done = true;
         }
     }
