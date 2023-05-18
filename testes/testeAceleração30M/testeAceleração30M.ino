@@ -9,8 +9,8 @@ long startTime, finalTime, elapsedTime;
 int botao = 0;
 bool ready = true, finish = false;
 
-const int StartSensorPort = 18;
-const int FinishSensorPort = 19;
+const int StartSensorPort = 32;
+const int FinishSensorPort = 34;
 
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
