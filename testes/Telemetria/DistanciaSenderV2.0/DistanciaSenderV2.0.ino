@@ -1,33 +1,53 @@
 #include <SoftwareSerial.h>
-SoftwareSerial HC12(10, 11); // HC-12 TX Pin, HC-12 RX Pin
-int data = 31052023;
-int dia, mes, ano;
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
+long timer, timer2;
+int i;
+int data = 0;
+char dado[10];
+
 
 void setup() {
   Serial.begin(9600);             // Serial port to computer
-  HC12.begin(9600);   // Serial port to HC12
-  HC12.println("Testing HC-12 module range...");
-  dia = data/1000000;
-  mes = (data/10000) % 100;
-  ano = data % 10000;
+  Serial1.begin(9600);   // Serial port to Serial1
+  lcd.begin(16,2);
+  //Serial1.println("Testing HC-12 module range...");
 }
-
+  int p = 0;
 void loop() {
-
-  // Increment the distance counter and print the result to the serial monitor
-  //Serial.print("ABCDEFGHIJ");
-  Serial.print("123456789");
+  int newdata = 0;
 
   // Wait for one second before sending the next message
-  delay(1000);
+  
+  if(Serial1.available()){
+    lcd.clear();
+    newdata = 0;
+  }
 
-  //HC12.println("ABCDEFGHIJ");
-  HC12.print("Data: ");
-  HC12.println(data);
-  HC12.print("Dia: ");
-  HC12.print(dia);
-  HC12.print(" | mes: ");
-  HC12.print(mes);
-  HC12.print(" | ano: ");
-  HC12.println(ano);
+  while(Serial1.available()){
+    data = Serial1.read();
+    Serial.write(data);
+    lcd.write(data);
+  }
+  
+
+ 
+  
+  if(millis()>timer2){
+    //lcd.print("Recived:");
+    lcd.setCursor(0,1);
+    lcd.print("Sent:");
+    lcd.print(i);
+    
+    timer2 = millis()+100;
+  }
+  
+  if(millis()>timer){
+    Serial1.println(i);
+    timer = millis() + 1000;
+    i++;
+    newdata=1;
+  }
 }
