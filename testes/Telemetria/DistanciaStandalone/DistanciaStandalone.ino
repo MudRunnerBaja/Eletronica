@@ -2,88 +2,61 @@
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
-long timer, timer2;
-int data = 0;
-
-String sentData = "TESTETESTE123456789123456789TESTETESTE"; //Dado a ser enviado ao hc12
+String sentData = "Testes"; //Dado a ser enviado ao hc12
 int REFRESH_DISPLAY = 100; //Tempo em ms
 int POLLING_RATE_DATA = 1000; //Tempo em ms
 
 void setup() {
   Serial.begin(9600);             // Porta serial para o arduino
-
-  Serial1.setRX(1); // 17 | 1
-  Serial1.setTX(0); // 16 | 0
   Serial1.begin(9600);            // Porta serial para o HC12
-
-  Serial2.setRX(5);
-  Serial2.setTX(4);
-  Serial2.begin(9600);
-
   lcd.begin(16,2);
 }
 
 void loop() {
-  // int bytesRead = hc12Read(); // Chamando dentro de lcdRefresh
-  // int bytesSent = hc12Send(); // Chamando dentro de lcdRefresh
-  lcdRefresh();
+  int bytesSent = hc12Send();
+  int bytesRead = hc12Read();
+  lcdRefresh(bytesRead, bytesSent);
 }
 
 
-void lcdRefresh(){
-  if(millis()>timer2) {
-    int bytesSent = hc12Send(sentData);
-    Serial.print("No of bytes Sent:");
-    Serial.println(bytesSent); //
+void lcdRefresh(int bytesRead, int bytesSent){
+  static long timer = 0;
 
+  if(millis()>timer){
+
+    Serial.print("Recived:");
+    Serial.print(bytesRead);
+    Serial.print("  ||   Sent:");
+    Serial.println(bytesSent);
+
+    lcd.clear();
+    lcd.print("Recived:");
+    lcd.println(bytesRead);
     lcd.setCursor(0,1);
+    lcd.print("Sent:");
+    lcd.println(bytesSent);
 
-    int bytesReceived = hc12Read();
-    Serial.print("No of bytes Received: ");
-    Serial.println(bytesReceived); //
-
-    Serial.print("\n--------\n");
-    timer2 = millis()+2000;
+    timer = millis()+1000;
   }
 }
 
 int hc12Read(){                   //RETORNA QUANTIDADE DE BITS QUE FOI ENVIADO
-  String rData = "";
-  Serial.print("Received Data: ");
-
+  static int receivedBytes = 0;
   while(Serial1.available()){
-    
-    Serial.print("Serial1 SOCORRO");
-    rData += Serial1.readString();
+    Serial1.read();
+    receivedBytes++;
   }
-  
-  while(Serial2.available()){
-    
-    Serial.print("Serial2 SOCORRO");
-    rData += Serial2.readString();
-  }
-
-  while(Serial.available()){
-    
-    Serial.print("Serial0 SOCORRO");
-    rData += Serial.readString();
-  }
-
-  Serial.print(rData);
-  return sizeof(rData);
+  return receivedBytes;
 }
 
 
-int hc12Send(String sData){                   //RETORNA A QUANTIDADE DE BITS QUE FOI RECIBIDA
-  
-  int size = Serial2.write(sData.c_str()); // Como está dentro do lcdRefresh, ele respeita o timer do lcdRefresh
-  Serial.print("Sent Data: ");
-  Serial.println(sData);
+int hc12Send(){                   //RETORNA A QUANTIDADE DE BITS QUE FOI RECIBIDA
+  static int sentBytes = 0;
+  static long timer = 0;
 
-  /* if(millis()>timer){
-    Serial1.println(sentData);
+  if(millis()>timer){
+    sentBytes += Serial1.println(sentData);
     timer = millis() + 1000;
-  }*/
-
-  return  size;
+  }
+  return  sentBytes;
 }
