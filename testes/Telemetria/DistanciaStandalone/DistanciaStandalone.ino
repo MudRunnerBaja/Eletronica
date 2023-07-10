@@ -22,21 +22,36 @@ void loop() {
 
 void lcdRefresh(){
   static long timer = 0;
+  static float readTotal = 4;
+  static float sentTotal;
 
   if(millis()>timer){
     int read = hc12Read();
     int sent = hc12Send();
+    
+    readTotal += read;
+    sentTotal += sent;
+
+    float percent = 100 - (readTotal/sentTotal) * 100;
+
     Serial.print("Recived:");
     Serial.print(read);
     Serial.print("  ||   Sent:");
     Serial.println(sent);
 
     lcd.clear();
-    lcd.print("Recived:");
-    lcd.println(read);
+    lcd.print("S:");
+    lcd.print(sent);
+    lcd.setCursor(3,0);
+    lcd.print("/R:");
+    lcd.print(read);
+    lcd.setCursor(7,0);
+    lcd.print(" Bytes");
+
     lcd.setCursor(0,1);
-    lcd.print("Sent:");
-    lcd.println(sent);
+    lcd.print("Perda:");
+    lcd.print(percent,6);
+    lcd.print("%");
 
     timer = millis()+1000;
   }
