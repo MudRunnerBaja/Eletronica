@@ -12,19 +12,15 @@ Por favor, ao fazer uma alteração no código, indicar o que foi alterado e col
 
 - __STM Arm__:STM32 é uma família de microcontroladores de 32 bits produzidos pela STMicroelectronics. Os chips STM32 são agrupados em séries relacionadas que são baseados em torno do mesmo núcleo do processador ARM de 32 bits, como o Cortex-M7, Cortex-M4F, Cortex-M3, Cortex-M0 +, ou Cortex-M0.<br /> 
 
+- __RP2040__: O RP2040 é um microcontrolador de baixo custo e boa performance, criado pela Raspberry Pi. Trata-se de um processador Dual-Core ARM Cortex M0+, rodando em até 133MHz. Possui 264kB de memória SRAM e 2MB de memória Flash integrada na placa e pode ser programado em MicroPhython ou C/C++. O RP2040 possui 26 GPIOs multifunção, com 2x SPI, 2x I2C, 2x UART, 3x ADC de 12-bits e 16 canais PWM. Ela inclui um sensor de temperatura e bibliotecas para tratar ponto flutuante.<br />
+
 ### Microcontrolador escolhido pela equipe
 
-O microcontrolador selecionado pela equipe foi o PIC porque ele é utilizado pela equipe desde 2018. Nossa ideia foi de dar continuidade ao projeto dos nossos veteranos reaproveitando o que já havia sido feito com o Pic com capacidade de processamento de 8 bits. Entretanto, para uma próxima temporada temos pretensão de alterar o microcontrolador. Os dois pic escolhidos pela equipe foram o 18f4550 e o 18f458.<br />
+O microcontrolador selecionado pela equipe é o RP2040, vendo sua alta performance, baixo custo e a possibilidade de ser programado pela IDE do arduino. A possibilidade de ser programado pela IDE do Arduino cria uma facilidade pela alta quantidade de bibliotecas, documentações e a familiaridade com a linguaguem de programação. Para usar esse microcontrolador, usamos a placa micro-controlada Raspberry Pi Pico.<br />
 
-__Pic 18f4550:__ 
+__Raspberry Pi Pico__
 
-![pic18f4550](https://user-images.githubusercontent.com/39687418/105561566-d0843400-5cf5-11eb-8968-8c0e4cf1fce2.gif)<br />
-*Fig 1 - Pinagem pic 18f4550*<br />
-
-__Pic 18f458:__
-
-![PIC18F458](https://user-images.githubusercontent.com/39687418/105561571-d24df780-5cf5-11eb-805d-e8ff38ad39b3.gif)<br />
-*Fig 2 - Pinagem pic 18f458*<br />
+![Pinout Pico](https://user-images.githubusercontent.com/13077798/224742127-b1833368-27a5-40e4-bc1d-77e34551913e.jpeg)
   
 
 ## Projetos
@@ -36,6 +32,7 @@ No momento foram implementadas as seguintes funcionalidades no carro:<br />
   <li>Medidor de combustível</li>
   <li>Leitura do RPM e da Velocidade</li>
   <li>Telemetria do carro</li>
+  <li>Armazenamento de dados</li>
   <li>Chamada para o box</li>
 </ul><br />
 
@@ -256,26 +253,19 @@ O módulo escolhido pela equipe foi o  LJC18A3,pois possui uma boa sensibilidade
 ### Leitura do RPM e da Velocidade
 
 #### Velocidade
-A velocidade do carro é um dado muito importante de se adquirir, visto que dá dados ao piloto para testar as melhores condições para fazer uma curva ou passar um obstáculo e é utilizada em diversos testes para a equipe. Com isso em mente, faz-se necessário a construção de um sistema para adquirir esse dado e o sub de eletrônica projetou esse modelo. O sistema conta um sensor de efeito hall (campo magnético) fixado no [local de fixação do sensor], com 4 imas, para serem a referência, instalados no [locais onde estão instaladas] da [roda em que estão instalados].<br />
-
-Para reduzir os erros causados pela derrapagem do carro, foi escolhido obter a média de velocidade nas rodas do veículo. Para isso, será necessário instalar sensores nas rodas dianteiras do veículo podendo, assim, obter a média de velocidades para que o dado apresentado pelo velocímetro não seja tão distante do comportamento real. E o sensor escolhido foi o NJk-5002C pelo fato dele ser robusto e a saída dele podo ser do tipo NPN ou PNP.<br />
-
-![njc](https://user-images.githubusercontent.com/57758959/103160388-3ba02080-47b3-11eb-9bde-0c09426b4a26.jpg)<br />
-*Fig 6 - Sensor de efeito hall Njk-5002C*<br />
+A velocidade do carro é um dado muito importante de se adquirir, visto que dá dados ao piloto para testar as melhores condições para fazer uma curva ou passar um obstáculo e é utilizada em diversos testes para a equipe. Com isso em mente, foi implementado um sensor de efeito hall, o qual detectava a pessagem de imãs no disco de freio. Posteriormente, vendo a imprecisão na aquisição da velocidade, causada pela folga axial no eixo da roda, o sistema de aquisição de velocidade foi substituido pela aquisição via GPS, a qual tem uma precisão de 0.1m/s.<br />
 
 #### RPM
 O motor de um baja é seu coração, portanto, controlar seu ‘batimento’ (RPM) é de suma importância para o time como um todo. É um dado imprescindível para análise de comportamento do motor, setagem de motor para TF, esforço do motor, quando mostrado ao piloto e entre outras situações.<br />
 
-O motor utilizado possui 4 tempos que são: a admissão, a compressão, a explosão e a exaustão. Ao efetuar um ciclo completo (admissão, compressão, explosão e exaustão), uma indução eletromagnética da corrente é gerada pela bobina da vela.Para conseguir um bom valor de RPM, o sinal do motor precisa ser tratado antes dele ser transmitido para a entidade que é responsável pelo cálculo do RPM. Esse tratamento de sinal se faz por filtros elétricos; com esse procedimento se espera ter um sinal na forma de onda quadrática com amplitude máxima de 5V.<br />
+O motor utilizado possui 4 tempos que são: a admissão, a compressão, a explosão e a exaustão. Ao efetuar um ciclo completo (admissão, compressão, explosão e exaustão), uma indução eletromagnética da corrente é gerada pela bobina da vela. Para conseguir um bom valor de RPM, o sinal do motor precisa ser tratado antes dele ser transmitido para a placa. Esse tratamento de sinal se faz por filtros elétricos; com esse procedimento se espera ter um sinal na forma de onda quadrática com amplitude máxima de 3.3V.<br />
 
-![sinais](https://user-images.githubusercontent.com/57758959/103160502-d5b49880-47b4-11eb-8fbe-14b9c349f4ab.PNG)<br />
+![sinais](https://user-images.githubusercontent.com/13077798/224748826-631d1fd8-9ae0-47be-bea8-870b38402c91.png)<br />
 *Fig 7 - Sinal da bobina primária do motor sem o filtro e com o filtro*<br /> 
 
 ![filtroantigo](https://user-images.githubusercontent.com/57758959/103160515-f7ae1b00-47b4-11eb-8956-71e126adb942.PNG)<br />
 *Fig 8 - Filtro atual implementado pela equipe*<br />
 
-![filtronovo](https://user-images.githubusercontent.com/57758959/103160513-f4b32a80-47b4-11eb-8550-59f0dd2b4f46.PNG)<br />
-*Fig 9 - Filtro que pretendemos implementar no futuro*<br />
 
 ### Telemetria
 Dado agora que já somos capazes de implementar na prática todos os projetos acima mencionados, damos início ao nosso projeto da Telemetria. Irá funcionar como um sistema supervisório, em que todos os dados coletados são enviados por meio de um transmissor para nosso box. Dessa forma, todos da equipe poderam observar e perceber o que está se passando no carro, ajudando nas tomadas de decisão durante a prova.<br />
@@ -303,32 +293,7 @@ Os seguintes testes estão em desenvolvimento para auxíliar a equipe quanto a o
 <ul>
   <li>Teste de Strain Gauge</li>
   <li>Teste de retomada e aceleração</li>
+  <li>Teste de CVT Tunning</li>
   <li>Teste da variação do coeficiente de atrito da pastilha e do disco</li>
   <li>Teste de vibração</li>
 </ul><br />
-  
-### Teste de Strain Gauge
-O Strain Gauge ou um extensômetro é um sensor de força capaz de medir a deformação de uma superfície que sofreu a ação de uma força. Devido à sua composição, a resistência elétrica desse sensor varia proporcionalmente com a deformação do corpo de prova. Dessa forma, a deformação sofrida pelo corpo de prova é transferida para o extensômetro que a recebe na forma da variação linear da sua resistência elétrica. O teste/projeto de strain gauge é muito importante para o subsistema de eletrônica, pois fornecerá a equipe dados concretos para serem parâmetros no projeto de futuros carros. <br />
-
-Antes de implementar no carro esse teste, pretendemos aplicar um método de validação. Para validação, faremos primeiro um teste de medir peso de objetos com o strain gauge e compararemos os resultados com o de uma balança. Caso não ocorra muita diferença entre as medições, procederemos para os testes no carro. O teste ainda está a ser decidido, mas temos algumas opções: 
-
-- Cortar, em formato de quadrado, um pedaço de metal e colocar um strain gauge em cada canto –Com isso, conseguimos pegar a força que o objeto a ser medido vai exercer em praticamente toda área. Depois de todas as conexões feitas e o circuito pronto, calibrar, com o código, o sistema e fazer o teste.
-
-
-- Colocar o strain gauge num pedaço de tubo normal e comparar os dados obtidos com o software de simulação ANSYS.
-
-
-
-### Teste de retomada e aceleração
-
-### Teste da variação do coeficiente de atrito da pastilha e do disco
-
-### Teste de vibração
-
-
-
-
-
-
-
-
