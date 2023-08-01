@@ -3,22 +3,11 @@
 #include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
 #include <RPi_Pico_ISR_Timer.hpp> // Manipuladores de Interrupção
 
-<<<<<<< HEAD
-#include "include/temp.c"         // Temperatura CVT
-#include "include/comb.c"         // Níveis de combustível
-#include "include/vel.c"          // Velocidade do carro
-#include "include/rpm.c"          // RPM do carro
-#include "include/display.c"      // Placa do display
-#include "include/sdcard.c"       // Gravação de dados no cartão SD
-#include "include/comunication.c" // Comunicação entre bibliotecas e serial
-#include "include/timers.c"        // Contagem do tempo de rodagem do carro e do motor
-=======
     // CONSTANTES
 #define TIMER_INTERVAL_MS 200
 #define TEMPERATURA_CRITICA_CVT 80
 #define CAR_NAME "MV-22"
 const long MINUTO = 60 * (1000 / TIMER_INTERVAL_MS); // Valor referente a um minuto em função do intervalo de atualização
->>>>>>> main
 
     // VARIÁVEIS GLOBAIS
 bool setupCompleto = false; // Flag Setup core 0

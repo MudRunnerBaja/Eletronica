@@ -46,14 +46,6 @@ void sdcardSetup()
         return;
     }
 
-<<<<<<< HEAD
-    if (arquivoDados) {
-        Serial.println("Nomeando colunas como:");
-        Serial.println("vel,rpm,tempcvt,comb,EngineRunningTime,MovingTime");
-
-        arquivoDados.println("vel,rpm,tempcvt,comb,EngineRunningTime,MovingTime");
-        arquivoDados.close();
-=======
     // Criando os arquivos txt
         int i = 0;  // ele ira aumentar um numero no nome do arquivo, e ira verificar de novo, até que não haja um arquivo do mesmo nome
         char unidade;
@@ -79,7 +71,6 @@ void sdcardSetup()
             return;
         }
         Serial.print("Arquivo "); Serial.print(arq); Serial.println(" criado.");
->>>>>>> main
 
     if (arquivoDados) {
         arquivoDados.println("data;tempo(ms);velo;rpm;tempcvt;comb;movida;latitude;longitude");
