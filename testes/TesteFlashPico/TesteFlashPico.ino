@@ -1,29 +1,52 @@
 #include <LittleFS.h>
 
+int c;
+long timer;
+String entry; 
+
+
 void setup() {
   Serial.begin(115200);
   delay(5000);
   LittleFS.begin();
-  char buff[32];
+}
 
-  File i = LittleFS.open("file1.txt", "w");
-  if (i){
-    i.write("10\n,10\n,10\n");
+void loop() {
+  commands();
+  if(millis() > timer + 1000){
+    escrita();
+    leitura();
+    timer = millis();
   }
 
-  i.close();
+}
 
-  Serial.println("---------------");
-  File s = LittleFS.open("file1.txt", "r");
-  if (s) {
+void commands(){
+  while (Serial.available()) {
+    entry = Serial.readString();
+  }
+  entry.trim();
+
+
+  if (entry == "/erase"){
+    Serial.print("APAGADO");
+    LittleFS.remove("file1.txt");
+  }
+}
+
+void escrita(){
+
+  String de = String(c,DEC);
+  File i = LittleFS.open("file1.txt", "w");
+  i.print("TESTE");
+  i.close();
+}
+
+void leitura(){
+   File s = LittleFS.open("file1.txt", "r");
     while (s.available()) {
       Serial.write(s.read());
     }
     Serial.println("---------------");
     s.close();
-  }
-}
-
-
-void loop() {
 }
