@@ -1,8 +1,7 @@
 #include <LittleFS.h>
 
-int c;
+
 long timer;
-String entry; 
 
 
 void setup() {
@@ -22,6 +21,7 @@ void loop() {
 }
 
 void commands(){
+  String entry; 
   while (Serial.available()) {
     entry = Serial.readString();
   }
@@ -34,19 +34,29 @@ void commands(){
   }
 }
 
+int c = 66;
+int lida;
+
 void escrita(){
 
   String de = String(c,DEC);
   File i = LittleFS.open("file1.txt", "w");
-  i.print("TESTE");
+  i.print(c);
   i.close();
 }
 
+String conv;
+
 void leitura(){
    File s = LittleFS.open("file1.txt", "r");
-    while (s.available()) {
+    /*while (s.available()) {
       Serial.write(s.read());
-    }
+    }*/
+    //Serial.println(s.readString());
     Serial.println("---------------");
+    conv = s.readString();
+    c = conv.toInt();
+    Serial.print(c);
+    c++;
     s.close();
 }
