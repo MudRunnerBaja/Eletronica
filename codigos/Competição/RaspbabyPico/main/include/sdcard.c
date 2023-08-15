@@ -91,11 +91,7 @@ void sdcardSetup()
 }
 
 
-<<<<<<< HEAD
-void writeData(float vel, int rpm, float tempcvt, int comb, int runningTimer, int movingTimer)
-=======
 void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd)
->>>>>>> main
 {
     if (tipoFalha == 1)
     {
@@ -112,21 +108,6 @@ void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd)
     // Testes de velocidade de escrita
     unsigned long t2, t1;
     t1 = micros();
-<<<<<<< HEAD
-    String printData = String(vel);
-    printData += ",";
-    printData += rpm;
-    printData += ",";
-    printData += tempcvt;
-    printData += ",";
-    printData += comb;
-    printData += ",";
-    printData += runningTimer;
-    printData += ",";
-    printData += movingTimer;
-=======
-
->>>>>>> main
 
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
