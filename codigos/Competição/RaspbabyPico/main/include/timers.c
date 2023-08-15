@@ -6,7 +6,7 @@ int movingTimerCounter;
 
 
 int timerEngine(){
-    while(rpmGlobal != 0 && millis >= engineElapsedTime){
+    while(getRpm() != 0 && millis >= engineElapsedTime){
         engineTimerCounter = engineTimerCounter + 1;
         engineElapsedTime = millis + 1000;
     }
@@ -14,7 +14,7 @@ int timerEngine(){
 }
 
 int timerMoving(){
-    while(velGlobal != 0 && millis >= movingElapsedTime){
+    while(gpsSpdFloat() >= 1 && getRpm() != 0 && millis >= movingElapsedTime){
         movingTimerCounter = movingTimerCounter + 3;        
         movingElapsedTime = millis + 3000;              //Delay de 3 segundos para evitar falsos positivos (falsa movimentação do gps mesmo carro estando imovel, quando o sinal esta fraco)
     }
