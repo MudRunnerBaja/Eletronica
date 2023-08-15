@@ -109,6 +109,7 @@ void writeData(float vel, int rpm, float tempcvt, int comb, int rpmMvd)
     unsigned long t2, t1;
     t1 = micros();
 
+
     arquivoDados = SD.open(arq, FILE_WRITE);
     if (arquivoDados) {
         Serial.print("Escrevendo em ");
