@@ -2,6 +2,7 @@
 
 
 long timer;
+String conv;
 
 
 void setup() {
@@ -13,8 +14,8 @@ void setup() {
 void loop() {
   commands();
   if(millis() > timer + 1000){
-    escrita();
     leitura();
+    escrita();
     timer = millis();
   }
 
@@ -31,32 +32,44 @@ void commands(){
   if (entry == "/erase"){
     Serial.print("APAGADO");
     LittleFS.remove("file1.txt");
+  } else if (entry == "/save")
+  {
+    Serial.print("Salvando");
+    File flashRead = LittleFS.open("file1.txt", "r");
+    File flashWrite = LittleFS.open("bckp.txt", "w");
+    String BCK;
+    BCK = flashRead.readString();
+    flashWrite.print(BCK);
+  }else if (entry == "/backup")
+  {
+    File flashWrite = LittleFS.open("bckp.txt", "r");
+    Serial.println(flashWrite.readString());
   }
 }
 
-int c = 66;
+int c;
 int lida;
 
 void escrita(){
+  //String de = String(c,DEC);
 
-  String de = String(c,DEC);
-  File i = LittleFS.open("file1.txt", "w");
-  i.print(c);
-  i.close();
+  File flashWrite = LittleFS.open("file1.txt", "w");
+
+  flashWrite.print(c);
+  flashWrite.close();
 }
 
-String conv;
 
 void leitura(){
-   File s = LittleFS.open("file1.txt", "r");
-    /*while (s.available()) {
-      Serial.write(s.read());
-    }*/
-    //Serial.println(s.readString());
-    Serial.println("---------------");
-    conv = s.readString();
+   File flashRead = LittleFS.open("file1.txt", "r");
+
+    conv = flashRead.readString();
+
     c = conv.toInt();
-    Serial.print(c);
+
+    Serial.println(conv);
+
     c++;
-    s.close();
+
+    flashRead.close();
 }
