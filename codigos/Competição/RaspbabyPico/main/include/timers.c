@@ -11,9 +11,8 @@ void writeFlash();
 bool timerEngine(){
     int rpm = getRpm();
 
-    if(rpm != 0 && millis() >= engineElapsedTime + 1000){
+    if(rpm != 0){
         engineTimerCounter += 1;
-        engineElapsedTime = millis();
         return true;
     }
     return false;
@@ -23,9 +22,8 @@ bool timerMoving(){
     int spd = gpsSpdInt();
     int rpm = getRpm();
 
-    if(spd >= 2 && rpm != 0 && millis() >= movingElapsedTime + 1000){
+    if(spd >= 2 && rpm != 0){
         movingTimerCounter += 1;        
-        movingElapsedTime = millis();
         return true;              
     }
     return false;

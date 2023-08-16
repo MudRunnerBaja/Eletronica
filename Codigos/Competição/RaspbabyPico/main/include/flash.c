@@ -25,32 +25,38 @@ void readFlash(){//Função que le o que esta gravado no flash do pico
 void writeFlash(){//Função que grava os dados no flash do pico
   File flashWrite = LittleFS.open("raw.dt", "w");             //Abre o arquivo como escrita
 
-  Serial.printf("IMPRIMINDO FLASH: %d %d\n\n", engineTimerCounter, movingTimerCounter);//Imprime no serial o que sera escrito do flash
+  Serial.printf("IMPRIMINDO FLASH: %d %d\n", engineTimerCounter, movingTimerCounter);//Imprime no serial o que sera escrito do flash
   flashWrite.printf("%d %d", engineTimerCounter, movingTimerCounter);                 //Escreve os novos valores no flash do pico
 
   flashWrite.close();                                           //Fecha o arquivo
 
-  Serial.printf("###########\n\n");
+  //Serial.printf("###########\n\n");
 }
 
 void erase(){
-  Serial.println("Apagado");
+  Serial.printf("\n\n###DADOS DE RODAGEM APAGADOS###\n\n");
   LittleFS.remove("raw.dt");
   engineTimerCounter = 0;
   movingTimerCounter = 0;
 }
 
 void save(){
-  Serial.println("Salvo no backup");
+  Serial.printf("\n\n###Salvo no backup###\n\n");
   File flashRead = LittleFS.open("raw.dt", "r");
   File flashWrite = LittleFS.open("backup.dt", "w");
 
   flashWrite.print(flashRead.readString());
+
+  flashWrite.close();
+  flashRead.close();
 }
 
 void backup(){
-  File flashWrite = LittleFS.open("backup.dt", "r");
-  Serial.println(flashWrite.readString());
+  Serial.printf("\n\n###CONTEUDO DO ARQUIVO DO BACKUP###\n\n");
+  File flashRead = LittleFS.open("backup.dt", "r");
+  Serial.println(flashRead.readString());
+
+  flashRead.close();
 }
 
 void commands(){
@@ -74,6 +80,7 @@ void commands(){
   }
   if (entry == "/format"){
     erase();
+    Serial.printf("\n\n###FLASH FORMATADO###\n\n");
     LittleFS.format();
   }
 }
