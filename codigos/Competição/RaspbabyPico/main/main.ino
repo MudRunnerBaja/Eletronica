@@ -22,6 +22,10 @@ unsigned long tempoTotal = 0, tempoInicial = 0;
 #include "include/cvt_tunning.c" // CVT Tuning
 #include "include/sdcard.c" // Modulo SD
 #include "include/communication.c" // Comunicação entre bibliotecas e serial
+#include "include/timers.c"
+#include "include/flash.c"
+
+
 
 bool UpdateTimer(struct repeating_timer *t);
 bool WriteSD(struct repeating_timer *t);
@@ -87,12 +91,13 @@ void setup1()
 void loop()
 {
  updateGps();
+ commands();
  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop1()
 {
-
+  
 }
 
 // Interrupt callback functions Core0
@@ -100,6 +105,7 @@ bool UpdateTimer(struct repeating_timer *t)
 {
   Serial.println("Nucleo 0 - Iniciando interrupcao");
   UpdateData();
+  timerUpdate();
   Serial.println("Nucleo 0 - Dados Atualizados");
   tempoTotal = ((millis() - tempoInicial) / 100) * 100;
   Serial.print("Tempo total de execucao: ");Serial.println(tempoTotal);

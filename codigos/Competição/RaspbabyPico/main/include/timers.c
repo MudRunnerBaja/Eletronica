@@ -1,22 +1,40 @@
-//// adicionado para realizar contagem de tempo de rodagem do motor e do carro ////
-int engineElapsedTime;
-int movingElapsedTime;
-int engineTimerCounter;
-int movingTimerCounter;
+//// adicionado para realizar contagem de tempo de rodagem do motor e do carro ///
+long engineElapsedTime;
+long movingElapsedTime;
+int engineTimerCounter; //valor lido no flash do pico
+int movingTimerCounter; //valor lido no flash do pico
+
+void readFlash();
+void writeFlash();
 
 
-int timerEngine(){
-    while(getRpm() != 0 && millis >= engineElapsedTime){
-        engineTimerCounter = engineTimerCounter + 1;
-        engineElapsedTime = millis + 1000;
+bool timerEngine(){
+    int rpm = getRpm();
+
+    if(rpm != 0 && millis() >= engineElapsedTime + 1000){
+        engineTimerCounter += 1;
+        engineElapsedTime = millis();
+        return true;
     }
-    return engineTimerCounter;    
+    return false;
 }
 
-int timerMoving(){
-    while(gpsSpdFloat() >= 1 && getRpm() != 0 && millis >= movingElapsedTime){
-        movingTimerCounter = movingTimerCounter + 3;        
-        movingElapsedTime = millis + 3000;              //Delay de 3 segundos para evitar falsos positivos (falsa movimentação do gps mesmo carro estando imovel, quando o sinal esta fraco)
+bool timerMoving(){
+    int spd = gpsSpdInt();
+    int rpm = getRpm();
+
+    if(spd >= 2 && rpm != 0 && millis() >= movingElapsedTime + 1000){
+        movingTimerCounter += 1;        
+        movingElapsedTime = millis();
+        return true;              
     }
-    return movingTimerCounter;
+    return false;
+}
+
+
+void timerUpdate(){
+    readFlash();  
+    if (timerEngine() || timerMoving()){
+        writeFlash();
+    }
 }
