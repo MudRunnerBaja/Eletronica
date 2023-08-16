@@ -56,6 +56,7 @@ void setup()
   Serial.println("sdcard ok");
   TuningSetup();
   Serial.println("cvt tuning ok");
+  flashSetup();
   
   delay(1000);
 
