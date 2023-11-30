@@ -7,6 +7,7 @@ int vlr;
 int ledRed = 0;
 int ledYel = 1;
 int ledGre = 2;
+bool bnt;
 //Encoder
 int S1PIN = 20;
 int S2PIN = 21;
@@ -50,7 +51,13 @@ void loop(void) {
     Serial.println(newPos);
     pos = newPos;   
 }
-  if (!KEY){ newPos = 0;}
+int but  = digitalRead(KEY);
+  if (!but){ 
+    bnt = true;
+    Serial.println("Button");
+    } else {
+      bnt = false;
+    }
 }
 void loop1(){
 u8g2.firstPage();
@@ -58,6 +65,10 @@ u8g2.firstPage();
     //######### BARRA ATIVA RPM #########
     u8g2.drawFrame(0,0,128,12);
     u8g2.drawBox(0,0,newPos,12);
+    if(bnt){
+    u8g2.setFont(u8g2_font_lubB18_te);
+    u8g2.drawButtonUTF8(60, 30 , U8G2_BTN_INV|U8G2_BTN_BW2, 32, 0, 0, "Buttom");
+    }
     u8g2.setFont(u8g2_font_ncenB10_tr);
     u8g2.setCursor(0, 64);
     u8g2.print(newPos);
