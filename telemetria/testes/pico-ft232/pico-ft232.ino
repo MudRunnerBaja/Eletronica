@@ -1,46 +1,46 @@
-
-// INCLUSÃO DE BIBLIOTECAS
-#include <SoftwareSerial.h>
-
-// DEFINIÇÕES
-#define msg1 "OK"
-#define msg2 "ajuda"
-
 // DECLARAÇÃO DE FUNÇÕES
 void enviaMensagem();
-String recebeMensagem();
+void recebeMensagem();
 String createTestCsv();
-
-// DECLARAÇÃO DE VARIÁVEIS
-int funcao = 0;
-
-
 
 void setup() {
   Serial.begin(9600);
 
   Serial1.setRX(1);
   Serial1.setTX(0);
+  Serial1.setFIFOSize(128);
   Serial1.begin(9600);
 
   delay(2000);
   Serial.println("Fim Setup");
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
   enviaMensagem();
-  Serial.print("Recebido:");
-  Serial.println(recebeMensagem());
-  delay(250);
+  recebeMensagem();
 }
 
 void enviaMensagem() {
+  digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
   Serial1.println(createTestCsv());
-  delay(250);
+  digitalWrite(LED_BUILTIN, LOW);  // turn the LED on (HIGH is the voltage level)
+  delay(500);
 }
 
-String recebeMensagem() {
-  return Serial1.readString();
+void recebeMensagem() {
+  int avlb = Serial1.available();
+  delay(10);
+  if (avlb > 0){
+    Serial.println(Serial1.available());
+  }
+  /*
+  Serial.print("=====RECEBIDO=====\n");
+  Serial.println(Serial1.readStringUntil('\n'));
+  Serial.println("");
+  */
+  return;
 }
 
 String createTestCsv() {
@@ -60,17 +60,15 @@ String createTestCsv() {
   data = String(data + comb);
   data = String(data + ",");
   data = String(data + mvd);
-  data = String(csvHeader + data);
+  // data = String(csvHeader + data);
 
   char* toSend;
 
   data.toCharArray(toSend, 128);
 
-  Serial.print("Data:");
+  Serial.print("=====ENVIADO=====");
+  Serial.println("");
   Serial.println(data);
-
-  Serial.print("charArray:");
-  Serial.print(toSend);
-
+  Serial.println("");
   return data;
 }
