@@ -16,6 +16,8 @@ const comPort = new SerialPort(ARDUINO_CONFIG);
 const parser = comPort.pipe(new ReadlineParser({ delimiter: "\n" })); // Pipes the port data to the parser using a delimiter
 
 
+const mongoose = require("mongoose")
+
 
 const DataSheet = require("./schematas/DataSheet");
 const Informacao = require("./schematas/Informacao");
@@ -117,9 +119,15 @@ comPort.on("open", () => {
 
 // Essa função é chamada sempre que o programa receber dados enviados do arduino.
 // No caso, ela lê o serial até encontrar o delimitador '\n'.
-parser.on("data", (data: string) => {
+parser.on("data", (data: any) => {
       // considero que data dentro da função é um objeto ja que usa o parser
-    const info = new Informacao({corrida: dataSheet._id, rpm: data.rpm, tempCVT: data.TempCVT, vel: data.vel, comb: data.comb, rpmMovida: data.rpmMovida})
+    const info = new Informacao({corrida:
+       dataSheet._id,
+      rpm: data.rpm,
+      tempCVT: data.TempCVT,
+      vel: data.vel,
+      comb: data.comb,
+      rpmMovida: data.rpmMovida})
     // como save é async deu pra usar o .then()
     info.save().then(()=>{console.log("\n [enviado ao db] \n")})
   /*
