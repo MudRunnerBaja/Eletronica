@@ -1,8 +1,7 @@
 {
-  "path": "COM6",
+  "path": "COM2",
   "baudRate": 9600,
   "dataBits": 8,
   "stopBits": 1,
-  "parity": "none",
-  "autoOpen": false
+  "parity": "none"
 }
