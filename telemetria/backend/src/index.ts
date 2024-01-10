@@ -15,35 +15,32 @@ const { ReadlineParser } = require("@serialport/parser-readline");
 const comPort = new SerialPort(ARDUINO_CONFIG);
 const parser = comPort.pipe(new ReadlineParser({ delimiter: "\n" })); // Pipes the port data to the parser using a delimiter
 
-
-
-
 //  MONGOOSE e MONGODB
 // cria o datasheet assim que o programa começa e quando recebe informações elas referenciam ele
 // não botei callback para verificar o erro, estava dando e erro e aparentemente o moondoose "decrepitou" callbacks no.connect()
 // ele confirma a conexâo quando cria o datasheet que sera referenciado pelas informações
 
-    
-const mongoose = require("mongoose")
-
+const mongoose = require("mongoose");
 
 const DataSheet = require("./schematas/DataSheet");
 const Informacao = require("./schematas/Informacao");
 
-
-mongoose.connect("mongodb://127.0.0.1/teste_r_w")
+mongoose.connect("mongodb://127.0.0.1/teste_r_w");
 
 //cria um datasheet com as informações
-const now = new Date()
-const identificador = now.toLocaleDateString('pt-br',{
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-})
+const now = new Date();
+const identificador = now.toLocaleDateString("pt-br", {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
 //cria o datasheet e mostra no console
-const dataSheet = new DataSheet({nome: "dataSheetTeste", horarioinicio: Date(), identificador: identificador})
-dataSheet.save().then(()=>console.log(dataSheet," [",Date()," ]"))
-
+const dataSheet = new DataSheet({
+  nome: "dataSheetTeste",
+  horarioinicio: Date(),
+  identificador: identificador,
+});
+dataSheet.save().then(() => console.log(dataSheet, " [", Date(), " ]"));
 
 /*
 mongoose.connect("mongodb://localhost/telemetria", () => {
@@ -71,7 +68,6 @@ mongoose.connect("mongodb://localhost/telemetria", () => {
 
 // Timer para tentar abrir a porta repetidamente quando falhar.
 
-
 // comentei p trecho abaixo para poder emular o port serial
 // abrir a porta via código causa conflito
 /*
@@ -88,8 +84,6 @@ function openComPort() {
   });
 }
 */
-
-
 
 // Iniciando o servidor
 server.listen(serverPort, () => {
@@ -126,22 +120,27 @@ comPort.on("open", () => {
    * Atente-se à necessidade de salvar o id ou o identificador do dataset criado para a próxima função
    *
    */
-
 });
 
 // Essa função é chamada sempre que o programa receber dados enviados do arduino.
 // No caso, ela lê o serial até encontrar o delimitador '\n'.
-parser.on("data", (data: any) => {
-      // considero que data dentro da função é um objeto ja que usa o parser
-    const info = new Informacao({
-      corrida:dataSheet._id,
-      rpm: data.rpm,
-      tempCVT: data.TempCVT,
-      vel: data.vel,
-      comb: data.comb,
-      rpmMovida: data.rpmMovida})
-    // como save é async deu pra usar o .then()
-    info.save().then(()=>{console.log("\n [enviado ao db] \n")})
+parser.on("data", (data: string) => {
+  // considero que data dentro da função é um objeto ja que usa o parser
+  console.log(data);
+  let arrayData: any[] = data.split(",");
+  const info = new Informacao({
+    corrida: dataSheet._id,
+    rpm: arrayData[0],
+    tempCVT: arrayData[1],
+    vel: arrayData[2],
+    comb: arrayData[3],
+    rpmMovida: arrayData[4],
+  });
+  // como save é async deu pra usar o .then()
+  console.log(info);
+  info.save().then(() => {
+    console.log("\n [enviado ao db] \n");
+  });
   /*
    * Sempre que uma nova linha for recebida, ela deve ser salva no banco de dados. É necessário que
    * seja criada uma relação entre essa linha recebida e o dataset criado no início da comunicação.
