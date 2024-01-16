@@ -2,11 +2,11 @@ const mongoose = require("mongoose")
 
 const informacaoSchema = new mongoose.Schema({
     corrida: mongoose.SchemaTypes.ObjectId,
-    rpm: Number,
-    rpmMovida: Number,
-    vel: Number,
-    tempCVT: Number,
-    comb: Number
+    rpm: String,
+    rpmMovida: String,
+    vel: String,
+    tempCVT: String,
+    comb: String
 
 })
 
