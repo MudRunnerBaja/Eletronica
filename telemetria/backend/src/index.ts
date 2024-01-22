@@ -1,4 +1,7 @@
 "use strict";
+
+import { Socket } from "socket.io";
+
 // ExpressJs -> Lidar principalmente com requests http (Server-side)
 // Docs: https://expressjs.com/
 const express = require("express");
@@ -6,6 +9,7 @@ const server = express();
 const serverPort = 3030;
 
 const ARDUINO_CONFIG = require("../arduino-config.json");
+
 
 // SerialPort e Parser são os responsável pela comunicação Serial com
 // o Pico.
@@ -132,12 +136,19 @@ const cors = require("cors")
 const io = require('socket.io')(3000, {
   //ponha o local host que você esta usando para o front end entre as aspas
   //botei um html pq eu estava testando
-  cors: ["file:///C:/Users/thiag/OneDrive/%C3%81rea%20de%20Trabalho/mariola/index.html"]
+  cors: ["http://localhost:4200"]
 })
+
+
+
+//importa fs
+import * as fs from 'fs'
+
+const editJsonFile = require("edit-json-file");
 
 //server.use(cors())
 io.on('connection', (socket:any) =>{
-  console.log('Um usuário se conectou');
+  console.log('\nUm usuário se conectou');
 
   // Evento personalizado para receber mensagens do frontend
   socket.on('mensagemDoCliente', (mensagem:any) => {
@@ -147,12 +158,36 @@ io.on('connection', (socket:any) =>{
     // no front end crie um um io.on para cada tipo de evento nesse caso 'mensagemDoServidor'
     io.emit('mensagemDoServidor', 'Mensagem recebida pelo servidor');
   });
+  
+  
+
+  socket.on("comChange",(comChange:any) =>{
+    console.log(comChange)
+    
+      let file = editJsonFile(`../foo.json`);
+      file.set("path", comChange);
+      //edita data 
+     // ARDUINO_CONFIG.path = comChange
+      // escreve JSON file 
+      file.save();
+      console.log(file.toObject())
+/*
+      fs.writeFile("../arduino-config.json", JSON.stringify(ARDUINO_CONFIG), function writeJSON(err) {
+        if (err) return console.log(err);
+        console.log("\n"+JSON.stringify(ARDUINO_CONFIG));
+        console.log('\n escrevendo em ' + "../arduino-config.json");
+      });
+
+
+      */
+  })
 
   socket.on('disconnect', () => {
     console.log('Usuário desconectado');
   });
 })
 
+//
 // Essa função é chamada sempre que o programa receber dados enviados do arduino.
 // No caso, ela lê o serial até encontrar o delimitador '\n'.
 parser.on("data", (data: string) => {
@@ -171,7 +206,8 @@ parser.on("data", (data: string) => {
   console.log("info");
 // manda ao frontend
 // no front end crie um um io.on para cada tipo de evento nesse caso "dataArduino"
-  io.emit("dataArduino",arrayData);
+  
+  io.emit("dataArduino",data);
 
   // como save é async deu pra usar o .then()
   info.save().then(() => {
@@ -187,6 +223,8 @@ parser.on("data", (data: string) => {
    * Obs: Talvez adicionar o tempo desde o início da comunicação possa ser interessante.
    */
 });
+
+
 
 /*
  * Outras tarefas:
