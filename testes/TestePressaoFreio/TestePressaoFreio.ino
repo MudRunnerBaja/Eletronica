@@ -3,9 +3,8 @@ int oldData, valorSensor, psi;
 bool newData = false;
 float voltPerBit, tensao;
 
-
-float alimentacaoSensor = 5;
-
+//####### EDITE CASO FOR USAR 3.3V ou 5V ########
+float alimentacaoSensor = 5;//VOLTS
 
 void setup() {
   Serial.begin(9600);
