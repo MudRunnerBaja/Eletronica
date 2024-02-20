@@ -174,17 +174,17 @@ void setup(void)
   for (size_t i = 0; i < 255; i++)
   {
     analogWrite(ledVermelho, i);
-    delay(5);
+    delay(2);
   }
   for (size_t i = 0; i < 255; i++)
   {
     analogWrite(ledAmarelo , i);
-    delay(5);
+    delay(2);
   }
   for (size_t i = 0; i < 255; i++)
   {
     analogWrite(ledVerde , i);
-    delay(5);
+    delay(2);
   }
   
   delay(100);
@@ -195,17 +195,17 @@ void setup(void)
   for (size_t i = 255; i > 0; i--)
   {
     analogWrite(ledVerde, i);
-    delay(3);
+    delay(2);
   }
   for (size_t i = 255; i > 0; i--)
   {
     analogWrite(ledAmarelo , i);
-    delay(3);
+    delay(2);
   }
   for (size_t i = 255; i > 0; i--)
   {
     analogWrite(ledVermelho , i);
-    delay(3);
+    delay(2);
   }
 }
 

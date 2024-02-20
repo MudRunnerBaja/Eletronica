@@ -1,0 +1,21 @@
+para emular o serial port alterei o arduino-config.json 
+troquei o patch para "COM2" e exclui o a"autoOpen": false, 
+sgue o original:(
+{
+  "path": "COM6",
+  "baudRate": 9600,
+  "dataBits": 8,
+  "stopBits": 1,
+  "parity": "none",
+  "autoOpen": false
+}
+)
+
+comentei o timer que fazia open em loop
+
+para emular o serial port use programa: https://freevirtualserialports.com/
+só instalar e criar uma conexão
+
+enquanto o index.ts executa abra outro terminal e va até a pasta writerTest usando cd
+e digite "node writer.js", indo até o terminal onde index.js está executando você
+deverá ver a mensagem "salvo em db"
