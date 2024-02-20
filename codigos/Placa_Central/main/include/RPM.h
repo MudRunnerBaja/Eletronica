@@ -13,13 +13,16 @@
 class RPM: public ContadorPorIntervalo, public Setupable {
 public: 
     
-void rpmSetup();
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 int getRPM();
     
 int updateRPM();
-    
-bool testarRPM();
+
 };
 
 #endif //_RPM_H

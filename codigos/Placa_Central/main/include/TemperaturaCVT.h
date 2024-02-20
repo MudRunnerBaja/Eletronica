@@ -7,7 +7,7 @@
 #define _TEMPERATURACVT_H
 
 #include "Setupable.h"
-
+#include <max6675.h>
 
 class TemperaturaCVT: public Setupable {
 public: 
@@ -16,7 +16,11 @@ float setTemperaturaCvt();
     
 float getTemperaturaCvt();
     
-void setupCvt();
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 MAX6675 getTermopar();
 private: 

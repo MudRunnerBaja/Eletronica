@@ -7,13 +7,16 @@
 #define _GPS_H
 
 #include "Setupable.h"
-
+#include <TinyGPSpp.h>
 
 class GPS: public Setupable {
 public: 
-    void Attribute1;
     
-void setupGps();
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 TinyGPSPlus getGps();
     
@@ -23,7 +26,6 @@ void gpsEncoding();
     
 bool updateGPS();
     
-bool testarGps();
 private: 
     double speed;
     double latitude;
@@ -36,7 +38,7 @@ private:
     unsigned short dia;
     unsigned short mes;
     unsigned short ano;
-    string datehj;
+    String datehj;
     bool newData;
     bool gpsOn;
     TinyGPSPlus gps;

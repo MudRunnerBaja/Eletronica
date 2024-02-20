@@ -7,6 +7,13 @@
 #define _INSTANCIA_H
 
 #include "Setupable.h"
+#include "Comunicacao.h"
+#include "CartaoSD.h"
+#include "TemperaturaCVT.h"
+#include "Combustivel.h"
+#include "RPM.h"
+#include "GPS.h"
+
 
 
 class Instancia: public Setupable {
@@ -17,11 +24,14 @@ public:
     Combustivel nivelCombustivel;
     RPM rpm;
     GPS gps;
-    void Attribute1;
-    Array<bool> estadoSistemas;
-    void testeSistemas;
+    bool* estadoSistemas;
+    bool* testeSistemas;
     
-bool setupInstancia();
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 bool EscreverSD();
     
@@ -29,7 +39,6 @@ bool AtualizarDados();
     
 bool EnviarDados();
     
-void testarSistemas();
 };
 
 #endif //_INSTANCIA_H

@@ -7,16 +7,21 @@
 #define _CARTAOSD_H
 
 #include "Setupable.h"
-#include "Setupable.h"
+#include <SPI.h>    // SPI para cartão SD
+#include <SD.h>     // SD Filesystem
 
-
-class CartaoSD: public Setupable, public Setupable {
+class CartaoSD: public Setupable {
 public: 
-    void Attribute1;
     
 void criarArquivoDados();
     
 void sdCardSetup();
+
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 /**
  * @param int
@@ -24,16 +29,15 @@ void sdCardSetup();
  * @param int
  * @param float float
  */
-void writeData(void int, void int, void int, void float float);
+void writeData(int a, int b, int c, float d, float e);
     
 bool testarCartaoSD();
     
-void Operation1();
 private: 
     String nomeArquivo;
     File arquivoDados;
     
-string getNomeArquivo();
+String getNomeArquivo();
 };
 
 #endif //_CARTAOSD_H

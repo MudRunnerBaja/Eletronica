@@ -6,11 +6,17 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
+#include <Arduino.h>
+#include <RPi_Pico_ISR_Timer.hpp> // Manipuladores de Interrupção
+#include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
+#include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
+#include "include/Instancia.h"
+
 class Main {
 public: 
     bool setupCompleto;
-    ulong tempoTotal;
-    ulong tempoInicial;
+    unsigned long tempoTotal;
+    unsigned long tempoInicial;
     RPI_PICO_Timer Core0Timer0;
     RPI_PICO_Timer Core1Timer1;
     Instancia instancia;
@@ -18,12 +24,12 @@ public:
 /**
  * @param repeating_timer
  */
-bool UpdateData(void repeating_timer);
+bool UpdateData(struct repeating_timer *t);
     
 /**
  * @param repeating_timer
  */
-bool WriteSD(void repeating_timer);
+bool WriteSD(struct repeating_timer *t);
     
 void setup();
     
@@ -36,7 +42,7 @@ void loop1();
 /**
  * @param bool
  */
-Instancia gerarInstancia(void bool);
+Instancia gerarInstancia(struct repeating_timer *t);
 };
 
 #endif //_MAIN_H

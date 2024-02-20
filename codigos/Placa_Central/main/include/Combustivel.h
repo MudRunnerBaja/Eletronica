@@ -11,15 +11,22 @@
 
 class Combustivel: public Setupable {
 public: 
-    enum niveis;
+    enum niveis {
+        LOW,
+        MED,
+        HIGH
+    };
     
-void combSetup();
+bool setup();
+
+bool test();
+
+bool testChosen(int escolhido);
     
 short setNivelAtual();
     
 short getNivelAtual();
     
-bool testarCombustivel();
 private: 
     short nivelAtual;
 };

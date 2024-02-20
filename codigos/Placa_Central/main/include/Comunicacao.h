@@ -12,22 +12,25 @@
 class Comunicacao: public Setupable {
 public: 
     
-void displaySetup();
+bool setup();
+
+bool test();
+/*
+testarTelemetria;
+testarCanBus;
+testarI2c;
+*/
+
+bool testChosen(int escolhido);
     
 void updateData();
     
 /**
  * @param int
  */
-void sendI2cDataTo(void int);
+void sendI2cDataTo(int slave);
     
-void Operation1();
-    
-bool testarTelemetria();
-    
-bool testarCanBus();
-    
-bool testarI2c();
+
 private: 
     byte data;
 };

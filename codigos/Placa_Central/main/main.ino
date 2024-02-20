@@ -2,13 +2,7 @@
  * Project Classes Placa Central
  */
 
-#include <Arduino.h>
 #include "main.h"
-#include "include/Instancia.h"
-
-#include <RPi_Pico_ISR_Timer.hpp> // Manipuladores de Interrupção
-#include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
-#include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
 
 /**
  * Main implementation
@@ -62,6 +56,6 @@ void Main::loop1() {
  * @param bool
  * @return Instancia
  */
-Instancia Main::gerarInstancia() {
+Instancia Main::gerarInstancia(struct repeating_timer *t) {
     return;
 }
