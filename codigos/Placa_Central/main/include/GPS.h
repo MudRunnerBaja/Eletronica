@@ -7,7 +7,7 @@
 #define _GPS_H
 
 #include "Setupable.h"
-#include <TinyGPSpp.h>
+#include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSpp.h"
 
 class GPS: public Setupable {
 public: 

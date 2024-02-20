@@ -13,7 +13,7 @@
 /**
  * @return bool
  */
-bool Instancia::setupInstancia() {
+bool Instancia::setup() {
     return false;
 }
 
@@ -39,8 +39,12 @@ bool Instancia::EnviarDados() {
 }
 
 /**
- * @return void
+ * @return bool
  */
-void Instancia::testarSistemas() {
+bool Instancia::test() {
+    return;
+}
+
+bool Instancia::testChosen(int escolhido) {
     return;
 }

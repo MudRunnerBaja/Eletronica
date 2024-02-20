@@ -6,6 +6,8 @@
 #ifndef _CONTADORPORINTERVALO_H
 #define _CONTADORPORINTERVALO_H
 
+#include "utils/FilaContador.h"
+
 class ContadorPorIntervalo {
 public: 
     
@@ -16,7 +18,7 @@ int getCountValue();
 int somaTodasContagensNoUltimoMinuto();
 protected: 
     FilaContador array;
-    ulong MINUTO;
+    unsigned long MINUTO;
     int counter;
     int mediaCounter;
     

@@ -57,5 +57,5 @@ void Main::loop1() {
  * @return Instancia
  */
 Instancia Main::gerarInstancia(struct repeating_timer *t) {
-    return;
+    return new Instancia();
 }
