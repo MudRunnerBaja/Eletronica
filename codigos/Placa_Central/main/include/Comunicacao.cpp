@@ -4,6 +4,7 @@
 
 
 #include "Comunicacao.h"
+#include "Constantes.h"
 
 /**
  * Comunicacao implementation
@@ -13,8 +14,32 @@
 /**
  * @return void
  */
-void Comunicacao::displaySetup() {
-    return;
+bool Comunicacao::setup() {
+    setupTelemetria();
+    return false;
+}
+
+bool Comunicacao::setupTelemetria() {
+    
+    Serial1.setRX(TELEMETRIA_RX);
+    Serial1.setTX(TELEMETRIA_TX);
+    Serial1.setFIFOSize(128);
+    Serial1.begin(9600);
+    
+    return false;
+}
+
+void Comunicacao::enviarDadosTelemetria(String data) {
+    
+    Serial1.println(data);
+}
+
+bool Comunicacao::setupCanBus() {
+    return false;
+}
+
+bool Comunicacao::setupI2c() {
+    return false;
 }
 
 /**
@@ -28,31 +53,35 @@ void Comunicacao::updateData() {
  * @param int
  * @return void
  */
-void Comunicacao::sendI2cDataTo(void int) {
+void Comunicacao::sendI2cDataTo(int slave) {
     return;
 }
 
-void Comunicacao::Operation1() {
-
+bool Comunicacao::test() {
+    return false;
 }
 
-/**
- * @return bool
- */
-bool Comunicacao::testarTelemetria() {
+bool Comunicacao::testChosen(int escolhido) {
     return false;
 }
 
 /**
  * @return bool
  */
-bool Comunicacao::testarCanBus() {
+bool Comunicacao::testTelemetria() {
     return false;
 }
 
 /**
  * @return bool
  */
-bool Comunicacao::testarI2c() {
+bool Comunicacao::testCanBus() {
+    return false;
+}
+
+/**
+ * @return bool
+ */
+bool Comunicacao::testI2c() {
     return false;
 }

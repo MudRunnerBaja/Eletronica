@@ -7,12 +7,22 @@
 #define _COMUNICACAO_H
 
 #include "Setupable.h"
+#include <Arduino.h>
 
 
 class Comunicacao: public Setupable {
 public: 
     
 bool setup();
+
+bool setupTelemetria();
+
+void enviarDadosTelemetria(String data);
+
+bool setupCanBus();
+
+bool setupI2c();
+
 
 bool test();
 /*
@@ -30,9 +40,13 @@ void updateData();
  */
 void sendI2cDataTo(int slave);
     
+bool testTelemetria();
+
+bool testCanBus();
+
+bool testI2c();
 
 private: 
-    byte data;
 };
 
 #endif //_COMUNICACAO_H

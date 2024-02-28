@@ -34,7 +34,21 @@ bool Instancia::AtualizarDados() {
 /**
  * @return bool
  */
-bool Instancia::EnviarDados() {
+bool Instancia::EnviarDadosTelemetria() {
+
+    String data = String(rpm.getRPM());
+    data = String(data + ",");
+    data = String(data + temperaturaCvt.getTemperaturaCvt());
+    data = String(data + ",");
+    data = String(data + gps.getSpeed());
+    data = String(data + ",");
+    data = String(data + nivelCombustivel.getNivelAtual());
+
+    comunicacao.enviarDadosTelemetria(data);
+    return false;
+}
+
+bool Instancia::EnviarDadosCanBus() {
     return false;
 }
 

@@ -13,8 +13,7 @@
 #include "Combustivel.h"
 #include "RPM.h"
 #include "GPS.h"
-
-
+#include <Arduino.h>
 
 class Instancia: public Setupable {
 public: 
@@ -37,8 +36,13 @@ bool EscreverSD();
     
 bool AtualizarDados();
     
-bool EnviarDados();
+bool EnviarDadosTelemetria();
     
+bool EnviarDadosCanBus();
+
+private:
+    byte data[5];
+
 };
 
 #endif //_INSTANCIA_H

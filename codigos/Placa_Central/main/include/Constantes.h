@@ -6,15 +6,30 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
+
+
+
 class Constantes {
 public: 
-    void INTERVALO_TIMER_MS;
-    void TEMPERATURA_CRITICA_CVT;
-    void MINUTO;
-    void RAIO_PNEU;
-    void QTD_SENSORES_PNEU;
-    void SLAVES_COMUNICACAO;
-    void PINOS;
+    #define INTERVALO_TIMER_MS 200
+    #define TEMPERATURA_CRITICA_CVT 200
+    #define RAIO_PNEU 22
+    #define QTD_SENSORES_PNEU 4
+
+    const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
+
+    #pragma region SLAVES_COMUNICACAO
+
+    #pragma endregion
+
+    #pragma region PINOS
+
+    // SERIAL1
+    #define TELEMETRIA_RX 1
+    #define TELEMETRIA_TX 0
+
+
+    #pragma endregion
 };
 
 #endif //_CONSTANTES_H
