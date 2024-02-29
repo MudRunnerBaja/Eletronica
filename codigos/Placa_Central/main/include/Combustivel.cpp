@@ -11,10 +11,24 @@
 
 
 /**
- * @return void
+ * @return bool
  */
-void Combustivel::combSetup() {
+bool Combustivel::setup() {
     return;
+}
+
+/**
+ * @return bool
+ */
+bool Combustivel::test() {
+    return false;
+}
+
+/**
+ * @return bool
+ */
+bool Combustivel::testChosen(int escolhido) {
+    return false;
 }
 
 /**
@@ -29,11 +43,4 @@ short Combustivel::setNivelAtual() {
  */
 short Combustivel::getNivelAtual() {
     return 0;
-}
-
-/**
- * @return bool
- */
-bool Combustivel::testarCombustivel() {
-    return false;
 }

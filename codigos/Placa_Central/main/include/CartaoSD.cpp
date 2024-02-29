@@ -4,11 +4,40 @@
 
 
 #include "CartaoSD.h"
+#include "Constantes.h"
 
 /**
  * CartaoSD implementation
  */
 
+/**
+ * @return bool
+ */
+bool CartaoSD::setup() {
+    SPI1.setRX(SD_RXPIN); // MISO
+    SPI1.setTX(SD_TXPIN); // MOSI
+    SPI1.setSCK(SD_SCKPIN);
+    SPI1.setCS(SD_CSPIN);
+    SPI1.begin(true);
+    if(SD.begin(SD_CSPIN, SPI1)){
+        digitalWrite(LED_BUILTIN, HIGH);
+    }
+    return;
+}
+
+/**
+ * @return bool
+ */
+bool CartaoSD::test() {
+    return;
+}
+
+/**
+ * @return bool
+ */
+bool CartaoSD::testChosen(int escolhido) {
+    return;
+}
 
 /**
  * @return void
@@ -31,7 +60,7 @@ void CartaoSD::sdCardSetup() {
  * @param float float
  * @return void
  */
-void CartaoSD::writeData(void int, void int, void int, void float float) {
+void CartaoSD::writeData(int a, int b, int c, float d, float e) {
     return;
 }
 
@@ -42,13 +71,10 @@ bool CartaoSD::testarCartaoSD() {
     return false;
 }
 
-void CartaoSD::Operation1() {
-
-}
 
 /**
  * @return string
  */
-string CartaoSD::getNomeArquivo() {
+String CartaoSD::getNomeArquivo() {
     return "";
 }

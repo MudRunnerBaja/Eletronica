@@ -8,6 +8,7 @@
 
 #include "Setupable.h"
 #include <max6675.h>
+#include <Adafruit_MLX90614.h>
 
 class TemperaturaCVT: public Setupable {
 public: 
@@ -24,6 +25,7 @@ bool testChosen(int escolhido);
     
 MAX6675 getTermopar();
 private: 
+    Adafruit_MLX90614 mlx = Adafruit_MLX90614();
     float temperaturaCvt;
     MAX6675 termopar;
 };

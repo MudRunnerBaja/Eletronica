@@ -9,12 +9,25 @@
  * RPM implementation
  */
 
+/**
+ * @return bool
+ */
+bool RPM::setup() {
+    return;
+}
 
 /**
- * @return void
+ * @return bool
  */
-void RPM::rpmSetup() {
-    return;
+bool RPM::test() {
+    return false;
+}
+
+/**
+ * @return bool
+ */
+bool RPM::testChosen(int escolhido) {
+    return false;
 }
 
 /**
@@ -29,11 +42,4 @@ int RPM::getRPM() {
  */
 int RPM::updateRPM() {
     return 0;
-}
-
-/**
- * @return bool
- */
-bool RPM::testarRPM() {
-    return false;
 }

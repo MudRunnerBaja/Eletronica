@@ -28,6 +28,13 @@ public:
     #define TELEMETRIA_RX 1
     #define TELEMETRIA_TX 0
 
+    // SPI1
+    #define SD_SCKPIN 10
+    #define SD_TXPIN 11 // MOSI
+    #define SD_RXPIN 12 // MISO
+    #define SD_CSPIN 13
+
+
 
     #pragma endregion
 };

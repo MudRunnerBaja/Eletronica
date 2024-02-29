@@ -21,19 +21,30 @@ float TemperaturaCVT::setTemperaturaCvt() {
  * @return float
  */
 float TemperaturaCVT::getTemperaturaCvt() {
+    mlx.readAmbientTempC();
+    mlx.readObjectTempC();
     return 0.0;
 }
 
 /**
- * @return void
+ * @return bool
  */
-void TemperaturaCVT::setupCvt() {
+bool TemperaturaCVT::setup() {
+    mlx.begin();
     return;
+}
+
+bool TemperaturaCVT::test() {
+    return false;
+}
+
+bool TemperaturaCVT::testChosen(int escolhido) {
+    return false;
 }
 
 /**
  * @return MAX6675
  */
 MAX6675 TemperaturaCVT::getTermopar() {
-    return null;
+    return termopar;
 }

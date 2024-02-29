@@ -11,17 +11,31 @@
 
 
 /**
- * @return void
+ * @return bool
  */
-void GPS::setupGps() {
+bool GPS::setup() {
     return;
+}
+
+/**
+ * @return bool
+ */
+bool GPS::test() {
+    return false;
+}
+
+/**
+ * @return bool
+ */
+bool GPS::testChosen(int escolhido) {
+    return false;
 }
 
 /**
  * @return TinyGPSPlus
  */
 TinyGPSPlus GPS::getGps() {
-    return null;
+    return gps;
 }
 
 /**
@@ -42,12 +56,5 @@ void GPS::gpsEncoding() {
  * @return bool
  */
 bool GPS::updateGPS() {
-    return false;
-}
-
-/**
- * @return bool
- */
-bool GPS::testarGps() {
     return false;
 }
