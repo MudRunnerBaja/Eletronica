@@ -3,11 +3,24 @@
 
 #include <CAN.h>
 
+#define sck 6
+#define rx 4  //MISO
+#define tx 7  //MOSI
+#define cs 5 
+
+
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-
+  delay(2000);
   Serial.println("CAN Receiver");
+
+  SPI.setSCK(sck);
+  SPI.setRX(rx);
+  SPI.setTX(tx);
+
+  CAN.setPins(cs);
+
 
   // start the CAN bus at 500 kbps
   if (!CAN.begin(500E3)) {

@@ -2,13 +2,26 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include <CAN.h>
+#include <SPI.h>
+
+#define sck 18
+#define rx 16  //MISO
+#define tx 19  //MOSI
+#define cs 17 
+
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
   delay(2000);
+
+  SPI.setSCK(sck);
+  SPI.setRX(rx);
+  SPI.setTX(tx);
+
+  CAN.setPins(cs);
+
   Serial.println("CAN Sender");
-  SPI.begin(17);
   // start the CAN bus at 500 kbps
   if (!CAN.begin(500E3)) {
     Serial.println("Starting CAN failed!");
