@@ -25,7 +25,7 @@ const unsigned long GPSBaud = 9600;
 
 int nvl_freio = 22, adc_divtensao = 26;
 float voltPerBit, tensao;
-float tensaoMaxBat = 13;//VOLTS
+float tensaoMaxBat = 13.3;//VOLTS
 bool sd_init = false;
 
 File myFile;
@@ -82,11 +82,11 @@ void setup() {
   voltPerBit = tensaoMaxBat / 1023;
 
   //SETANDO PORTA DO GPS / INICIALIZANDO
-  /*Serial1.setTX(GPS_TX);
-  Serial1.setRX(GPS_RX);
-  Serial1.begin(GPSBaud);
+  Serial2.setTX(GPS_TX);
+  Serial2.setRX(GPS_RX);
+  Serial2.begin(GPSBaud);
   Serial.println("Inicializado Serial do GPS");
-  */
+  
   
   Serial.println("INCILIZADO!");
 }
@@ -164,6 +164,23 @@ void loop() {
     Serial.print("ERRO!");
   }
   myFile.close();
+  Serial.print("\nGPS Caracteres processados: ");
+  gps.encode(Serial2.read());
+
+  if (gps.charsProcessed() < 10)
+  {
+    Serial.println(F("No GPS detected"));
+  } else {
+    Serial.println(gps.time.value());
+
+   /* Serial.print(gps.date.month());
+    Serial.print(F("/"));
+    Serial.print(gps.date.day());
+    Serial.print(F("/"));
+    Serial.println(gps.date.year());*/
+  }
+
+
   long t_final = millis();
   long t_total = t_final - t_inicial;
   Serial.print("\n\nTempo de processamento: ");
