@@ -26,13 +26,15 @@ const unsigned long GPSBaud = 9600;
 int nvl_freio = 22, adc_divtensao = 26;
 float voltPerBit, tensao;
 float tensaoMaxBat = 13;//VOLTS
+bool sd_init = false;
 
+File myFile;
 
 TinyGPSPlus gps;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 void setup() {
-  Serial.begin(9600);  
+  Serial.begin(115200);  
   Serial.println("INCIALIZANDO");
   pinMode(nvl_freio, INPUT);
 
@@ -54,9 +56,12 @@ void setup() {
   SPI1.begin(true);
   //INICIALIZANDO O CARTAO SD / VERIFICANDO A INCIALIZAÇÃO
   if(SD.begin(CSPIN, SPI1)){
-    digitalWrite(LED_BUILTIN, HIGH);    //LED ACESO = CARTAO SD INCIALIZADO
-  }
-
+      digitalWrite(LED_BUILTIN, HIGH);//LED ACESO = CARTAO SD INCIALIZADO
+      sd_init = true;
+  }else{
+    Serial.println("Erro inicialização SD");
+    sd_init = false;
+  }  
   //SETANDO PINOS DO CAN-BUS (SPI0)
   SPI.setSCK(sck0);
   SPI.setRX(rx0);
@@ -66,23 +71,30 @@ void setup() {
   if (!CAN.begin(500E3)) {
     Serial.println("Starting CAN failed!");
     while (1);
-  }
+  } else {
+    Serial.println("Inicializado CAN");
+    }
 
   //INICALIZA O SENSOR DE TEMPERATURA INFRAVERMELHO
   mlx.begin();
+  Serial.println("Inicializado MLX");
+
   voltPerBit = tensaoMaxBat / 1023;
 
   //SETANDO PORTA DO GPS / INICIALIZANDO
-  //Serial1.setTX(GPS_TX);
-  //Serial1.setRX(GPS_RX);
-  //Serial1.begin(GPSBaud);
+  /*Serial1.setTX(GPS_TX);
+  Serial1.setRX(GPS_RX);
+  Serial1.begin(GPSBaud);
+  Serial.println("Inicializado Serial do GPS");
+  */
   
   Serial.println("INCILIZADO!");
 }
 
 bool fluido_baixo;
 void loop() {
-  Serial.println("\nLOOP!");
+  long t_inicial = millis();
+  Serial.println("\n###############################\nLOOP!");
   int bits_divtensao = analogRead(adc_divtensao);
   tensao = bits_divtensao * voltPerBit;
 
@@ -120,7 +132,6 @@ void loop() {
 
   Serial.println("OK!");
 
-  delay(200);
 
   // send extended packet: id is 29 bits, packet can contain up to 8 bytes of data
   Serial.print("CAN-BUS pacote extendido: ");
@@ -132,8 +143,29 @@ void loop() {
   CAN.write('l');
   CAN.write('d');
   CAN.endPacket();
-
   Serial.println("OK!");
 
-  delay(500); 
+
+  if(!sd_init){
+    if(SD.begin(CSPIN, SPI1)){
+      sd_init = true;
+      digitalWrite(LED_BUILTIN, HIGH);
+    }
+  }
+
+  Serial.println("Conteudo no SD: ");
+  myFile = SD.open("test.txt");
+
+  if(myFile){
+  while (myFile.available()) {
+      Serial.write(myFile.read());
+    }
+  }else{
+    Serial.print("ERRO!");
+  }
+  myFile.close();
+  long t_final = millis();
+  long t_total = t_final - t_inicial;
+  Serial.print("\n\nTempo de processamento: ");
+  Serial.println(t_total);
 }
