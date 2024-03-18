@@ -8,15 +8,18 @@
 
 #include "Setupable.h"
 #include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSpp.h"
+#include "Constantes.h"
 
 class GPS: public Setupable {
 public: 
     
-bool setup();
+bool Setup();
 
-bool test();
+bool Test();
 
-bool testChosen(int escolhido);
+bool Debug();
+
+bool TestChosen(int escolhido);
     
 TinyGPSPlus getGps();
     

@@ -4,7 +4,6 @@
 
 
 #include "Comunicacao.h"
-#include "Constantes.h"
 
 /**
  * Comunicacao implementation
@@ -12,9 +11,9 @@
 
 
 /**
- * @return void
+ * @return bool
  */
-bool Comunicacao::setup() {
+bool Comunicacao::Setup() {
     setupTelemetria();
     return false;
 }
@@ -35,10 +34,13 @@ void Comunicacao::enviarDadosTelemetria(String data) {
 }
 
 bool Comunicacao::setupCanBus() {
-    return false;
-}
 
-bool Comunicacao::setupI2c() {
+    int cspin, irq, bitrate, spiFrequency;
+
+    CAN.setSPIFrequency(spiFrequency);
+    CAN.setPins(cspin, irq);
+    CAN.begin(bitrate);
+
     return false;
 }
 
@@ -50,38 +52,24 @@ void Comunicacao::updateData() {
 }
 
 /**
- * @param int
- * @return void
+ * @param int CAN Id that should receive the message
+ * @param byte* Pointer to buffer with data 
+ * @param int buffer size
+ * @return int - Number of bytes written
  */
-void Comunicacao::sendI2cDataTo(int slave) {
+void Comunicacao::sendCanDataTo(int receiverId, byte buffer[], int length) {
+    CAN.write(buffer, length);
+
+    int id, dlc, rtr;
+    CAN.beginPacket(id, dlc, rtr);
+
     return;
 }
 
-bool Comunicacao::test() {
+bool Comunicacao::Test() {
     return false;
 }
 
-bool Comunicacao::testChosen(int escolhido) {
-    return false;
-}
-
-/**
- * @return bool
- */
-bool Comunicacao::testTelemetria() {
-    return false;
-}
-
-/**
- * @return bool
- */
-bool Comunicacao::testCanBus() {
-    return false;
-}
-
-/**
- * @return bool
- */
-bool Comunicacao::testI2c() {
+bool Comunicacao::TestChosen(int escolhido) {
     return false;
 }

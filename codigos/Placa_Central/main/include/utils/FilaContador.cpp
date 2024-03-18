@@ -1,18 +1,6 @@
-class FilaContador
-{
-    private:
-    int* thisArray;
-    int FIRSTINDEX = 0;
-    int LASTINDEX;
-    int OLDESTINDEX = 0;
+#include "FilaContador.h"
 
-    void UpdateOldest();
-
-    public:
-    int maxSize;
-    int currentSize;
-
-    FilaContador(int maximumSize)
+FilaContador::FilaContador(int maximumSize)
     {
         maxSize = maximumSize;
         LASTINDEX = maximumSize - 1;
@@ -22,13 +10,8 @@ class FilaContador
         {
             thisArray[i] = 0;
         }
+        return;
     }
-
-    public:
-    int InsertLast(int value);
-    int ChangeOldest(int value);
-    void Delete();
-};
 
 int FilaContador::InsertLast(int value)
 {

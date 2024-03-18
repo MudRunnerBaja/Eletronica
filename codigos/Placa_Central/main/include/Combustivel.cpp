@@ -13,21 +13,21 @@
 /**
  * @return bool
  */
-bool Combustivel::setup() {
+bool Combustivel::Setup() {
     return;
 }
 
 /**
  * @return bool
  */
-bool Combustivel::test() {
+bool Combustivel::Test() {
     return false;
 }
 
 /**
  * @return bool
  */
-bool Combustivel::testChosen(int escolhido) {
+bool Combustivel::TestChosen(int escolhido) {
     return false;
 }
 

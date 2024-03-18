@@ -9,6 +9,9 @@
  * ContadorPorIntervalo implementation
  */
 
+ContadorPorIntervalo::ContadorPorIntervalo(int maximumSize) {
+    return;
+}
 
 /**
  * @return int

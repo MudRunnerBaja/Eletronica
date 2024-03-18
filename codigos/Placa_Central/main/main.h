@@ -11,6 +11,7 @@
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
 #include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
 #include "include/Instancia.h"
+#include "include/Constantes.h"
 
 class Main {
 public: 
@@ -31,7 +32,7 @@ bool UpdateData(struct repeating_timer *t);
  */
 bool WriteSD(struct repeating_timer *t);
     
-void setup();
+void Setup();
     
 void setup1();
     

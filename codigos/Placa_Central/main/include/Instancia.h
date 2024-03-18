@@ -14,8 +14,10 @@
 #include "RPM.h"
 #include "GPS.h"
 #include <Arduino.h>
+#include "Constantes.h"
 
 class Instancia: public Setupable {
+
 public: 
     Comunicacao comunicacao;
     CartaoSD cartaoSD;
@@ -26,23 +28,26 @@ public:
     bool* estadoSistemas;
     bool* testeSistemas;
     
-bool setup();
+    Instancia();
 
-bool test();
+    bool Setup();
 
-bool testChosen(int escolhido);
-    
-bool EscreverSD();
-    
-bool AtualizarDados();
-    
-bool EnviarDadosTelemetria();
-    
-bool EnviarDadosCanBus();
+    bool Test();
+
+    bool Debug();
+
+    bool TestChosen(int escolhido);
+
+    bool EscreverSD();
+
+    bool AtualizarDados();
+
+    bool EnviarDadosTelemetria();
+
+    bool EnviarDadosCanBus();
 
 private:
     byte data[5];
-
 };
 
 #endif //_INSTANCIA_H

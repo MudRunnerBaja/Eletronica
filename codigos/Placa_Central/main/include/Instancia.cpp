@@ -8,13 +8,26 @@
 /**
  * Instancia implementation
  */
-
+Instancia::Instancia() {
+    Setup();
+    return;
+}
 
 /**
  * @return bool
  */
-bool Instancia::setup() {
-    return false;
+bool Instancia::Setup() {
+    bool check = true;
+
+    check = comunicacao.Setup();
+    check = gps.Setup();
+    check = cartaoSD.Setup();
+    check = temperaturaCvt.Setup();
+    check = rpm.Setup();
+
+    
+
+    return check;
 }
 
 /**
@@ -55,10 +68,10 @@ bool Instancia::EnviarDadosCanBus() {
 /**
  * @return bool
  */
-bool Instancia::test() {
+bool Instancia::Test() {
     return;
 }
 
-bool Instancia::testChosen(int escolhido) {
+bool Instancia::TestChosen(int escolhido) {
     return;
 }

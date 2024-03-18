@@ -9,19 +9,22 @@
 #include "Setupable.h"
 #include <SPI.h>    // SPI para cartão SD
 #include <SD.h>     // SD Filesystem
+#include "Constantes.h"
 
 class CartaoSD: public Setupable {
 public: 
+
+bool Setup();
+
+bool Test();
+
+bool Debug();
+
+bool TestChosen(int escolhido);
     
 void criarArquivoDados();
     
 void sdCardSetup();
-
-bool setup();
-
-bool test();
-
-bool testChosen(int escolhido);
     
 /**
  * @param int

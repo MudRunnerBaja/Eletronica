@@ -9,6 +9,9 @@
  * TemperaturaCVT implementation
  */
 
+TemperaturaCVT::TemperaturaCVT() {
+    return;
+}
 
 /**
  * @return float
@@ -29,22 +32,22 @@ float TemperaturaCVT::getTemperaturaCvt() {
 /**
  * @return bool
  */
-bool TemperaturaCVT::setup() {
+bool TemperaturaCVT::Setup() {
     mlx.begin();
     return;
 }
 
-bool TemperaturaCVT::test() {
+bool TemperaturaCVT::Test() {
     return false;
 }
 
-bool TemperaturaCVT::testChosen(int escolhido) {
+bool TemperaturaCVT::TestChosen(int escolhido) {
     return false;
 }
 
 /**
- * @return MAX6675
+ * @return Adafruit_MLX90614
  */
-MAX6675 TemperaturaCVT::getTermopar() {
-    return termopar;
+Adafruit_MLX90614 TemperaturaCVT::getTermopar() {
+    return mlx;
 }

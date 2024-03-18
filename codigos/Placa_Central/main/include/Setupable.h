@@ -9,14 +9,16 @@
 class Setupable {
 public: 
     
-virtual bool setup() = 0;
+virtual bool Setup() = 0;
     
-virtual bool test() = 0;
+virtual bool Debug() = 0;
+
+virtual bool Test() = 0;
     
 /**
  * @param int
  */
-virtual bool testChosen(int escolhido) = 0;
+virtual bool TestChosen(int escolhido) = 0;
 };
 
 #endif //_SETUPABLE_H

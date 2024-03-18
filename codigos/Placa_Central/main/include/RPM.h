@@ -6,22 +6,27 @@
 #ifndef _RPM_H
 #define _RPM_H
 
-#include "ContadorPorIntervalo.h"
+#include "utils/ContadorPorIntervalo.h"
 #include "Setupable.h"
+#include "Constantes.h"
 
 
 class RPM: public ContadorPorIntervalo, public Setupable {
-public: 
-    
-bool setup();
+public:
 
-bool test();
+    RPM(int maximumSize = Constantes::MINUTO);
+        
+    bool Setup();
 
-bool testChosen(int escolhido);
-    
-int getRPM();
-    
-int updateRPM();
+    bool Test();
+
+    bool Debug();
+
+    bool TestChosen(int escolhido);
+        
+    int getRPM();
+        
+    int updateRPM();
 
 };
 

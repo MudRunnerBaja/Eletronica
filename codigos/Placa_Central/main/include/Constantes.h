@@ -16,7 +16,14 @@ public:
     #define RAIO_PNEU 22
     #define QTD_SENSORES_PNEU 4
 
-    const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
+    static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
+    static const bool DEBUG_MODE = true;
+
+    enum Nivel {
+        BAIXO,
+        MEDIO,
+        ALTO
+    };
 
     #pragma region SLAVES_COMUNICACAO
 

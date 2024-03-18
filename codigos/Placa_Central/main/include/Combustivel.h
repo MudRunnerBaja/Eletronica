@@ -7,21 +7,19 @@
 #define _COMBUSTIVEL_H
 
 #include "Setupable.h"
+#include "Constantes.h"
 
 
 class Combustivel: public Setupable {
 public: 
-    enum niveis {
-        LOW,
-        MED,
-        HIGH
-    };
     
-bool setup();
+bool Setup();
 
-bool test();
+bool Test();
 
-bool testChosen(int escolhido);
+bool Debug();
+
+bool TestChosen(int escolhido);
     
 short setNivelAtual();
     

@@ -7,27 +7,30 @@
 #define _TEMPERATURACVT_H
 
 #include "Setupable.h"
-#include <max6675.h>
 #include <Adafruit_MLX90614.h>
+#include "Constantes.h"
 
 class TemperaturaCVT: public Setupable {
 public: 
+
+TemperaturaCVT();
     
 float setTemperaturaCvt();
     
 float getTemperaturaCvt();
     
-bool setup();
+bool Setup();
 
-bool test();
+bool Test();
 
-bool testChosen(int escolhido);
+bool Debug();
+
+bool TestChosen(int escolhido);
     
-MAX6675 getTermopar();
+Adafruit_MLX90614 getTermopar();
 private: 
     Adafruit_MLX90614 mlx = Adafruit_MLX90614();
     float temperaturaCvt;
-    MAX6675 termopar;
 };
 
 #endif //_TEMPERATURACVT_H

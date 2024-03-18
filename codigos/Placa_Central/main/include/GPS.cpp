@@ -13,21 +13,21 @@
 /**
  * @return bool
  */
-bool GPS::setup() {
+bool GPS::Setup() {
     return;
 }
 
 /**
  * @return bool
  */
-bool GPS::test() {
+bool GPS::Test() {
     return false;
 }
 
 /**
  * @return bool
  */
-bool GPS::testChosen(int escolhido) {
+bool GPS::TestChosen(int escolhido) {
     return false;
 }
 

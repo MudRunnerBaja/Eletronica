@@ -1,6 +1,8 @@
 #ifndef FilaContador_h
 #define FilaContador_h
 
+#include "../Constantes.h"
+
 class FilaContador
 {
     private:
@@ -13,7 +15,8 @@ class FilaContador
     public:
     int maxSize;
     int currentSize;
-    FilaContador(int maximumSize);
+    FilaContador();
+    FilaContador(int maximumSize  = Constantes::MINUTO);
     int InsertLast(int value);
     int ChangeOldest(int value);
     void Delete();

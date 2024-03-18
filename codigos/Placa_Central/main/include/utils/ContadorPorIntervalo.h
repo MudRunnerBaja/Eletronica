@@ -6,10 +6,13 @@
 #ifndef _CONTADORPORINTERVALO_H
 #define _CONTADORPORINTERVALO_H
 
-#include "utils/FilaContador.h"
+#include "FilaContador.h"
+#include "../Constantes.h"
 
 class ContadorPorIntervalo {
 public: 
+
+ContadorPorIntervalo(int maximumSize = Constantes::MINUTO);
     
 int updateCountValue();
     

@@ -4,7 +4,6 @@
 
 
 #include "CartaoSD.h"
-#include "Constantes.h"
 
 /**
  * CartaoSD implementation
@@ -13,7 +12,7 @@
 /**
  * @return bool
  */
-bool CartaoSD::setup() {
+bool CartaoSD::Setup() {
     SPI1.setRX(SD_RXPIN); // MISO
     SPI1.setTX(SD_TXPIN); // MOSI
     SPI1.setSCK(SD_SCKPIN);
@@ -28,14 +27,14 @@ bool CartaoSD::setup() {
 /**
  * @return bool
  */
-bool CartaoSD::test() {
+bool CartaoSD::Test() {
     return;
 }
 
 /**
  * @return bool
  */
-bool CartaoSD::testChosen(int escolhido) {
+bool CartaoSD::TestChosen(int escolhido) {
     return;
 }
 

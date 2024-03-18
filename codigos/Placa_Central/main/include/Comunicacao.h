@@ -6,45 +6,42 @@
 #ifndef _COMUNICACAO_H
 #define _COMUNICACAO_H
 
-#include "Setupable.h"
 #include <Arduino.h>
+#include <CAN.h>
+#include "Setupable.h"
+#include "Constantes.h"
 
 
 class Comunicacao: public Setupable {
 public: 
     
-bool setup();
+bool Setup();
+
+bool Test();
+
+bool Debug();
+
+bool TestChosen(int escolhido);
 
 bool setupTelemetria();
 
+/**
+* CAN-BUS by Sandeep Mistry
+* https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
+*/
+bool setupCanBus();
+    
 void enviarDadosTelemetria(String data);
 
-bool setupCanBus();
-
-bool setupI2c();
-
-
-bool test();
-/*
-testarTelemetria;
-testarCanBus;
-testarI2c;
-*/
-
-bool testChosen(int escolhido);
-    
 void updateData();
     
 /**
- * @param int
+ * @param int CAN Id that should receive the message
+ * @param byte* Pointer to buffer with data 
+ * @param int buffer size
+ * @return int - Number of bytes written
  */
-void sendI2cDataTo(int slave);
-    
-bool testTelemetria();
-
-bool testCanBus();
-
-bool testI2c();
+void Comunicacao::sendCanDataTo(int receiverId, byte buffer[], int length);
 
 private: 
 };

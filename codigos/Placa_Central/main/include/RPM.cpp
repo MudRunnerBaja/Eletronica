@@ -9,24 +9,28 @@
  * RPM implementation
  */
 
-/**
- * @return bool
- */
-bool RPM::setup() {
+RPM::RPM(int maximumSize) {
     return;
 }
 
 /**
  * @return bool
  */
-bool RPM::test() {
+bool RPM::Setup() {
+    return;
+}
+
+/**
+ * @return bool
+ */
+bool RPM::Test() {
     return false;
 }
 
 /**
  * @return bool
  */
-bool RPM::testChosen(int escolhido) {
+bool RPM::TestChosen(int escolhido) {
     return false;
 }
 
