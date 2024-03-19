@@ -2,7 +2,6 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _TEMPERATURACVT_H
 #define _TEMPERATURACVT_H
 
@@ -10,25 +9,26 @@
 #include <Adafruit_MLX90614.h>
 #include "Constantes.h"
 
-class TemperaturaCVT: public Setupable {
-public: 
+class TemperaturaCVT : public Setupable
+{
+public:
+    TemperaturaCVT();
 
-TemperaturaCVT();
-    
-float setTemperaturaCvt();
-    
-float getTemperaturaCvt();
-    
-bool Setup();
+    float setTemperaturaCvt();
 
-bool Test();
+    float getTemperaturaCvt();
 
-bool Debug();
+    bool Setup();
 
-bool TestChosen(int escolhido);
-    
-Adafruit_MLX90614 getTermopar();
-private: 
+    bool Loop();
+
+    bool Debug();
+
+    bool TestChosen(int escolhido);
+
+    Adafruit_MLX90614 getTermopar();
+
+private:
     Adafruit_MLX90614 mlx = Adafruit_MLX90614();
     float temperaturaCvt;
 };

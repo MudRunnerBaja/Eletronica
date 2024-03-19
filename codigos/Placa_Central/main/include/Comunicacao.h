@@ -2,48 +2,47 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _COMUNICACAO_H
 #define _COMUNICACAO_H
 
-#include <Arduino.h>
-#include <CAN.h>
 #include "Setupable.h"
 #include "Constantes.h"
+#include <CAN.h>
+#include <Arduino.h>
+#include <SPI.h>
 
+class Comunicacao : public Setupable
+{
+public:
+    bool Setup();
 
-class Comunicacao: public Setupable {
-public: 
-    
-bool Setup();
+    bool Loop();
 
-bool Test();
+    bool Debug();
 
-bool Debug();
+    bool TestChosen(int escolhido);
 
-bool TestChosen(int escolhido);
+    bool setupTelemetria();
 
-bool setupTelemetria();
+    /**
+     * CAN-BUS by Sandeep Mistry
+     * https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
+     */
+    bool setupCanBus();
 
-/**
-* CAN-BUS by Sandeep Mistry
-* https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
-*/
-bool setupCanBus();
-    
-void enviarDadosTelemetria(String data);
+    void enviarDadosTelemetria(String data);
 
-void updateData();
-    
-/**
- * @param int CAN Id that should receive the message
- * @param byte* Pointer to buffer with data 
- * @param int buffer size
- * @return int - Number of bytes written
- */
-void Comunicacao::sendCanDataTo(int receiverId, byte buffer[], int length);
+    void updateData();
 
-private: 
+    /**
+     * @param int CAN Id that should receive the message
+     * @param byte* Pointer to buffer with data
+     * @param int buffer size
+     * @return int - Number of bytes written
+     */
+    void Comunicacao::sendCanDataTo(int receiverId, byte buffer[], int length);
+
+private:
 };
 
 #endif //_COMUNICACAO_H

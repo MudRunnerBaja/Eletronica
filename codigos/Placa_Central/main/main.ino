@@ -2,60 +2,64 @@
  * Project Classes Placa Central
  */
 
-#include "main.h"
+// #include "main.h"
+#include <Instancia.h>
 
 /**
- * Main implementation
+ * DECLARAÇÕES DE FUNÇÕES
  */
+bool UpdateData(struct repeating_timer *t);
+bool WriteSD(struct repeating_timer *t);
 
 /**
- * @param repeating_timer
- * @return bool
+ * DECLARAÇÕES DE VARIÁVEIS
  */
-bool Main::UpdateData(struct repeating_timer *t) {
+
+bool setupCompleto;
+unsigned long tempoTotal;
+unsigned long tempoInicial;
+RPI_PICO_Timer Core0Timer0;
+RPI_PICO_Timer Core1Timer1;
+Instancia instancia;
+
+/**
+ * IMPLEMENTAÇÃO
+ */
+
+bool UpdateData(struct repeating_timer *t)
+{
     return false;
 }
 
-/**
- * @param repeating_timer
- * @return bool
- */
-bool Main::WriteSD(struct repeating_timer *t) {
+bool WriteSD(struct repeating_timer *t)
+{
     return false;
 }
 
-/**
- * @return void
- */
-void Main::setup() {
+void setup()
+{
+    Serial.begin(SERIAL_BAUD);
+    Serial.println("INCIALIZANDO");
+
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    instancia = new Instancia(false, true);
+
     return;
 }
 
-/**
- * @return void
- */
-void Main::setup1() {
+void setup1()
+{
     return;
 }
 
-/**
- * @return void
- */
-void Main::loop() {
+void loop()
+{
     return;
 }
 
-/**
- * @return void
- */
-void Main::loop1() {
+void loop1()
+{
     return;
-}
-
-/**
- * @param bool
- * @return Instancia
- */
-Instancia Main::gerarInstancia(struct repeating_timer *t) {
-    return instancia;
 }

@@ -2,30 +2,48 @@
  * Project Classes Placa Central
  */
 
-
 #include "Instancia.h"
 
 /**
  * Instancia implementation
+ * @param debugMode if true waits for Serial USB Port comm. Hangs the program indefinitely.
+ * @param callSetup if true calls default initialization function. Defaults to true.
  */
-Instancia::Instancia() {
-    Setup();
+Instancia::Instancia(bool debugMode, bool callSetup)
+{
+    /* Wait for serial */
+    while (debugMode && !Serial)
+    {
+        digitalWrite(LED_BUILTIN, LOW);
+        int i = 0;
+        while (i < 3)
+        {
+            digitalWrite(LED_BUILTIN, HIGH);
+            delay(75);
+            digitalWrite(LED_BUILTIN, LOW);
+            delay(75);
+        }
+    }
+
+    if (callSetup)
+    {
+        Setup();
+    }
     return;
 }
 
 /**
  * @return bool
  */
-bool Instancia::Setup() {
-    bool check = true;
+bool Instancia::Setup()
+{
+    bool check = false;
 
-    check = comunicacao.Setup();
-    check = gps.Setup();
-    check = cartaoSD.Setup();
-    check = temperaturaCvt.Setup();
-    check = rpm.Setup();
-
-    
+    freio.Setup();
+    cartaoSD.Setup();
+    comunicacao.setupCanBus();
+    temperaturaCvt.Setup();
+    gps.Setup();
 
     return check;
 }
@@ -33,21 +51,24 @@ bool Instancia::Setup() {
 /**
  * @return bool
  */
-bool Instancia::EscreverSD() {
+bool Instancia::EscreverSD()
+{
     return false;
 }
 
 /**
  * @return bool
  */
-bool Instancia::AtualizarDados() {
+bool Instancia::AtualizarDados()
+{
     return false;
 }
 
 /**
  * @return bool
  */
-bool Instancia::EnviarDadosTelemetria() {
+bool Instancia::EnviarDadosTelemetria()
+{
 
     String data = String(rpm.getRPM());
     data = String(data + ",");
@@ -61,17 +82,20 @@ bool Instancia::EnviarDadosTelemetria() {
     return false;
 }
 
-bool Instancia::EnviarDadosCanBus() {
+bool Instancia::EnviarDadosCanBus()
+{
     return false;
 }
 
 /**
  * @return bool
  */
-bool Instancia::Test() {
+bool Instancia::Loop()
+{
     return;
 }
 
-bool Instancia::TestChosen(int escolhido) {
+bool Instancia::TestChosen(int escolhido)
+{
     return;
 }

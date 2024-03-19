@@ -2,7 +2,6 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _GPS_H
 #define _GPS_H
 
@@ -10,26 +9,26 @@
 #include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSpp.h"
 #include "Constantes.h"
 
-class GPS: public Setupable {
-public: 
-    
-bool Setup();
+class GPS : public Setupable
+{
+public:
+    bool Setup();
 
-bool Test();
+    bool Loop();
 
-bool Debug();
+    bool Debug();
 
-bool TestChosen(int escolhido);
-    
-TinyGPSPlus getGps();
-    
-float getSpeed();
-    
-void gpsEncoding();
-    
-bool updateGPS();
-    
-private: 
+    bool TestChosen(int escolhido);
+
+    TinyGPSPlus getGps();
+
+    float getSpeed();
+
+    void gpsEncoding();
+
+    bool updateGPS();
+
+private:
     double speed;
     double latitude;
     double longitude;

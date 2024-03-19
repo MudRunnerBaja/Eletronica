@@ -2,48 +2,53 @@
  * Project Classes Placa Central
  */
 
-
 #include "RPM.h"
 
 /**
  * RPM implementation
  */
 
-RPM::RPM(int maximumSize) {
+RPM::RPM(int maximumSize)
+{
     return;
 }
 
 /**
  * @return bool
  */
-bool RPM::Setup() {
+bool RPM::Setup()
+{
     return;
 }
 
 /**
  * @return bool
  */
-bool RPM::Test() {
+bool RPM::Loop()
+{
     return false;
 }
 
 /**
  * @return bool
  */
-bool RPM::TestChosen(int escolhido) {
+bool RPM::TestChosen(int escolhido)
+{
     return false;
 }
 
 /**
  * @return int
  */
-int RPM::getRPM() {
+int RPM::getRPM()
+{
     return 0;
 }
 
 /**
  * @return int
  */
-int RPM::updateRPM() {
+int RPM::updateRPM()
+{
     return 0;
 }

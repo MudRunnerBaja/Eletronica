@@ -2,13 +2,13 @@
  * Project Classes Placa Central
  */
 
-#ifndef _COMBUSTIVEL_H
-#define _COMBUSTIVEL_H
+#ifndef _FREIO_H
+#define _FREIO_H
 
 #include "Setupable.h"
 #include "Constantes.h"
 
-class Combustivel : public Setupable
+class Freio : public Setupable
 {
 public:
     bool Setup();
@@ -19,12 +19,10 @@ public:
 
     bool TestChosen(int escolhido);
 
-    short setNivelAtual();
-
     short getNivelAtual();
 
 private:
     short nivelAtual;
 };
 
-#endif //_COMBUSTIVEL_H
+#endif //_FREIO_H

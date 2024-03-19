@@ -2,28 +2,30 @@
  * Project Classes Placa Central
  */
 
-
 #include "TemperaturaCVT.h"
 
 /**
  * TemperaturaCVT implementation
  */
 
-TemperaturaCVT::TemperaturaCVT() {
+TemperaturaCVT::TemperaturaCVT()
+{
     return;
 }
 
 /**
  * @return float
  */
-float TemperaturaCVT::setTemperaturaCvt() {
+float TemperaturaCVT::setTemperaturaCvt()
+{
     return 0.0;
 }
 
 /**
  * @return float
  */
-float TemperaturaCVT::getTemperaturaCvt() {
+float TemperaturaCVT::getTemperaturaCvt()
+{
     mlx.readAmbientTempC();
     mlx.readObjectTempC();
     return 0.0;
@@ -32,22 +34,26 @@ float TemperaturaCVT::getTemperaturaCvt() {
 /**
  * @return bool
  */
-bool TemperaturaCVT::Setup() {
+bool TemperaturaCVT::Setup()
+{
     mlx.begin();
     return;
 }
 
-bool TemperaturaCVT::Test() {
+bool TemperaturaCVT::Loop()
+{
     return false;
 }
 
-bool TemperaturaCVT::TestChosen(int escolhido) {
+bool TemperaturaCVT::TestChosen(int escolhido)
+{
     return false;
 }
 
 /**
  * @return Adafruit_MLX90614
  */
-Adafruit_MLX90614 TemperaturaCVT::getTermopar() {
+Adafruit_MLX90614 TemperaturaCVT::getTermopar()
+{
     return mlx;
 }

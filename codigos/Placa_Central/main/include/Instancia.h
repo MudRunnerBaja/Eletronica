@@ -2,7 +2,6 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _INSTANCIA_H
 #define _INSTANCIA_H
 
@@ -15,24 +14,30 @@
 #include "GPS.h"
 #include <Arduino.h>
 #include "Constantes.h"
+#include "Freio.h"
+#include <RPi_Pico_ISR_Timer.hpp>    // Manipuladores de Interrupção
+#include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
+#include <RPi_Pico_ISR_Timer.h>      // Manipuladores de Interrupção
 
-class Instancia: public Setupable {
+class Instancia : public Setupable
+{
 
-public: 
+public:
     Comunicacao comunicacao;
     CartaoSD cartaoSD;
     TemperaturaCVT temperaturaCvt;
     Combustivel nivelCombustivel;
     RPM rpm;
     GPS gps;
-    bool* estadoSistemas;
-    bool* testeSistemas;
-    
-    Instancia();
+    Freio freio;
+    bool *estadoSistemas;
+    bool *testeSistemas;
+
+    Instancia(bool debugMode = false, bool callSetup = true);
 
     bool Setup();
 
-    bool Test();
+    bool Loop();
 
     bool Debug();
 
