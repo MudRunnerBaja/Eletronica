@@ -11,6 +11,11 @@
 #define GPS_RX 9 // PINO RX UART GPS
 const unsigned long GPSBaud = 9600;
 
+#define LORA_TX 0
+#define LORA_RX 1
+const unsigned long LoRaBaud = 9600;
+
+
 //cartao sd
 #define SCKPIN 10
 #define TXPIN 11 // MOSI
@@ -80,6 +85,11 @@ void setup() {
   Serial.println("Inicializado MLX");
 
   voltPerBit = tensaoMaxBat / 1023;
+
+  Serial1.setTX(LORA_TX);
+  Serial1.setRX(LORA_RX);
+  Serial1.begin(LoRaBaud);
+  Serial.println("Incializado Serial do LoRa");
 
   //SETANDO PORTA DO GPS / INICIALIZANDO
   Serial2.setTX(GPS_TX);
@@ -180,6 +190,8 @@ void loop() {
     Serial.println(gps.date.year());*/
   }
 
+  Serial1.println("LoRa Master: 123TEST");
+  Serial.println("\nSerial LoRa: Dados enviados");
 
   long t_final = millis();
   long t_total = t_final - t_inicial;
