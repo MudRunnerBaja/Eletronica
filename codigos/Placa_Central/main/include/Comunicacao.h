@@ -14,25 +14,63 @@
 class Comunicacao : public Setupable
 {
 public:
-    bool Setup();
+    bool Setup()
+    {
+        setupTelemetria();
+        return false;
+    }
 
-    bool Loop();
+    bool Loop()
+    {
+        return false;
+    }
 
-    bool Debug();
+    bool Debug()
+    {
+        return false;
+    }
 
-    bool TestChosen(int escolhido);
+    bool setupTelemetria()
+    {
 
-    bool setupTelemetria();
+        Serial1.setRX(TELEMETRIA_RX);
+        Serial1.setTX(TELEMETRIA_TX);
+        Serial1.setFIFOSize(128);
+        Serial1.begin(9600);
+
+        return false;
+    }
 
     /**
      * CAN-BUS by Sandeep Mistry
      * https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
      */
-    bool setupCanBus();
+    bool setupCanBus()
+    {
 
-    void enviarDadosTelemetria(String data);
+        SPI.setSCK(CAN_SCKPIN);
+        SPI.setRX(CAN_RXPIN);
+        SPI.setTX(CAN_TXPIN);
+        CAN.setPins(CAN_CSPIN);
 
-    void updateData();
+        if (!CAN.begin(500E3))
+        {
+            Serial.println("Starting CAN failed!");
+            return false;
+        }
+        return true;
+    }
+
+    void enviarDadosTelemetria(String data)
+    {
+
+        Serial1.println(data);
+    }
+
+    void updateData()
+    {
+        return;
+    }
 
     /**
      * @param int CAN Id that should receive the message
@@ -40,7 +78,15 @@ public:
      * @param int buffer size
      * @return int - Number of bytes written
      */
-    void Comunicacao::sendCanDataTo(int receiverId, byte buffer[], int length);
+    void sendCanDataTo(int receiverId, byte buffer[], int length)
+    {
+        CAN.write(buffer, length);
+
+        int dlc, rtr;
+        CAN.beginPacket(receiverId, dlc, rtr);
+
+        return;
+    }
 
 private:
 };

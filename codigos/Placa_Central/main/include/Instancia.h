@@ -5,6 +5,7 @@
 #ifndef _INSTANCIA_H
 #define _INSTANCIA_H
 
+#include <Arduino.h>
 #include "Setupable.h"
 #include "Comunicacao.h"
 #include "CartaoSD.h"
@@ -12,16 +13,11 @@
 #include "Combustivel.h"
 #include "RPM.h"
 #include "GPS.h"
-#include <Arduino.h>
 #include "Constantes.h"
 #include "Freio.h"
-#include <RPi_Pico_ISR_Timer.hpp>    // Manipuladores de Interrupção
-#include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
-#include <RPi_Pico_ISR_Timer.h>      // Manipuladores de Interrupção
 
 class Instancia : public Setupable
 {
-
 public:
     Comunicacao comunicacao;
     CartaoSD cartaoSD;
@@ -33,23 +29,103 @@ public:
     bool *estadoSistemas;
     bool *testeSistemas;
 
-    Instancia(bool debugMode = false, bool callSetup = true);
+    /**
+     * Implementacao de uma instancia.
+     * @param debugMode if true waits for Serial USB Port comm. Hangs the program indefinitely.
+     * @param callSetup if true calls default initialization function. Defaults to true.
+     */
+    Instancia(bool debugMode, bool callSetup)
+    {
+        comunicacao = Comunicacao();
 
-    bool Setup();
+        while (debugMode && !Serial)
+        {
+            digitalWrite(LED_BUILTIN, LOW);
+            int i = 0;
+            while (i < 3)
+            {
+                digitalWrite(LED_BUILTIN, HIGH);
+                delay(75);
+                digitalWrite(LED_BUILTIN, LOW);
+                delay(75);
+            }
+        }
 
-    bool Loop();
+        if (callSetup)
+        {
+            Setup();
+        }
+    }
 
-    bool Debug();
+    /**
+     * @return bool
+     */
+    bool Setup()
+    {
+        bool check = false;
+        /*
+            freio.Setup();
+            cartaoSD.Setup();
+            comunicacao.setupCanBus();
+            temperaturaCvt.Setup();
 
-    bool TestChosen(int escolhido);
+            gps.Setup();
+        */
+        return check;
+    }
 
-    bool EscreverSD();
+    /**
+     * @return bool
+     */
+    bool EscreverSD()
+    {
+        return false;
+    }
 
-    bool AtualizarDados();
+    /**
+     * @return bool
+     */
+    bool AtualizarDados()
+    {
+        return false;
+    }
 
-    bool EnviarDadosTelemetria();
+    bool Debug()
+    {
+        return false;
+    }
 
-    bool EnviarDadosCanBus();
+    /**
+     * @return bool
+     */
+    bool EnviarDadosTelemetria()
+    {
+        /*
+            String data = String(rpm.getRPM());
+            data = String(data + ",");
+            data = String(data + temperaturaCvt.getTemperaturaCvt());
+            data = String(data + ",");
+            data = String(data + gps.getSpeed());
+            data = String(data + ",");
+            data = String(data + nivelCombustivel.getNivelAtual());
+
+            comunicacao.enviarDadosTelemetria(data);
+            */
+        return false;
+    }
+
+    bool EnviarDadosCanBus()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    bool Loop()
+    {
+        return true;
+    }
 
 private:
     byte data[5];

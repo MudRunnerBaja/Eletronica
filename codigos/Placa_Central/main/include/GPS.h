@@ -6,27 +6,53 @@
 #define _GPS_H
 
 #include "Setupable.h"
-#include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSpp.h"
 #include "Constantes.h"
+#include <TinyGPS++.h>
 
 class GPS : public Setupable
 {
 public:
-    bool Setup();
+    TinyGPSPlus gps();
 
-    bool Loop();
+    bool Setup()
+    {
+        Serial2.setTX(GPS_TX);
+        Serial2.setRX(GPS_RX);
+        Serial2.begin(GPS_BAUD);
 
-    bool Debug();
+        if (!Serial2)
+        {
+            Serial.println("Falha Serial GPS");
+            return false;
+        }
+        Serial.println("Inicializado Serial do GPS");
+        return true;
+    }
 
-    bool TestChosen(int escolhido);
+    bool Loop()
+    {
+        return false;
+    }
 
-    TinyGPSPlus getGps();
+    bool Debug()
+    {
+        return false;
+    }
 
-    float getSpeed();
+    float getSpeed()
+    {
+        return 0.0;
+    }
 
-    void gpsEncoding();
+    void gpsEncoding()
+    {
+        return;
+    }
 
-    bool updateGPS();
+    bool updateGPS()
+    {
+        return false;
+    }
 
 private:
     double speed;
@@ -43,7 +69,6 @@ private:
     String datehj;
     bool newData;
     bool gpsOn;
-    TinyGPSPlus gps;
 };
 
 #endif //_GPS_H

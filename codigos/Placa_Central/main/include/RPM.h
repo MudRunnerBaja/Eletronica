@@ -12,19 +12,35 @@
 class RPM : public ContadorPorIntervalo, public Setupable
 {
 public:
-    RPM(int maximumSize = Constantes::MINUTO);
+    RPM(int maximumSize = Constantes::MINUTO)
+    {
+        return;
+    }
 
-    bool Setup();
+    bool Setup()
+    {
+        return false;
+    }
 
-    bool Loop();
+    bool Loop()
+    {
+        return false;
+    }
 
-    bool Debug();
+    bool Debug()
+    {
+        return false;
+    }
 
-    bool TestChosen(int escolhido);
+    int getRPM()
+    {
+        return 0;
+    }
 
-    int getRPM();
-
-    int updateRPM();
+    int updateRPM()
+    {
+        return 0;
+    }
 };
 
 #endif //_RPM_H

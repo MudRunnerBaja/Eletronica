@@ -13,17 +13,48 @@
 class CartaoSD : public Setupable
 {
 public:
-    bool Setup();
+    CartaoSD()
+    {
+        return;
+    }
 
-    bool Loop();
+    bool Setup()
+    {
 
-    bool Debug();
+        SPI1.setRX(SD_RXPIN); // MISO
+        SPI1.setTX(SD_TXPIN); // MOSI
+        SPI1.setSCK(SD_SCKPIN);
+        SPI1.setCS(SD_CSPIN);
 
-    bool TestChosen(int escolhido);
+        SPI1.begin(true);
 
-    void criarArquivoDados();
+        if (!SD.begin(SD_CSPIN, SPI1))
+        {
+            Serial.println("Erro inicialização SD");
+            return false;
+        }
+        return true;
+    }
 
-    void sdCardSetup();
+    bool Loop()
+    {
+        return true;
+    }
+
+    bool Debug()
+    {
+        return true;
+    }
+
+    void criarArquivoDados()
+    {
+        return;
+    }
+
+    void sdCardSetup()
+    {
+        return;
+    }
 
     /**
      * @param int
@@ -31,9 +62,15 @@ public:
      * @param int
      * @param float float
      */
-    void writeData(int a, int b, int c, float d, float e);
+    void writeData(int a, int b, int c, float d, float e)
+    {
+        return;
+    }
 
-    bool testarCartaoSD();
+    bool testarCartaoSD()
+    {
+        return true;
+    }
 
 private:
     String nomeArquivo;

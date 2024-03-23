@@ -13,11 +13,6 @@ public:
     virtual bool Debug() = 0;
 
     virtual bool Loop() = 0;
-
-    /**
-     * @param int
-     */
-    virtual bool TestChosen(int escolhido) = 0;
 };
 
 #endif //_SETUPABLE_H

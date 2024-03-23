@@ -2,18 +2,19 @@
  * Project Classes Placa Central
  */
 
-#ifndef _COMBUSTIVEL_H
-#define _COMBUSTIVEL_H
+#ifndef _TENSAOBATERIA_H
+#define _TENSAOBATERIA_H
 
 #include "Setupable.h"
 #include "Constantes.h"
 
-class Combustivel : public Setupable
+class TensaoBateria : public Setupable
 {
 public:
     bool Setup()
     {
-        return false;
+        pinMode(NIVEL_FREIO, INPUT);
+        return true;
     }
 
     bool Loop()
@@ -26,18 +27,13 @@ public:
         return false;
     }
 
-    short setNivelAtual()
-    {
-        return 0;
-    }
-
-    short getNivelAtual()
+    short getTensaoBateria()
     {
         return 0;
     }
 
 private:
-    short nivelAtual;
+    short tensaoBateria;
 };
 
-#endif //_COMBUSTIVEL_H
+#endif //_TENSAOBATERIA_H

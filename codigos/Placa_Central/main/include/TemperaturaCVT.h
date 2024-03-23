@@ -12,21 +12,41 @@
 class TemperaturaCVT : public Setupable
 {
 public:
-    TemperaturaCVT();
+    TemperaturaCVT()
+    {
+        return;
+    }
 
-    float setTemperaturaCvt();
+    float setTemperaturaCvt()
+    {
+        return 0.0;
+    }
 
-    float getTemperaturaCvt();
+    float getTemperaturaCvt()
+    {
+        return 0.0;
+    }
 
-    bool Setup();
+    bool Setup()
+    {
+        mlx.begin();
+        return true;
+    }
 
-    bool Loop();
+    bool Loop()
+    {
+        return false;
+    }
 
-    bool Debug();
+    bool Debug()
+    {
+        return false;
+    }
 
-    bool TestChosen(int escolhido);
-
-    Adafruit_MLX90614 getTermopar();
+    Adafruit_MLX90614 getTermopar()
+    {
+        return mlx;
+    }
 
 private:
     Adafruit_MLX90614 mlx = Adafruit_MLX90614();

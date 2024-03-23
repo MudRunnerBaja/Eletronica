@@ -11,15 +11,42 @@
 class Freio : public Setupable
 {
 public:
-    bool Setup();
+    Freio()
+    {
+        return;
+    }
+    /**
+     * @return bool
+     */
+    bool Setup()
+    {
+        pinMode(NIVEL_FREIO, INPUT);
+        return true;
+    }
 
-    bool Loop();
+    /**
+     * @return bool
+     */
+    bool Loop()
+    {
+        return false;
+    }
 
-    bool Debug();
+    /**
+     * @return bool
+     */
+    bool Debug()
+    {
+        return false;
+    }
 
-    bool TestChosen(int escolhido);
-
-    short getNivelAtual();
+    /**
+     * @return short
+     */
+    short getNivelAtual()
+    {
+        return 0;
+    }
 
 private:
     short nivelAtual;
