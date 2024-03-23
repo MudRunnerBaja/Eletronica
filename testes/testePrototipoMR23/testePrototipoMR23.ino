@@ -28,7 +28,7 @@ const unsigned long LoRaBaud = 9600;
 #define tx0 19  //MOSI
 #define cs0 17 
 
-int nvl_freio = 22, adc_divtensao = 26;
+int nvl_freio = 20, adc_divtensao = 26;
 float voltPerBit, tensao;
 float tensaoMaxBat = 13.3;//VOLTS
 bool sd_init = false;
