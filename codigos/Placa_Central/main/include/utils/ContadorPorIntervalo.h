@@ -5,31 +5,12 @@
 #ifndef _CONTADORPORINTERVALO_H
 #define _CONTADORPORINTERVALO_H
 
+#include <Arduino.h>
 #include "FilaContador.h"
 #include "../Constantes.h"
 
 class ContadorPorIntervalo
 {
-public:
-    ContadorPorIntervalo(int maximumSize = Constantes::MINUTO)
-    {
-        return;
-    }
-
-    int updateCountValue()
-    {
-        return 0;
-    }
-
-    int getCountValue()
-    {
-        return 0;
-    }
-    int somaTodasContagensNoUltimoMinuto()
-    {
-        return 0;
-    }
-
 protected:
     FilaContador array;
     unsigned long MINUTO;
@@ -38,7 +19,36 @@ protected:
 
     void increaseCount()
     {
+        counter++;
         return;
+    }
+
+public:
+    ContadorPorIntervalo(int pinToMonitor, unsigned long intervalToUpdate = INTERVALO_TIMER_MS)
+    {
+        pinMode(pinToMonitor, INPUT);
+        this->MINUTO = intervalToUpdate;
+        array = *(new FilaContador(intervalToUpdate));
+        attachInterrupt(digitalPinToInterrupt(pinToMonitor), increaseCount, RISING);
+    }
+
+    int updateCountValue()
+    {
+        int countInstantaneoAtual = counter * MINUTO;
+        int somaCountAnteriores = (mediaCounter * array.currentSize);
+        array.InsertLast(countInstantaneoAtual);
+        int mediaCounter = (countInstantaneoAtual + somaCountAnteriores) / array.currentSize;
+        counter = 0;
+        return mediaCounter;
+    }
+
+    int getCountValue()
+    {
+        return mediaCounter;
+    }
+    int somaTodasContagensNoUltimoMinuto()
+    {
+        return (mediaCounter * array.currentSize);
     }
 };
 

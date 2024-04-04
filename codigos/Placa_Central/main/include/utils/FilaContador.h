@@ -10,7 +10,10 @@ private:
     int FIRSTINDEX = 0;
     int LASTINDEX;
     int OLDESTINDEX = 0;
-    void UpdateOldest();
+    void UpdateOldest()
+    {
+        OLDESTINDEX < LASTINDEX ? OLDESTINDEX++ : OLDESTINDEX = 0;
+    }
 
 public:
     int maxSize;
