@@ -2,27 +2,45 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _RPM_H
 #define _RPM_H
 
-#include "ContadorPorIntervalo.h"
+#include "utils/ContadorPorIntervalo.h"
 #include "Setupable.h"
+#include "Constantes.h"
 
+class RPM : public ContadorPorIntervalo, public Setupable
+{
+public:
+    RPM(int maximumSize = Constantes::MINUTO)
+    {
+        return;
+    }
 
-class RPM: public ContadorPorIntervalo, public Setupable {
-public: 
-    
-bool setup();
+    bool Setup()
+    {
+        return false;
+    }
 
-bool test();
+    bool Loop()
+    {
+        return false;
+    }
 
-bool testChosen(int escolhido);
-    
-int getRPM();
-    
-int updateRPM();
+    bool Debug()
+    {
+        return false;
+    }
 
+    int getRPM()
+    {
+        return 0;
+    }
+
+    int updateRPM()
+    {
+        return 0;
+    }
 };
 
 #endif //_RPM_H

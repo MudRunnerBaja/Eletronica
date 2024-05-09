@@ -2,32 +2,41 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _COMBUSTIVEL_H
 #define _COMBUSTIVEL_H
 
 #include "Setupable.h"
+#include "Constantes.h"
 
+class Combustivel : public Setupable
+{
+public:
+    bool Setup()
+    {
+        return false;
+    }
 
-class Combustivel: public Setupable {
-public: 
-    enum niveis {
-        LOW,
-        MED,
-        HIGH
-    };
-    
-bool setup();
+    bool Loop()
+    {
+        return false;
+    }
 
-bool test();
+    bool Debug()
+    {
+        return false;
+    }
 
-bool testChosen(int escolhido);
-    
-short setNivelAtual();
-    
-short getNivelAtual();
-    
-private: 
+    short setNivelAtual()
+    {
+        return 0;
+    }
+
+    short getNivelAtual()
+    {
+        return 0;
+    }
+
+private:
     short nivelAtual;
 };
 

@@ -2,31 +2,59 @@
  * Project Classes Placa Central
  */
 
-
 #ifndef _GPS_H
 #define _GPS_H
 
 #include "Setupable.h"
-#include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSpp.h"
+#include "Constantes.h"
+#include <TinyGPS++.h>
 
-class GPS: public Setupable {
-public: 
-    
-bool setup();
+class GPS : public Setupable
+{
+public:
+    TinyGPSPlus gps();
 
-bool test();
+    bool Setup()
+    {
+        Serial2.setTX(GPS_TX);
+        Serial2.setRX(GPS_RX);
+        Serial2.begin(GPS_BAUD);
 
-bool testChosen(int escolhido);
-    
-TinyGPSPlus getGps();
-    
-float getSpeed();
-    
-void gpsEncoding();
-    
-bool updateGPS();
-    
-private: 
+        if (!Serial2)
+        {
+            Serial.println("Falha Serial GPS");
+            return false;
+        }
+        Serial.println("Inicializado Serial do GPS");
+        return true;
+    }
+
+    bool Loop()
+    {
+        return false;
+    }
+
+    bool Debug()
+    {
+        return false;
+    }
+
+    float getSpeed()
+    {
+        return 0.0;
+    }
+
+    void gpsEncoding()
+    {
+        return;
+    }
+
+    bool updateGPS()
+    {
+        return false;
+    }
+
+private:
     double speed;
     double latitude;
     double longitude;
@@ -41,7 +69,6 @@ private:
     String datehj;
     bool newData;
     bool gpsOn;
-    TinyGPSPlus gps;
 };
 
 #endif //_GPS_H
