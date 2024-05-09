@@ -44,14 +44,15 @@ enum Nivel
 #define SD_TXPIN 19 // MOSI
 
 // FREIO
-#define NIVEL_FREIO 22
+#define NIVEL_FREIO 20
+#define PRESSAO_FREIO 27
 
 // DIVISOR TENSAO
 #define DIV_TENSAO 26
 #define BATERIA_TENSAO_MAX 13.3
 
 // COMBUSTIVEL
-#define COMB_SUPERIOR
-#define COMB_INFERIOR
+#define COMB_INFERIOR 14
+#define COMB_SUPERIOR 15
 
 #endif //_CONSTANTES_H

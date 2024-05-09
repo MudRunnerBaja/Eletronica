@@ -1,5 +1,8 @@
 /**
  * Project Classes Placa Central
+ *
+ * Aquisição do nível de combustível
+ *
  */
 
 #ifndef _COMBUSTIVEL_H
@@ -15,7 +18,8 @@ public:
     {
         pinMode(COMB_SUPERIOR, INPUT);
         pinMode(COMB_INFERIOR, INPUT);
-        nivelAtual = BAIXO;
+        setNivelAtual();
+
         // É possível testar se os pinos foram setados adequadamente?
         return true;
     }
@@ -26,6 +30,10 @@ public:
         return true;
     }
 
+    /**
+     * Imprime o nível atual de combustível no momento da chamada.
+     * Retorna verdadeiro se o valor não for previsto.
+     */
     bool Debug()
     {
         bool erro = false;
