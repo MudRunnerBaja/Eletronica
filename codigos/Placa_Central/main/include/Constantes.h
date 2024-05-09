@@ -5,23 +5,20 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
-class Constantes
-{
-public:
 #define INTERVALO_TIMER_MS 200
 #define TEMPERATURA_CRITICA_CVT 200
 #define RAIO_PNEU 22
 #define QTD_SENSORES_PNEU 4
 
-    static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
-    static const bool DEBUG_MODE = true;
+static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
+static const bool DEBUG_MODE = true;
 
-    enum Nivel
-    {
-        BAIXO,
-        MEDIO,
-        ALTO
-    };
+enum Nivel
+{
+    BAIXO,
+    MEDIO,
+    ALTO
+};
 
 #define SERIAL_BAUD 115200 // SERIAL DEBUG
 
@@ -52,6 +49,9 @@ public:
 // DIVISOR TENSAO
 #define DIV_TENSAO 26
 #define BATERIA_TENSAO_MAX 13.3
-};
+
+// COMBUSTIVEL
+#define COMB_SUPERIOR
+#define COMB_INFERIOR
 
 #endif //_CONSTANTES_H
