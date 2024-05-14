@@ -55,4 +55,7 @@ enum Nivel
 #define COMB_INFERIOR 14
 #define COMB_SUPERIOR 15
 
+// RPM
+#define RPM_INTERRUPT_PIN 21
+
 #endif //_CONSTANTES_H
