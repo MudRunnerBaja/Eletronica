@@ -13,7 +13,7 @@ class TensaoBateria : public Setupable
 public:
     bool Setup()
     {
-        pinMode(NIVEL_FREIO, INPUT);
+        pinMode(DIV_TENSAO, INPUT);
         return true;
     }
 
@@ -22,18 +22,24 @@ public:
         return false;
     }
 
+    double updateTensaoBateria()
+    {
+        tensaoBateria;
+        return tensaoBateria;
+    }
+
     bool Debug()
     {
         return false;
     }
 
-    short getTensaoBateria()
+    double getTensaoBateria()
     {
-        return 0;
+        return tensaoBateria;
     }
 
 private:
-    short tensaoBateria;
+    double tensaoBateria;
 };
 
 #endif //_TENSAOBATERIA_H

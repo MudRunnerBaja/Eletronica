@@ -9,7 +9,7 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class RPM : public Setupable
+class RPM_Motor : public Setupable
 {
 public:
     bool Setup()
@@ -35,18 +35,24 @@ public:
         return rpm;
     }
 
-    double updateRPM()
+    /**
+     * O AttachInterrupt requer uma referência estática para uma função.
+     * Ele não é pensado para trabalhar com objetos ou classes.
+     * Uma alternativa é trabalhar com o RPM como um singleton, mas tratar
+     *  a função e das variáveis como estáticas envolve menos código.
+     */
+    static void updateRPM()
     {
         tpulse = micros() - told;
         rpm = 60000000 / tpulse; // O que é essa constante?
         told = micros();
-        return rpm;
     }
 
 private:
     volatile byte state = LOW;
-    long told = 0, tpulse = 0;
-    double rpm = 0;
+    static long told;
+    static long tpulse;
+    static double rpm;
 };
 
 #endif //_RPM_H

@@ -7,7 +7,7 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include <TinyGPS++.h>
+#include <TinyGPSPlus.h>
 
 class GPS : public Setupable
 {
@@ -149,6 +149,7 @@ public:
         datahj += String(mes);
         datahj += "/";
         datahj += String(ano);
+        return datahj;
     }
 
 private:

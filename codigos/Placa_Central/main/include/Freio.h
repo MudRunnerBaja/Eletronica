@@ -58,6 +58,7 @@ public:
     int setPressaoAtual()
     {
         pressaoAtual = calculaPressao();
+        return pressaoAtual;
     }
 
     double calculaPressao()
