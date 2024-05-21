@@ -2,20 +2,20 @@
  * Project Classes Placa Central
  */
 
-#ifndef _RPM_H
-#define _RPM_H
+#ifndef _VEL_H
+#define _VEL_H
 
 #include <Arduino.h>
 #include "Setupable.h"
 #include "Constantes.h"
 
-class RPM_Motor : public Setupable
+class Velocidade : public Setupable
 {
 public:
     bool Setup()
     {
-        pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
-        attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
+        pinMode(VEL_INTERRUPT_PIN, INPUT_PULLUP);
+        attachInterrupt(digitalPinToInterrupt(VEL_INTERRUPT_PIN), updateVel, RISING);
         told = micros();
         return true;
     }
@@ -30,21 +30,21 @@ public:
         return true;
     }
 
-    double getRPM()
+    double getVel()
     {
-        return rpm;
+        return vel;
     }
 
     /**
      * O AttachInterrupt requer uma referência estática para uma função.
      * Ele não é pensado para trabalhar com objetos ou classes.
-     * Uma alternativa é trabalhar com o RPM como um singleton, mas tratar
+     * Uma alternativa é trabalhar com a Velocidade como um singleton, mas tratar
      *  a função e das variáveis como estáticas envolve menos código.
      */
-    static void updateRPM()
+    static void updateVel()
     {
         tpulse = micros() - told;
-        rpm = MINUTO_EM_MICROSSEGUNDOS / tpulse;
+        vel = MINUTO_EM_MICROSSEGUNDOS / tpulse;
         told = micros();
     }
 
@@ -52,11 +52,7 @@ private:
     volatile byte state = LOW;
     static long told;
     static long tpulse;
-    static double rpm;
+    static double vel;
 };
 
-long RPM_Motor::told = 0;
-long RPM_Motor::tpulse = 0;
-double RPM_Motor::rpm = 0.0;
-
-#endif //_RPM_H
+#endif //_VEL_H

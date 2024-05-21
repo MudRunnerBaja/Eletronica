@@ -42,6 +42,9 @@ public:
         //     Serial.println("No fix detected");
         // }
 
+        if (!Serial)
+            return false;
+
         String s = String("Lat: ");
         latitude = gps.location.lat();
         s = String(s + latitude + " | Lon: ");
@@ -66,7 +69,7 @@ public:
         {
             Serial.println("GPS OK");
         }
-        return false;
+        return true;
     }
 
     void gpsEncoding()

@@ -9,6 +9,7 @@
 #define TEMPERATURA_CRITICA_CVT 200
 #define RAIO_PNEU 22
 #define QTD_SENSORES_PNEU 4
+#define MINUTO_EM_MICROSSEGUNDOS 60000000
 
 static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
 static const bool DEBUG_MODE = true;
@@ -57,5 +58,11 @@ enum Nivel
 
 // RPM
 #define RPM_INTERRUPT_PIN 21
+
+// VELOCIDADE
+#define VEL_INTERRUPT_PIN 22
+
+// PEDAL ACELERADOR
+#define PEDAL_ACELERADOR 28
 
 #endif //_CONSTANTES_H
