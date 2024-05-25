@@ -2,18 +2,18 @@
  * Project Classes Placa Central
  */
 
-#ifndef _TENSAOBATERIA_H
-#define _TENSAOBATERIA_H
+#ifndef _PEDAL_ACELERADOR_H
+#define _PEDAL_ACELERADOR_H
 
 #include "Setupable.h"
 #include "Constantes.h"
 
-class TensaoBateria : public Setupable
+class PedalAcelerador : public Setupable
 {
 public:
     bool Setup()
     {
-        pinMode(DIV_TENSAO, INPUT);
+        pinMode(PEDAL_ACELERADOR, INPUT);
         return true;
     }
 
@@ -24,8 +24,8 @@ public:
 
     double updateTensaoBateria()
     {
-        tensaoBateria;
-        return tensaoBateria;
+        pedalAcelerador;
+        return pedalAcelerador;
     }
 
     bool Debug()
@@ -35,11 +35,11 @@ public:
 
     double getTensaoBateria()
     {
-        return tensaoBateria;
+        return pedalAcelerador;
     }
 
 private:
-    double tensaoBateria;
+    double pedalAcelerador;
 };
 
-#endif //_TENSAOBATERIA_H
+#endif //_PEDAL_ACELERADOR_H

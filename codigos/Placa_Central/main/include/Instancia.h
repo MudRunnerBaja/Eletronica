@@ -11,7 +11,7 @@
 #include "CartaoSD.h"
 #include "TemperaturaCVT.h"
 #include "Combustivel.h"
-#include "RPM.h"
+#include "RPM_Motor.h"
 #include "GPS.h"
 #include "Constantes.h"
 #include "Freio.h"
@@ -23,7 +23,7 @@ public:
     CartaoSD cartaoSD;
     TemperaturaCVT temperaturaCvt;
     Combustivel nivelCombustivel;
-    RPM rpm;
+    RPM_Motor rpm;
     GPS gps;
     Freio freio;
     bool *estadoSistemas;

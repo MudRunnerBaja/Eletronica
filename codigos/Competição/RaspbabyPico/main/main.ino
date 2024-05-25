@@ -1,31 +1,29 @@
 #include <Arduino.h>
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
-#include <RPi_Pico_ISR_Timer.h> // Manipuladores de Interrupção
-#include <RPi_Pico_ISR_Timer.hpp> // Manipuladores de Interrupção
+#include <RPi_Pico_ISR_Timer.h>      // Manipuladores de Interrupção
+#include <RPi_Pico_ISR_Timer.hpp>    // Manipuladores de Interrupção
 
-    // CONSTANTES
+// CONSTANTES
 #define TIMER_INTERVAL_MS 200
 #define TEMPERATURA_CRITICA_CVT 80
 #define CAR_NAME "MV-22"
 const long MINUTO = 60 * (1000 / TIMER_INTERVAL_MS); // Valor referente a um minuto em função do intervalo de atualização
 
-    // VARIÁVEIS GLOBAIS
+// VARIÁVEIS GLOBAIS
 bool setupCompleto = false; // Flag Setup core 0
 unsigned long tempoTotal = 0, tempoInicial = 0;
 
-    // OUTROS ARQUIVOS
-#include "include/utilities.c" // Funções úteis
-#include "include/temperatura_cvt.c" // Temperatura CVT
+// OUTROS ARQUIVOS
+#include "include/utilities.c"         // Funções úteis
+#include "include/temperatura_cvt.c"   // Temperatura CVT
 #include "include/nivel_combustivel.c" // Níveis de combustível
-#include "include/rpm_motor.c" // RPM do carro
-#include "include/gps.c" // GPS 
-#include "include/cvt_tunning.c" // CVT Tuning
-#include "include/sdcard.c" // Modulo SD
-#include "include/communication.c" // Comunicação entre bibliotecas e serial
+#include "include/rpm_motor.c"         // RPM do carro
+#include "include/gps.c"               // GPS
+#include "include/cvt_tunning.c"       // CVT Tuning
+#include "include/sdcard.c"            // Modulo SD
+#include "include/communication.c"     // Comunicação entre bibliotecas e serial
 #include "include/timers.c"
 #include "include/flash.c"
-
-
 
 bool UpdateTimer(struct repeating_timer *t);
 bool WriteSD(struct repeating_timer *t);
@@ -38,10 +36,10 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.begin(9600);
-  
+
   // Esperar pela resposta do monitor serial?
   WaitSerial(false);
-  
+
   Serial.println("Iniciando setup...");
 
   DisplaySetup();
@@ -57,7 +55,7 @@ void setup()
   TuningSetup();
   Serial.println("cvt tuning ok");
   flashSetup();
-  
+
   delay(1000);
 
   // Interval in unsigned long microseconds
@@ -78,12 +76,12 @@ void setup1()
   }
 
   delay(10);
-  
+
   if (Core1Timer1.attachInterruptInterval(TIMER_INTERVAL_MS * 1000, WriteSD))
     Serial.println("Core1Timer1 OK. Timer de: " + TIMER_INTERVAL_MS);
   else
     Serial.println("Falha no Core1Timer1. Sem timer de escrita no SD");
-  
+
   Serial.print("Setup core1 finalizado.");
   digitalWrite(LED_BUILTIN, HIGH);
   tempoInicial = millis();
@@ -91,14 +89,13 @@ void setup1()
 
 void loop()
 {
- updateGps();
- commands();
- digitalWrite(LED_BUILTIN, HIGH);
+  updateGps();
+  commands();
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop1()
 {
-  
 }
 
 // Interrupt callback functions Core0
@@ -109,7 +106,8 @@ bool UpdateTimer(struct repeating_timer *t)
   timerUpdate();
   Serial.println("Nucleo 0 - Dados Atualizados");
   tempoTotal = ((millis() - tempoInicial) / 100) * 100;
-  Serial.print("Tempo total de execucao: ");Serial.println(tempoTotal);
+  Serial.print("Tempo total de execucao: ");
+  Serial.println(tempoTotal);
   return true;
 }
 
@@ -133,4 +131,4 @@ bool WriteSD(struct repeating_timer *t)
 // https://arduino-pico.readthedocs.io/en/latest/multicore.html
 // Loop e Loop1 são loops em núcleos separados;
 // Setup e Setup1 são setups separados;
-// Setups ocorrem simultaneamente;
+// Loops ocorrem simultaneamente;
