@@ -14,14 +14,17 @@
 class Combustivel : public Setupable
 {
 public:
-    bool Setup()
+    static Combustivel instance;
+
+    Combustivel *Setup()
     {
+        instance = *new Combustivel();
+
         pinMode(COMB_SUPERIOR, INPUT);
         pinMode(COMB_INFERIOR, INPUT);
         setNivelAtual();
 
-        // É possível testar se os pinos foram setados adequadamente?
-        return true;
+        return &instance;
     }
 
     bool Loop()

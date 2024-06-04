@@ -11,10 +11,13 @@
 class PedalAcelerador : public Setupable
 {
 public:
-    bool Setup()
+    static PedalAcelerador instance;
+
+    PedalAcelerador *Setup()
     {
+        instance = *new PedalAcelerador();
         pinMode(PEDAL_ACELERADOR, INPUT);
-        return true;
+        return &instance;
     }
 
     bool Loop()

@@ -12,12 +12,17 @@
 class RPM_Motor : public Setupable
 {
 public:
-    bool Setup()
+    static RPM_Motor instance;
+
+    RPM_Motor *Setup()
     {
+        instance = *new RPM_Motor();
+
         pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
         attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
         told = micros();
-        return true;
+
+        return &instance;
     }
 
     bool Loop()

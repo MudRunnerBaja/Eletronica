@@ -17,20 +17,18 @@
 class Freio : public Setupable
 {
 public:
-    Freio()
-    {
-        return;
-    }
+    static Freio instance;
 
     /**
-     * @return bool
+     * @return Ponteiro para o singleton de Freio
      */
-    bool Setup()
+    Freio *Setup()
     {
+        instance = *new Freio();
         pinMode(NIVEL_FREIO, INPUT);
         pinMode(PRESSAO_FREIO, INPUT);
 
-        return true;
+        return &instance;
     }
 
     /**
