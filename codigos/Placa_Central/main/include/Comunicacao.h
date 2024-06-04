@@ -14,10 +14,14 @@
 class Comunicacao : public Setupable
 {
 public:
-    bool Setup()
+    static Comunicacao instance;
+
+    Comunicacao *Setup()
     {
+        instance = *new Comunicacao();
+
         setupTelemetria();
-        return false;
+        return &instance;
     }
 
     bool Loop()

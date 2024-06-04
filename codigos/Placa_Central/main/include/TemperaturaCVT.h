@@ -12,9 +12,15 @@
 class TemperaturaCVT : public Setupable
 {
 public:
-    TemperaturaCVT()
+    static TemperaturaCVT instance;
+
+    TemperaturaCVT *Setup()
     {
-        return;
+        instance = *new TemperaturaCVT();
+
+        mlx.begin();
+
+        return &instance;
     }
 
     float setTemperaturaObjeto()
@@ -37,12 +43,6 @@ public:
     float getTemperaturaAmbiente()
     {
         return temperaturaAmbiente;
-    }
-
-    bool Setup()
-    {
-        mlx.begin();
-        return true;
     }
 
     bool Loop()

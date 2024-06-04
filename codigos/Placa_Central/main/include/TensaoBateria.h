@@ -11,10 +11,13 @@
 class TensaoBateria : public Setupable
 {
 public:
-    bool Setup()
+    static TensaoBateria instance;
+
+    TensaoBateria *Setup()
     {
+        instance = *new TensaoBateria();
         pinMode(DIV_TENSAO, INPUT);
-        return true;
+        return &instance;
     }
 
     bool Loop()

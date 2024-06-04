@@ -12,12 +12,16 @@
 class Velocidade : public Setupable
 {
 public:
-    bool Setup()
+    static Velocidade instance;
+
+    Velocidade *Setup()
     {
+        instance = *new Velocidade();
+
         pinMode(VEL_INTERRUPT_PIN, INPUT_PULLUP);
         attachInterrupt(digitalPinToInterrupt(VEL_INTERRUPT_PIN), updateVel, RISING);
         told = micros();
-        return true;
+        return &instance;
     }
 
     bool Loop()
