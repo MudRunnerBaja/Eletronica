@@ -22,7 +22,7 @@ public:
     /**
      * @return Ponteiro para o singleton de Freio
      */
-    Freio *Setup()
+    static Freio *Setup()
     {
         instance = *new Freio();
         pinMode(NIVEL_FREIO, INPUT);

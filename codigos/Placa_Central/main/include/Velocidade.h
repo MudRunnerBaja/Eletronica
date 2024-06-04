@@ -14,7 +14,7 @@ class Velocidade : public Setupable
 public:
     static Velocidade instance;
 
-    Velocidade *Setup()
+    static Velocidade *Setup()
     {
         instance = *new Velocidade();
 

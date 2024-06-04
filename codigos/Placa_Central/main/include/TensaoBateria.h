@@ -13,7 +13,7 @@ class TensaoBateria : public Setupable
 public:
     static TensaoBateria instance;
 
-    TensaoBateria *Setup()
+    static TensaoBateria *Setup()
     {
         instance = *new TensaoBateria();
         pinMode(DIV_TENSAO, INPUT);

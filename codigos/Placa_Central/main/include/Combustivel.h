@@ -16,13 +16,12 @@ class Combustivel : public Setupable
 public:
     static Combustivel instance;
 
-    Combustivel *Setup()
+    static Combustivel *Setup()
     {
         instance = *new Combustivel();
 
         pinMode(COMB_SUPERIOR, INPUT);
         pinMode(COMB_INFERIOR, INPUT);
-        setNivelAtual();
 
         return &instance;
     }

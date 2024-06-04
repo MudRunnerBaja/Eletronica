@@ -14,10 +14,11 @@ class TemperaturaCVT : public Setupable
 public:
     static TemperaturaCVT instance;
 
-    TemperaturaCVT *Setup()
+    static TemperaturaCVT *Setup()
     {
         instance = *new TemperaturaCVT();
 
+        mlx = Adafruit_MLX90614();
         mlx.begin();
 
         return &instance;
@@ -69,7 +70,7 @@ public:
     }
 
 private:
-    Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+    static Adafruit_MLX90614 mlx;
     float temperaturaObjeto = 0.0;
     float temperaturaAmbiente = 0.0;
 };

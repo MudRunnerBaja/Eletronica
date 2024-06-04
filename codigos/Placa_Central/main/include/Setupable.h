@@ -8,7 +8,7 @@
 class Setupable
 {
 public:
-    virtual Setupable *Setup() = 0;
+    static Setupable *Setup();
 
     virtual bool Debug() = 0;
 

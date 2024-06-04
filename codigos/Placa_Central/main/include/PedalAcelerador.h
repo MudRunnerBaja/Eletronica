@@ -13,7 +13,7 @@ class PedalAcelerador : public Setupable
 public:
     static PedalAcelerador instance;
 
-    PedalAcelerador *Setup()
+    static PedalAcelerador *Setup()
     {
         instance = *new PedalAcelerador();
         pinMode(PEDAL_ACELERADOR, INPUT);

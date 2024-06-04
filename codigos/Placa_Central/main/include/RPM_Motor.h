@@ -14,7 +14,7 @@ class RPM_Motor : public Setupable
 public:
     static RPM_Motor instance;
 
-    RPM_Motor *Setup()
+    static RPM_Motor *Setup()
     {
         instance = *new RPM_Motor();
 
