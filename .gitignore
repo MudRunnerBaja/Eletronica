@@ -1,6 +1,6 @@
 telemetria/sistema_tema_equipe/Sistema/node_modules
 telemetria/sistema_tema_equipe/Sistema/.env
 telemetria/sistema_tema_equipe/Receptor/node_modules
-.vscode
-.code-workspace
-.output
+*.vscode
+*.code-workspace
+*.output

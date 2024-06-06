@@ -2,22 +2,57 @@
  * Project Classes Placa Central
  */
 
+#ifndef _VEL_H
+#define _VEL_H
 
-#ifndef _VELOCIDADE_H
-#define _VELOCIDADE_H
-
-#include "ContadorPorIntervalo.h"
+#include <Arduino.h>
 #include "Setupable.h"
+#include "Constantes.h"
 
+class Velocidade : public Setupable
+{
+public:
+    bool Setup()
+    {
+        pinMode(VEL_INTERRUPT_PIN, INPUT_PULLUP);
+        attachInterrupt(digitalPinToInterrupt(VEL_INTERRUPT_PIN), updateVel, RISING);
+        told = micros();
+        return true;
+    }
 
-class Velocidade: public ContadorPorIntervalo, public Setupable {
-public: 
-    
-void velSetup();
-    
-int getVel();
-    
-int updateVel();
+    bool Loop()
+    {
+        return false;
+    }
+
+    bool Debug()
+    {
+        return true;
+    }
+
+    double getVel()
+    {
+        return vel;
+    }
+
+    /**
+     * O AttachInterrupt requer uma referência estática para uma função.
+     * Ele não é pensado para trabalhar com objetos ou classes.
+     * Uma alternativa é trabalhar com a Velocidade como um singleton, mas tratar
+     *  a função e das variáveis como estáticas envolve menos código.
+     */
+    static void updateVel()
+    {
+        tpulse = micros() - told;
+        vel = MINUTO_EM_MICROSSEGUNDOS / tpulse;
+        told = micros();
+    }
+
+private:
+    volatile byte state = LOW;
+    static long told;
+    static long tpulse;
+    static double vel;
 };
 
-#endif //_VELOCIDADE_H
+#endif //_VEL_H
