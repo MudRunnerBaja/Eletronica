@@ -36,8 +36,9 @@ void loop(){
     while(!intialized){
         delay(1);
     }
-    updateDisplay(update, menu); 
-    
+    menuButton(menu);
+    updateHUDMain(update, menu, raw); 
+    updateHUDRaw(update, menu, raw);
     updateMenu(menu);
 }
 

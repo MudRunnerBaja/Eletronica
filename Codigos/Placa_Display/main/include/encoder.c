@@ -1,6 +1,3 @@
-
-
-
 #include <RotaryEncoder.h>
 
 int S1PIN = 20;
@@ -8,50 +5,61 @@ int S2PIN = 21;
 int KEY = 22;
 RotaryEncoder encoder(S1PIN, S2PIN, RotaryEncoder::LatchMode::FOUR3);
 
-bool bnt, menu;
+bool bnt, menu = false;
 
 
 int encoderPosition(){
-    static int pos = 0;
-    encoder.tick();
-    return encoder.getPosition();;
+    return encoder.getPosition();
 }
 
 void updateEncoder(){
     encoder.tick();
-
 }
 
-int i;
-void encoderButton(){
-    Serial.println("BOTAO");
-    if (i>2000 && !menu){            //ACHAR OUTRO MEIO DE VERIFICAR TOGGLE POR 2 SEGUNDOS
-        //detachInterrupt(digitalPinToInterrupt(KEY));
-        Serial.println("MENU");
-        i = 0;
-        menu = true;
+void overrideEnc(int valor){
+    encoder.setPosition(valor);
+}
+
+int lastButtonState;
+long buttonPressTime, currentTime;
+int toogleButton(int ms){
+    bool pressed;
+    long currentTime = millis();
+    int buttonState = digitalRead(KEY);
+
+    if (buttonState == LOW && lastButtonState == HIGH) {
+        buttonPressTime = currentTime;
+    } else if (buttonState == HIGH && lastButtonState == LOW) {
+        buttonPressTime = 0; 
     }
-    i++;
-    delay(1);
-}
 
-void setEncoderKey(bool attach){
-    if (attach){
-        attachInterrupt(digitalPinToInterrupt(KEY), encoderButton, LOW);
+    if (buttonState == LOW && (currentTime - buttonPressTime >= ms)) {
+        pressed = true;
     } else {
-        detachInterrupt(digitalPinToInterrupt(KEY));
+        pressed = false;
+    }
+    lastButtonState = buttonState;
+
+    return pressed;
+    }
+
+
+void menuButton(bool enabled){
+    if(!enabled){
+        if(toogleButton(2000)){
+            menu = true;
+        } else {
+            menu = false;
+        }
     }
 }
-/*
-int encoderKey(){
-    int but  = digitalRead(KEY);
-    return but;
-}
-*/
 
+int encoderKey(){
+    return digitalRead(KEY);
+}
 
 
 void setupEncoder(){
     pinMode(KEY, INPUT);
-    setEncoderKey(true);
+    digitalWrite(KEY, HIGH);
 }
