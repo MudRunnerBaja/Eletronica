@@ -11,19 +11,8 @@
 class TensaoBateria : public Setupable
 {
 public:
-    static TensaoBateria instance;
-
-    static TensaoBateria *Setup()
-    {
-        instance = *new TensaoBateria();
-        pinMode(DIV_TENSAO, INPUT);
-        return &instance;
-    }
-
-    bool Loop()
-    {
-        return false;
-    }
+    static TensaoBateria *instance;
+    static TensaoBateria *Setup();
 
     double updateTensaoBateria()
     {
@@ -41,8 +30,30 @@ public:
         return tensaoBateria;
     }
 
+    TensaoBateria(TensaoBateria &outro) = delete;
+
+    TensaoBateria()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
+    }
+
 private:
     double tensaoBateria;
 };
+
+TensaoBateria *TensaoBateria::instance{nullptr};
+TensaoBateria *TensaoBateria::Setup()
+{
+    if (instance == nullptr)
+    {
+        instance = new TensaoBateria();
+    }
+
+    pinMode(DIV_TENSAO, INPUT);
+    return instance;
+}
 
 #endif //_TENSAOBATERIA_H

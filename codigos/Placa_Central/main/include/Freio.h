@@ -17,27 +17,8 @@
 class Freio : public Setupable
 {
 public:
-    static Freio instance;
-
-    /**
-     * @return Ponteiro para o singleton de Freio
-     */
-    static Freio *Setup()
-    {
-        instance = *new Freio();
-        pinMode(NIVEL_FREIO, INPUT);
-        pinMode(PRESSAO_FREIO, INPUT);
-
-        return &instance;
-    }
-
-    /**
-     * @return bool
-     */
-    bool Loop()
-    {
-        return true;
-    }
+    static Freio *instance;
+    static Freio *Setup();
 
     /**
      * @return bool
@@ -80,9 +61,32 @@ public:
         return pressaoAtual;
     }
 
+    Freio(Freio &outro) = delete;
+
+    Freio()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
+    }
+
 private:
     int nivelAtual;
     double pressaoAtual;
 };
 
+Freio *Freio::instance{nullptr};
+Freio *Freio::Setup()
+{
+    if (instance == NULL)
+    {
+        instance = new Freio();
+    }
+
+    pinMode(NIVEL_FREIO, INPUT);
+    pinMode(PRESSAO_FREIO, INPUT);
+
+    return instance;
+}
 #endif //_FREIO_H

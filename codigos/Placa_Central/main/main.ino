@@ -25,10 +25,6 @@ RPI_PICO_Timer Core0Timer0(0);
 RPI_PICO_Timer Core1Timer1(1);
 Instancia myInstance(false, true);
 
-/**
- * IMPLEMENTAÇÃO
- */
-
 void setup()
 {
     Serial.begin(SERIAL_BAUD);

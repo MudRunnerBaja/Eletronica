@@ -8,11 +8,11 @@
 #include <Arduino.h>
 #include "Setupable.h"
 #include "Comunicacao.h"
-// #include "CartaoSD.h"
+#include "CartaoSD.h"
 #include "TemperaturaCVT.h"
 #include "Combustivel.h"
 #include "RPM_Motor.h"
-// #include "GPS.h"
+#include "GPS.h"
 #include "Constantes.h"
 #include "Freio.h"
 #include "Velocidade.h"
@@ -21,11 +21,11 @@ class Instancia
 {
 public:
     Comunicacao comunicacao;
-    // CartaoSD cartaoSD;
+    CartaoSD cartaoSD;
     TemperaturaCVT temperaturaCvt;
     Combustivel nivelCombustivel;
     RPM_Motor rpm;
-    // GPS gps;
+    GPS gps;
     Freio freio;
     Velocidade velocidade;
     bool *estadoSistemas;
@@ -47,8 +47,7 @@ public:
      *
      * Isso é um ponto de falha e requer atenção do desenvolvedor quando usado.
      * O ideal é usar um método para referenciar a instância quando necessário, como
-     * Instancia.GetInstance()
-     */
+     * Instancia.GetInstance() */
     // void operator=(const Instancia &) = delete;
 
     /**
@@ -109,14 +108,17 @@ public:
 
     void Setup()
     {
+        gps.Setup();
+        comunicacao.Setup();
+        temperaturaCvt.Setup();
+        rpm.Setup();
+        nivelCombustivel.Setup();
+        freio.Setup();
+        velocidade.Setup();
+        cartaoSD.Setup();
     }
 
-private:
-    byte data[5];
-
     /**
-     * O construtor deve ser privado para evitar construções diretas de uma
-     * nova instância, com new ou delete.
      * @param debugMode if true waits for Serial USB Port comm. Hangs the program indefinitely.
      * @param callSetup if true calls default initialization function. Defaults to true.
      */
@@ -129,30 +131,45 @@ private:
         if (instance == nullptr)
         {
             instance = this;
-        }
 
-        while (debugMode && !Serial)
-        {
-            digitalWrite(LED_BUILTIN, LOW);
-            int i = 0;
-            while (i < 3)
+            // Aguardando comunicação Serial
+            while (debugMode && !Serial)
             {
-                digitalWrite(LED_BUILTIN, HIGH);
-                delay(75);
                 digitalWrite(LED_BUILTIN, LOW);
-                delay(75);
+                int i = 0;
+                while (i < 3)
+                {
+                    digitalWrite(LED_BUILTIN, HIGH);
+                    delay(75);
+                    digitalWrite(LED_BUILTIN, LOW);
+                    delay(75);
+                }
+            }
+
+            gps = GPS();
+            comunicacao = Comunicacao();
+            temperaturaCvt = TemperaturaCVT();
+            rpm = RPM_Motor();
+            nivelCombustivel = Combustivel();
+            freio = Freio();
+            velocidade = Velocidade();
+            cartaoSD = CartaoSD();
+
+            if (callSetup)
+            {
+                Setup();
             }
         }
-
-        if (callSetup)
-        {
-            Setup();
-        }
     }
+
+private:
+    byte data[5]; // Dados transmitidos entre dispositivos.
 };
 
 /**
- * Static methods should be defined outside the class.
+ * Implementações de variáveis e métodos estáticos.
+ * Especialmente importante que sejam feitos fora da função
+ * para o compilador do Arduino
  */
 
 Instancia *Instancia::instance{nullptr};

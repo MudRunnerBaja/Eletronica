@@ -12,24 +12,15 @@
 class RPM_Motor : public Setupable
 {
 public:
-    static RPM_Motor instance;
+    static RPM_Motor *instance;
+    static RPM_Motor *Setup();
 
-    static RPM_Motor *Setup()
-    {
-        instance = *new RPM_Motor();
-
-        pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
-        attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
-        told = micros();
-
-        return &instance;
-    }
-
-    bool Loop()
-    {
-        return false;
-    }
-
+    /**
+     * O AttachInterrupt requer uma referência estática para uma função.
+     * Ele não é pensado para trabalhar com objetos ou classes.
+     * Isso é contornável tornando varíaveis e métodos estáticos.
+     */
+    static void updateRPM();
     bool Debug()
     {
         return true;
@@ -40,17 +31,14 @@ public:
         return rpm;
     }
 
-    /**
-     * O AttachInterrupt requer uma referência estática para uma função.
-     * Ele não é pensado para trabalhar com objetos ou classes.
-     * Uma alternativa é trabalhar com o RPM como um singleton, mas tratar
-     *  a função e das variáveis como estáticas envolve menos código.
-     */
-    static void updateRPM()
+    RPM_Motor(RPM_Motor &outro) = delete;
+
+    RPM_Motor()
     {
-        tpulse = micros() - told;
-        rpm = MINUTO_EM_MICROSSEGUNDOS / tpulse;
-        told = micros();
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
     }
 
 private:
@@ -60,8 +48,34 @@ private:
     static double rpm;
 };
 
+// Implementações de variáveis e métodos estáticos.
+// Especialmente importante que sejam feitos fora da função
+// para o compilador do Arduino
+
+RPM_Motor *RPM_Motor::instance{nullptr};
 long RPM_Motor::told = 0;
 long RPM_Motor::tpulse = 0;
 double RPM_Motor::rpm = 0.0;
+
+RPM_Motor *RPM_Motor::Setup()
+{
+    if (instance == nullptr)
+    {
+        instance = new RPM_Motor();
+    }
+
+    pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
+    told = micros();
+
+    return instance;
+}
+
+void RPM_Motor::updateRPM()
+{
+    tpulse = micros() - told;
+    rpm = MINUTO_EM_MICROSSEGUNDOS / tpulse;
+    told = micros();
+}
 
 #endif //_RPM_H

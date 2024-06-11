@@ -7,27 +7,16 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include <TinyGPSPlus.h>
+#include <TinyGPSPlus.h> // http://arduiniana.org/libraries/tinygps/
 
 class GPS : public Setupable
 {
 public:
+    static GPS *instance;
+    static GPS *Setup();
+
     TinyGPSPlus gps;
-
-    bool Setup()
-    {
-        Serial2.setTX(GPS_TX);
-        Serial2.setRX(GPS_RX);
-        Serial2.begin(GPS_BAUD);
-
-        if (!Serial2)
-        {
-            Serial.println("Falha Serial GPS");
-            return false;
-        }
-        Serial.println("Inicializado Serial do GPS");
-        return true;
-    }
+    bool possuiData;
 
     bool Loop()
     {
@@ -50,8 +39,8 @@ public:
         s = String(s + latitude + " | Lon: ");
         longitude = gps.location.lng();
         s = String(s + longitude + "\nAge: ");
-        age = gps.location.age();
-        s = String(s + age + " | Vel: ");
+        fix_age = gps.location.age();
+        s = String(s + fix_age + " | Vel: ");
         speed = gps.speed.kmph();
         s = String(s + speed + " | Sat: ");
         sat = gps.satellites.value();
@@ -61,7 +50,7 @@ public:
         date = gps.date.value();
         s = String(s + date);
 
-        if (age > 5000)
+        if (fix_age > 5000)
         {
             Serial.println("AVISO! GPS possivelmente desatualizado!");
         }
@@ -97,28 +86,31 @@ public:
             gpsOn = true;
             latitude = gps.location.lat();
             longitude = gps.location.lng();
-            age = gps.location.age();
+            fix_age = gps.location.age();
             speed = gps.speed.kmph();
             sat = gps.satellites.value();
             gpstime = gps.time.value();
-            date = gps.date.value();
 
-            dia = date / 100000;
-            mes = (date / 10000) % 100;
-            ano = date % 10000;
+            // Docs sugerem que existe, compilador diz que nao
+            // gps.crack_datetime(&ano, &mes, &dia, &hora, &minuto, &segundo, &centissegundos, &fix_age);
 
-            datahj = String(dia);
-            datahj += "/";
-            datahj += String(mes);
-            datahj += "/";
-            datahj += String(ano);
+            if (!possuiData)
+            {
+
+                datahj = String("");
+                datahj = String(dia);
+                datahj += "/";
+                datahj += String(mes);
+                datahj += "/";
+                datahj += String(ano);
+            }
 
             newData = false;
             return true;
         }
         else
         {
-            if (age > 5000)
+            if (fix_age > 5000)
             {
                 gpsOn = false;
             }
@@ -147,29 +139,63 @@ public:
 
     String getDataHoje()
     {
-        datahj = String(dia);
-        datahj += "/";
-        datahj += String(mes);
-        datahj += "/";
-        datahj += String(ano);
-        return datahj;
+        if (possuiData)
+        {
+            return datahj;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    GPS()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
     }
 
 private:
     double speed;
     double latitude;
     double longitude;
-    unsigned long age;
+    unsigned long fix_age;
     unsigned long gpstime;
     unsigned long date;
     unsigned long sat;
     unsigned long milisec;
-    unsigned short dia;
-    unsigned short mes;
-    unsigned short ano;
+    unsigned short dia, mes, hora, minuto, segundo, centissegundos;
+    unsigned int ano;
     String datahj;
+
     bool newData;
     bool gpsOn;
 };
 
+GPS *GPS::instance{nullptr};
+
+GPS *GPS::Setup()
+{
+    if (instance == nullptr)
+    {
+        instance = new GPS();
+    }
+
+    Serial2.setTX(GPS_TX);
+    Serial2.setRX(GPS_RX);
+    Serial2.begin(GPS_BAUD);
+
+    if (!Serial2)
+    {
+        Serial.println("Falha Serial GPS");
+    }
+    else
+    {
+        Serial.println("Inicializado Serial do GPS");
+    }
+
+    return instance;
+}
 #endif //_GPS_H

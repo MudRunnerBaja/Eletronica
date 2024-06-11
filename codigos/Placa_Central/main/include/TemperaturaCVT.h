@@ -12,17 +12,8 @@
 class TemperaturaCVT : public Setupable
 {
 public:
-    static TemperaturaCVT instance;
-
-    static TemperaturaCVT *Setup()
-    {
-        instance = *new TemperaturaCVT();
-
-        mlx = Adafruit_MLX90614();
-        mlx.begin();
-
-        return &instance;
-    }
+    static TemperaturaCVT *instance;
+    static TemperaturaCVT *Setup();
 
     float setTemperaturaObjeto()
     {
@@ -46,11 +37,6 @@ public:
         return temperaturaAmbiente;
     }
 
-    bool Loop()
-    {
-        return false;
-    }
-
     bool Debug()
     {
         if (!Serial)
@@ -69,10 +55,36 @@ public:
         return mlx;
     }
 
+    TemperaturaCVT(TemperaturaCVT &outro) = delete;
+
+    TemperaturaCVT()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
+    }
+
 private:
     static Adafruit_MLX90614 mlx;
     float temperaturaObjeto = 0.0;
     float temperaturaAmbiente = 0.0;
 };
+
+Adafruit_MLX90614 TemperaturaCVT::mlx = Adafruit_MLX90614();
+TemperaturaCVT *TemperaturaCVT::instance{nullptr};
+TemperaturaCVT *TemperaturaCVT::Setup()
+{
+    if (instance == nullptr)
+    {
+        instance = new TemperaturaCVT();
+    }
+
+    // mlx = Adafruit_MLX90614();
+
+    mlx.begin();
+
+    return instance;
+}
 
 #endif //_TEMPERATURACVT_H

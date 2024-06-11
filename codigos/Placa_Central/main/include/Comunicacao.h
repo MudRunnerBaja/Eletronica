@@ -14,15 +14,8 @@
 class Comunicacao : public Setupable
 {
 public:
-    static Comunicacao instance;
-
-    Comunicacao *Setup()
-    {
-        instance = *new Comunicacao();
-
-        setupTelemetria();
-        return &instance;
-    }
+    static Comunicacao *instance;
+    static Comunicacao *Setup();
 
     bool Loop()
     {
@@ -32,37 +25,6 @@ public:
     bool Debug()
     {
         return false;
-    }
-
-    bool setupTelemetria()
-    {
-
-        Serial1.setRX(TELEMETRIA_RX);
-        Serial1.setTX(TELEMETRIA_TX);
-        Serial1.setFIFOSize(128);
-        Serial1.begin(9600);
-
-        return false;
-    }
-
-    /**
-     * CAN-BUS by Sandeep Mistry
-     * https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
-     */
-    bool setupCanBus()
-    {
-
-        SPI.setSCK(CAN_SCKPIN);
-        SPI.setRX(CAN_RXPIN);
-        SPI.setTX(CAN_TXPIN);
-        CAN.setPins(CAN_CSPIN);
-
-        if (!CAN.begin(500E3))
-        {
-            Serial.println("Starting CAN failed!");
-            return false;
-        }
-        return true;
     }
 
     void enviarDadosTelemetria(String data)
@@ -92,7 +54,61 @@ public:
         return;
     }
 
+    Comunicacao(Comunicacao &outro) = delete;
+
+    Comunicacao()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
+    }
+
 private:
+    static bool setupTelemetria()
+    {
+
+        Serial1.setRX(TELEMETRIA_RX);
+        Serial1.setTX(TELEMETRIA_TX);
+        Serial1.setFIFOSize(128);
+        Serial1.begin(9600);
+
+        return false;
+    }
+
+    /**
+     * CAN-BUS by Sandeep Mistry
+     * https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
+     */
+    static bool setupCanBus()
+    {
+
+        SPI.setSCK(CAN_SCKPIN);
+        SPI.setRX(CAN_RXPIN);
+        SPI.setTX(CAN_TXPIN);
+        CAN.setPins(CAN_CSPIN);
+
+        if (!CAN.begin(500E3))
+        {
+            Serial.println("Starting CAN failed!");
+            return false;
+        }
+        return true;
+    }
 };
+
+Comunicacao *Comunicacao::instance{nullptr};
+Comunicacao *Comunicacao::Setup()
+{
+    if (instance == NULL)
+    {
+        instance = new Comunicacao();
+    }
+
+    // setupTelemetria();
+    // setupCanBus();
+
+    return instance;
+}
 
 #endif //_COMUNICACAO_H

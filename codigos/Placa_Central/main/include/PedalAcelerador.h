@@ -11,21 +11,15 @@
 class PedalAcelerador : public Setupable
 {
 public:
-    static PedalAcelerador instance;
+    static PedalAcelerador *instance;
+    static PedalAcelerador *Setup();
 
-    static PedalAcelerador *Setup()
+    double getPedalAcelerador()
     {
-        instance = *new PedalAcelerador();
-        pinMode(PEDAL_ACELERADOR, INPUT);
-        return &instance;
+        return pedalAcelerador;
     }
 
-    bool Loop()
-    {
-        return false;
-    }
-
-    double updateTensaoBateria()
+    double updatePedalAcelerador()
     {
         pedalAcelerador;
         return pedalAcelerador;
@@ -36,13 +30,35 @@ public:
         return false;
     }
 
-    double getTensaoBateria()
+    bool Loop()
     {
-        return pedalAcelerador;
+        return false;
+    }
+
+    PedalAcelerador(PedalAcelerador &outro) = delete;
+
+    PedalAcelerador()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
     }
 
 private:
     double pedalAcelerador;
 };
+
+PedalAcelerador *PedalAcelerador::instance{nullptr};
+PedalAcelerador *PedalAcelerador::Setup()
+{
+    if (instance == nullptr)
+    {
+        instance = new PedalAcelerador();
+    }
+
+    pinMode(PEDAL_ACELERADOR, INPUT);
+    return instance;
+}
 
 #endif //_PEDAL_ACELERADOR_H

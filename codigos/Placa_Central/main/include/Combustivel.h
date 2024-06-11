@@ -14,23 +14,8 @@
 class Combustivel : public Setupable
 {
 public:
-    static Combustivel instance;
-
-    static Combustivel *Setup()
-    {
-        instance = *new Combustivel();
-
-        pinMode(COMB_SUPERIOR, INPUT);
-        pinMode(COMB_INFERIOR, INPUT);
-
-        return &instance;
-    }
-
-    bool Loop()
-    {
-        // Não deve ser chamado
-        return true;
-    }
+    static Combustivel *instance;
+    static Combustivel *Setup();
 
     /**
      * Imprime o nível atual de combustível no momento da chamada.
@@ -93,8 +78,32 @@ public:
         return nivelAtual;
     }
 
+    Combustivel(Combustivel &outro) = delete;
+
+    Combustivel()
+    {
+        if (instance == nullptr)
+        {
+            instance = this;
+        }
+    }
+
 private:
     short nivelAtual;
 };
+
+Combustivel *Combustivel::instance{nullptr};
+Combustivel *Combustivel::Setup()
+{
+    if (instance == NULL)
+    {
+        instance = new Combustivel();
+    }
+
+    pinMode(COMB_SUPERIOR, INPUT);
+    pinMode(COMB_INFERIOR, INPUT);
+
+    return instance;
+}
 
 #endif //_COMBUSTIVEL_H
