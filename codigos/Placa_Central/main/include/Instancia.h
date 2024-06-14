@@ -17,6 +17,18 @@
 #include "Freio.h"
 #include "Velocidade.h"
 
+// Incluir todos os dados. Quando atualizar
+// cada dado, salvar também nessa struct em
+// Instancia
+
+struct _Dados
+{
+    float velocidade;
+    float tempCvt;
+    float rpm;
+};
+typedef struct _Dados Dados;
+
 class Instancia
 {
 public:
@@ -32,6 +44,7 @@ public:
     bool *testeSistemas;
 
     static Instancia *instance;
+    static Dados dados;
 
     // Esse é o principal caso de exemplo para Singletons.
     // https://refactoring.guru/pt-br/design-patterns/singleton/cpp/example#example-1
@@ -146,7 +159,7 @@ public:
                 }
             }
 
-            gps = GPS();
+            // gps = GPS();
             comunicacao = Comunicacao();
             temperaturaCvt = TemperaturaCVT();
             rpm = RPM_Motor();
@@ -173,6 +186,11 @@ private:
  */
 
 Instancia *Instancia::instance{nullptr};
+Dados Instancia::dados{
+    velocidade : 0.0,
+    tempCvt : 0.0,
+    rpm : 0.0
+};
 
 Instancia *Instancia::GetInstance()
 {
