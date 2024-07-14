@@ -27,22 +27,32 @@ enum Nivel
 #define TELEMETRIA_RX 1 // PINO RX UART LORA
 #define TELEMETRIA_TX 0 // PINO TX UART LORA
 
+// TEMP CVT
+/*
+    TODO
+    4 E 5 SÃO DO MLX, REVISAR PINOUT E SETUP
+*/
+
 // GPS SERIAL1 UART
 #define GPS_TX 8 // PINO TX UART GPS
 #define GPS_RX 9 // PINO RX UART GPS
 #define GPS_BAUD 9600
 
-// CAN SPI
-#define CAN_SCKPIN 10
-#define CAN_TXPIN 11 // MOSI/TX CAN
-#define CAN_RXPIN 12 // MISO/RX CAN
-#define CAN_CSPIN 13
+// SD SPI0
+#define SD_RXPIN 12 // MISO
+#define SD_CSPIN 13
+#define SD_SCKPIN 10
+#define SD_TXPIN 11 // MOSI
 
-// SD SPI1
-#define SD_RXPIN 16 // MISO
-#define SD_CSPIN 17
-#define SD_SCKPIN 18
-#define SD_TXPIN 19 // MOSI
+// COMBUSTIVEL
+#define COMB_INFERIOR 14
+#define COMB_SUPERIOR 15
+
+// CAN SPI1
+#define CAN_SCKPIN 18
+#define CAN_TXPIN 19 // MOSI/TX CAN
+#define CAN_RXPIN 16 // MISO/RX CAN
+#define CAN_CSPIN 17
 
 // FREIO
 #define NIVEL_FREIO 20
@@ -51,10 +61,6 @@ enum Nivel
 // DIVISOR TENSAO
 #define DIV_TENSAO 26
 #define BATERIA_TENSAO_MAX 13.3
-
-// COMBUSTIVEL
-#define COMB_INFERIOR 14
-#define COMB_SUPERIOR 15
 
 // RPM
 #define RPM_INTERRUPT_PIN 21

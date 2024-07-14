@@ -33,7 +33,7 @@ class Instancia
 {
 public:
     Comunicacao comunicacao;
-    CartaoSD cartaoSD;
+    // CartaoSD cartaoSD;
     TemperaturaCVT temperaturaCvt;
     Combustivel nivelCombustivel;
     RPM_Motor rpm;
@@ -128,7 +128,7 @@ public:
         nivelCombustivel.Setup();
         freio.Setup();
         velocidade.Setup();
-        cartaoSD.Setup();
+        // cartaoSD.Setup();
     }
 
     /**
@@ -166,7 +166,7 @@ public:
             nivelCombustivel = Combustivel();
             freio = Freio();
             velocidade = Velocidade();
-            cartaoSD = CartaoSD();
+            // cartaoSD = CartaoSD();
 
             if (callSetup)
             {

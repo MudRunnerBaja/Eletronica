@@ -9,6 +9,10 @@
 #include <Adafruit_MLX90614.h>
 #include "Constantes.h"
 
+/*
+    REVISAR PINOUT E SETUP
+*/
+
 class TemperaturaCVT : public Setupable
 {
 public:
