@@ -1,0 +1,26 @@
+<div class="container-fluid mx-auto px-auto my-4">
+    <div class="row justify-content-center align-center">
+      <div class="col-5">
+        <div class="card text-center">
+          <div class="card-header">RPM</div>
+          <div class="card-body">
+            <app-chart-rpm #chartRpm
+            (ultimoDado)="getUltimoRpm($event)"></app-chart-rpm>
+          </div>
+          <div class="card-footer text-muted"><span>Último Rpm: {{ultimoRPM}}</span></div>
+        </div>
+      </div>
+  
+      <div class="col-5">
+        <div class="card text-center">
+          <div class="card-header">Velocidade</div>
+          <div class="card-body">
+            <app-chart-vel #chartVel
+            (ultimoDado)="getUltimaVel($event)"></app-chart-vel>
+          </div>
+          <div class="card-footer text-muted"><span>Última Vel: {{ultimaVel}}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

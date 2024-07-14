@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, AfterViewInit, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Chart } from 'chart.js/auto';
 import { Dados } from '../../models/dados';
 import { WebSocketService } from '../../shared/web-socket.service';
 
 @Component({
-  selector: 'app-chart-vel',
+  selector: 'app-chart-rpm',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  templateUrl: './chart-vel.component.html',
-  styleUrl: './chart-vel.component.scss',
+  templateUrl: './chart-rpm.component.html',
+  styleUrl: './chart-rpm.component.scss',
 })
-export class ChartVelComponent implements AfterViewInit {
+export class ChartRpmComponent implements AfterViewInit {
 
   constructor(private WebSocketService: WebSocketService,
   ) {}
@@ -20,7 +20,7 @@ export class ChartVelComponent implements AfterViewInit {
   @ViewChild('chartRef', { static: false }) chartElementRef!: ElementRef;
   @Output() ultimoDado = new EventEmitter<number>();
 
-  public chartName: string = 'Velocidade';
+  public chartName: string = 'RPM';
   public conjunto: Dados[] = [];
   public count: number = 10;
 
@@ -38,7 +38,7 @@ export class ChartVelComponent implements AfterViewInit {
         labels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         datasets: [
           {
-            label: 'Velocidade',
+            label: 'RPM',
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           },
         ],
@@ -55,9 +55,8 @@ export class ChartVelComponent implements AfterViewInit {
     this.WebSocketService.listen('dataArduino').subscribe((data) => {
       // console.log(data);
       let dataObj: Dados = JSON.parse(data);
-      this.ultimoDado.emit(dataObj.vel);
+      this.ultimoDado.emit(dataObj.rpm);
 
-      // console.log(this.ultimaVel);
       this.conjunto.push(dataObj);
       //aumenta o contador de interações
       this.count += 1;
@@ -71,7 +70,7 @@ export class ChartVelComponent implements AfterViewInit {
         dataset.data.shift();
       });
       chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(this.conjunto[this.count - 11].vel);
+        dataset.data.push(this.conjunto[this.count - 11].rpm);
       });
 
       chart.update('none');

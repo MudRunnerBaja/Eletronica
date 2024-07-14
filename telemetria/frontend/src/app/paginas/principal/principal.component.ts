@@ -1,15 +1,15 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { ChartVelComponent } from '../../charts/chart-vel/chart-vel.component';
 import { ChartRpmComponent } from '../../charts/chart-rpm/chart-rpm.component';
+import { ChartVelComponent } from '../../charts/chart-vel/chart-vel.component';
 
 @Component({
-  selector: 'app-dashboard-template',
+  selector: 'app-principal',
   standalone: true,
   imports: [ChartVelComponent, ChartRpmComponent],
-  templateUrl: './dashboard-template.component.html',
-  styleUrl: './dashboard-template.component.scss',
+  templateUrl: './principal.component.html',
+  styleUrl: './principal.component.scss'
 })
-export class DashboardTemplateComponent implements AfterViewInit {
+export class PrincipalComponent implements AfterViewInit {
 
   constructor() {
 

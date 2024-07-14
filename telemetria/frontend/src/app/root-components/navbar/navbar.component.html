@@ -1,18 +1,20 @@
-<ul ngbNav #nav="ngbNav" class="nav-tabs">
-  <li ngbNavItem>
-    <button ngbNavLink>First</button>
-    <ng-template ngbNavContent>First content</ng-template>
+<ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="active" (navChange)="onNavChange($event)">
+  <li [ngbNavItem]="1">
+    <button ngbNavLink>Principal</button>
+    <ng-template ngbNavContent><app-principal></app-principal></ng-template>
   </li>
-  <li ngbNavItem>
-    <button ngbNavLink>Second</button>
+  <li [ngbNavItem]="2">
+    <button ngbNavLink>Simplificado</button>
     <ng-template ngbNavContent>Second content</ng-template>
   </li>
-  <li ngbNavItem>
-    <button ngbNavLink>Third</button>
+  <li [ngbNavItem]="3">
+    <button ngbNavLink [disabled]="disabled">Third</button>
     <ng-template ngbNavContent>Third content</ng-template>
   </li>
-  <li ngbNavItem>
-    <button ngbNavLink>Fourth</button>
+  <li [ngbNavItem]="4">
+    <button ngbNavLink [disabled]="disabled">Fourth</button>
     <ng-template ngbNavContent>Quarta content</ng-template>
   </li>
 </ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

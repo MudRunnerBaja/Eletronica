@@ -1,24 +1,24 @@
 <div class="container-fluid mx-auto px-auto my-4">
-  <div class="row align-center">
-    <div class="col-6">
+  <div class="row justify-content-center align-center">
+    <div class="col-5">
       <div class="card text-center">
-        <div class="card-header">Header</div>
+        <div class="card-header">RPM</div>
         <div class="card-body">
-          <h5 class="card-title">Body - Título</h5>
-          <p class="card-text">Body - Texto</p>
-          <a href="#" class="btn btn-primary">Body - Botão</a>
+          <app-chart-rpm #chartRpm
+          (ultimoDado)="getUltimoRpm($event)"></app-chart-rpm>
         </div>
-        <div class="card-footer text-muted">Footer</div>
+        <div class="card-footer text-muted"><span>Último Rpm: {{ultimoRPM}}</span></div>
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-5">
       <div class="card text-center">
         <div class="card-header">Velocidade</div>
         <div class="card-body">
-          <app-chart-vel></app-chart-vel>
+          <app-chart-vel #chartVel
+          (ultimoDado)="getUltimaVel($event)"></app-chart-vel>
         </div>
-        <div class="card-footer text-muted">*Mais Recente*</div>
+        <div class="card-footer text-muted"><span>Última Vel: {{ultimaVel}}</span></div>
       </div>
     </div>
   </div>
