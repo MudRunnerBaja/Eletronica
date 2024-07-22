@@ -72,7 +72,7 @@ public:
                 newData = true;
 
             tf = millis();
-            unsigned int tTotal = tf - t0;
+            // unsigned int tTotal = tf - t0;
         }
         return;
     }

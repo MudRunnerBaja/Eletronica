@@ -71,16 +71,17 @@ public:
      * @param int
      * @param float float
      */
-    void writeData(int a, int b, int c, float d, float e)
+    /*
+void writeData(int a, int b, int c, float d, float e)
+{
+    if (!arquivoCriado)
     {
-        if (!arquivoCriado)
-        {
-            return;
-        }
-
         return;
     }
 
+    return;
+}
+*/
     bool testarCartaoSD()
     {
         return true;

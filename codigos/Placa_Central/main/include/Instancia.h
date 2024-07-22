@@ -33,7 +33,7 @@ class Instancia
 {
 public:
     Comunicacao comunicacao;
-    // CartaoSD cartaoSD;
+    CartaoSD cartaoSD;
     TemperaturaCVT temperaturaCvt;
     Combustivel nivelCombustivel;
     RPM_Motor rpm;
@@ -122,13 +122,21 @@ public:
     void Setup()
     {
         gps.Setup();
+        Serial.println("Setup GPS concluido");
         comunicacao.Setup();
+        Serial.println("Setup comunicacao concluido");
         temperaturaCvt.Setup();
+        Serial.println("Setup temperaturaCvt concluido");
         rpm.Setup();
+        Serial.println("Setup rpm concluido");
         nivelCombustivel.Setup();
+        Serial.println("Setup nivelCombustivel concluido");
         freio.Setup();
+        Serial.println("Setup freio concluido");
         velocidade.Setup();
-        // cartaoSD.Setup();
+        Serial.println("Setup velocidade concluido");
+        cartaoSD.Setup();
+        Serial.println("Setup cartaoSD concluido");
     }
 
     /**
@@ -143,12 +151,24 @@ public:
          */
         if (instance == nullptr)
         {
+            Serial.println("Criando nova instancia");
+            int i = 0;
+            while (i < 3)
+            {
+                digitalWrite(LED_BUILTIN, HIGH);
+                delay(75);
+                digitalWrite(LED_BUILTIN, LOW);
+                delay(75);
+                i++;
+            }
+            digitalWrite(LED_BUILTIN, HIGH);
             instance = this;
 
-            // Aguardando comunicação Serial
-            while (debugMode && !Serial)
+            if (debugMode)
             {
                 digitalWrite(LED_BUILTIN, LOW);
+                Serial.println("Iniciando em Debug Mode");
+                Serial.println("Piscando led");
                 int i = 0;
                 while (i < 3)
                 {
@@ -156,21 +176,38 @@ public:
                     delay(75);
                     digitalWrite(LED_BUILTIN, LOW);
                     delay(75);
+                    i++;
                 }
+                Serial.println("Mantendo led aceso");
+                digitalWrite(LED_BUILTIN, HIGH);
             }
 
-            // gps = GPS();
-            comunicacao = Comunicacao();
+            gps = GPS();
+            // Serial.println("Instancia GPS gerada");
+            // comunicacao = Comunicacao();
+            // Serial.println("Instancia Comunicacao gerada");
             temperaturaCvt = TemperaturaCVT();
+            Serial.println("Instancia TemperaturaCVT gerada");
             rpm = RPM_Motor();
+            Serial.println("Instancia RPM_Motor gerada");
             nivelCombustivel = Combustivel();
+            Serial.println("Instancia Combustivel gerada");
             freio = Freio();
+            Serial.println("Instancia Freio gerada");
             velocidade = Velocidade();
+            Serial.println("Instancia Velocidade gerada");
             // cartaoSD = CartaoSD();
+            Serial.println("Instancia CartaoSD gerada");
 
             if (callSetup)
             {
+                Serial.println("Chamando Setup");
                 Setup();
+                Serial.println("Setup concluido");
+            }
+            else
+            {
+                Serial.println("Setup não será chamado.");
             }
         }
     }
@@ -209,5 +246,7 @@ Instancia *Instancia::GerarInstancia(bool debugMode, bool callSetup)
     }
     return instance;
 }
+
+typedef class Instancia Instancia;
 
 #endif //_INSTANCIA_H
