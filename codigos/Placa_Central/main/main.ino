@@ -24,8 +24,8 @@ unsigned long tempoTotal;
 unsigned long tempoInicial;
 RPI_PICO_Timer Core0Timer0(0);
 RPI_PICO_Timer Core1Timer1(1);
-bool debugMode = true;
-bool callSetup = true;
+static bool debugMode = true;
+static bool callSetup = true;
 static Instancia *myInstance;
 
 void setup()
@@ -34,13 +34,13 @@ void setup()
     digitalWrite(LED_BUILTIN, HIGH);
     Serial.begin(SERIAL_BAUD);
 
-    WaitSerial(true);
+    WaitSerial(debugMode);
     Serial.println("INCIALIZANDO INSTANCIA");
     Serial.println("=======================");
     myInstance = new Instancia(debugMode, callSetup);
 
     pinMode(LED_BUILTIN, OUTPUT);
-
+    randomSeed(756498465497);
     Serial.println("=======================");
     Serial.println("INICIALIZACAO CONCLUIDA");
     return;
@@ -53,7 +53,10 @@ void setup1()
 
 void loop()
 {
-    return;
+    myInstance->TesteAtualizarDados();
+    delay(5);
+    myInstance->DebugLoop();
+    delay(995);
 }
 
 void loop1()

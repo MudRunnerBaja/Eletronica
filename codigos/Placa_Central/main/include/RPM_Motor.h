@@ -33,6 +33,11 @@ public:
 
     RPM_Motor(RPM_Motor &outro) = delete;
 
+    void setValoresDeTeste()
+    {
+        rpm = (float)((random(RAND_MAX) / RAND_MAX) * 4200);
+    }
+
     RPM_Motor()
     {
         if (instance == nullptr)

@@ -44,6 +44,25 @@ public:
         return erro;
     }
 
+    void setValoresDeTeste()
+    {
+        int sensorSuperior = (random(10) % 2);
+        int sensorInfernior = (random(10) % 2);
+
+        if (sensorInfernior == HIGH) // Se o inferior não detecta combustível
+        {
+            nivelAtual = BAIXO;
+        }
+        if (sensorSuperior == LOW) // Se o superior detecta combustível
+        {                          // E o inferior TAMBÉM (1º if)
+            nivelAtual = ALTO;
+        }
+        else // Se o superior não detecta e o inferior detecta
+        {
+            nivelAtual = MEDIO;
+        }
+    }
+
     short setNivelAtual()
     {
         /*

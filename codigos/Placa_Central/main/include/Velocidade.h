@@ -28,6 +28,11 @@ public:
         return true;
     }
 
+    void setValoresDeTeste()
+    {
+        vel = (double)((random(RAND_MAX) / RAND_MAX) * 52);
+    }
+
     double getVel()
     {
         return vel;

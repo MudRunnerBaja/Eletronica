@@ -31,6 +31,12 @@ public:
         return temperaturaAmbiente;
     }
 
+    void setValoresDeTeste()
+    {
+        temperaturaAmbiente = (random(2000) / 10.0);
+        temperaturaObjeto = (random(2000) / 10.0);
+    }
+
     float getTemperaturaObjeto()
     {
         return temperaturaObjeto;

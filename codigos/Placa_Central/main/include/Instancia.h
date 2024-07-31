@@ -43,6 +43,15 @@ public:
     bool *estadoSistemas;
     bool *testeSistemas;
 
+    void TesteAtualizarDados()
+    {
+        temperaturaCvt.setValoresDeTeste();
+        rpm.setValoresDeTeste();
+        nivelCombustivel.setValoresDeTeste();
+        freio.setValoresDeTeste();
+        velocidade.setValoresDeTeste();
+    }
+
     static Instancia *instance;
     static Dados dados;
 
@@ -78,6 +87,20 @@ public:
      * @param callSetup if true calls default initialization function. Defaults to true.
      */
     static Instancia *GerarInstancia(bool debugMode, bool callSetup);
+
+    bool DebugLoop()
+    {
+        gps.Debug();
+        comunicacao.Debug();
+        temperaturaCvt.Debug();
+        rpm.Debug();
+        nivelCombustivel.Debug();
+        freio.Debug();
+        velocidade.Debug();
+        cartaoSD.Debug();
+
+        return false;
+    }
 
     /**
      * @return bool
@@ -183,9 +206,9 @@ public:
             }
 
             gps = GPS();
-            // Serial.println("Instancia GPS gerada");
-            // comunicacao = Comunicacao();
-            // Serial.println("Instancia Comunicacao gerada");
+            Serial.println("Instancia GPS gerada");
+            comunicacao = Comunicacao();
+            Serial.println("Instancia Comunicacao gerada");
             temperaturaCvt = TemperaturaCVT();
             Serial.println("Instancia TemperaturaCVT gerada");
             rpm = RPM_Motor();
@@ -196,7 +219,7 @@ public:
             Serial.println("Instancia Freio gerada");
             velocidade = Velocidade();
             Serial.println("Instancia Velocidade gerada");
-            // cartaoSD = CartaoSD();
+            cartaoSD = CartaoSD();
             Serial.println("Instancia CartaoSD gerada");
 
             if (callSetup)
@@ -221,7 +244,6 @@ private:
  * Especialmente importante que sejam feitos fora da função
  * para o compilador do Arduino
  */
-
 Instancia *Instancia::instance{nullptr};
 Dados Instancia::dados{
     velocidade : 0.0,

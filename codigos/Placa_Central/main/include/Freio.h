@@ -28,6 +28,12 @@ public:
         return false;
     }
 
+    void setValoresDeTeste()
+    {
+        pressaoAtual = (((double)random(255) / 146.25) * 2.1428);
+        nivelAtual = random(1);
+    }
+
     int setNivelAtual()
     {
         nivelAtual = digitalRead(NIVEL_FREIO);
