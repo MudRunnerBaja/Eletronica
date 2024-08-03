@@ -53,9 +53,9 @@ void setup1()
 
 void loop()
 {
-    myInstance->TesteAtualizarDados();
+    myInstance->AtualizarDados();
     delay(5);
-    myInstance->DebugLoop();
+    myInstance->printarDados();
     delay(995);
 }
 

@@ -16,18 +16,19 @@
 #include "Constantes.h"
 #include "Freio.h"
 #include "Velocidade.h"
+#include "Dados.h"
 
 // Incluir todos os dados. Quando atualizar
 // cada dado, salvar também nessa struct em
 // Instancia
 
-struct _Dados
-{
-    float velocidade;
-    float tempCvt;
-    float rpm;
-};
-typedef struct _Dados Dados;
+// struct _Dados
+// {
+//     float velocidade;
+//     float tempCvt;
+//     float rpm;
+// };
+// typedef struct _Dados Dados;
 
 class Instancia
 {
@@ -115,7 +116,12 @@ public:
      */
     bool AtualizarDados()
     {
+        Dados::atualizarDados(0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         return false;
+    }
+
+    void printarDados(){
+        Serial.println(Dados::formatarDados());
     }
 
     /**
@@ -123,22 +129,36 @@ public:
      */
     bool EnviarDadosTelemetria()
     {
-        /*
             String data = String(rpm.getRPM());
             data = String(data + ",");
-            data = String(data + temperaturaCvt.getTemperaturaCvt());
+            data = String(data + temperaturaCvt.getTemperaturaObjeto());
             data = String(data + ",");
             data = String(data + gps.getSpeed());
             data = String(data + ",");
             data = String(data + nivelCombustivel.getNivelAtual());
-
             comunicacao.enviarDadosTelemetria(data);
-            */
         return false;
     }
 
     bool EnviarDadosCanBus()
     {
+        // packet1
+        // nivelCombustível = short = 2
+        // nivelAtualFreio = int = 2
+        // pressaoAtualFreio = double = 4
+
+        // packet2
+        // pedalAcel = double = 4
+        // tensaoBat = double = 4
+
+        // packet3
+        // tempObj = float = 4
+        // tempAmb = float = 4
+
+        // packet4
+        // rpm = double = 4
+        // vel = double = 4
+        comunicacao.receberDados(nivelCombustivel.getNivelAtual(), freio.getNivelAtual(), freio.getPressaoAtual());
         return false;
     }
 
@@ -245,11 +265,11 @@ private:
  * para o compilador do Arduino
  */
 Instancia *Instancia::instance{nullptr};
-Dados Instancia::dados{
-    velocidade : 0.0,
-    tempCvt : 0.0,
-    rpm : 0.0
-};
+// Dados Instancia::dados{
+//     velocidade : 0.0,
+//     tempCvt : 0.0,
+//     rpm : 0.0
+// };
 
 Instancia *Instancia::GetInstance()
 {
