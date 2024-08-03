@@ -54,7 +54,6 @@ public:
     }
 
     static Instancia *instance;
-    static Dados dados;
 
     // Esse é o principal caso de exemplo para Singletons.
     // https://refactoring.guru/pt-br/design-patterns/singleton/cpp/example#example-1
@@ -120,7 +119,8 @@ public:
         return false;
     }
 
-    void printarDados(){
+    void printarDados()
+    {
         Serial.println(Dados::formatarDados());
     }
 
@@ -129,14 +129,14 @@ public:
      */
     bool EnviarDadosTelemetria()
     {
-            String data = String(rpm.getRPM());
-            data = String(data + ",");
-            data = String(data + temperaturaCvt.getTemperaturaObjeto());
-            data = String(data + ",");
-            data = String(data + gps.getSpeed());
-            data = String(data + ",");
-            data = String(data + nivelCombustivel.getNivelAtual());
-            comunicacao.enviarDadosTelemetria(data);
+        String data = String(rpm.getRPM());
+        data = String(data + ",");
+        data = String(data + temperaturaCvt.getTemperaturaObjeto());
+        data = String(data + ",");
+        data = String(data + gps.getSpeed());
+        data = String(data + ",");
+        data = String(data + nivelCombustivel.getNivelAtual());
+        comunicacao.enviarDadosTelemetria(data);
         return false;
     }
 
@@ -158,7 +158,9 @@ public:
         // packet4
         // rpm = double = 4
         // vel = double = 4
-        comunicacao.receberDados(nivelCombustivel.getNivelAtual(), freio.getNivelAtual(), freio.getPressaoAtual());
+
+        // TODO: Revisar funcionamento e nome do metodo
+        comunicacao.sendCanDataTo(Dados::getStructDados());
         return false;
     }
 

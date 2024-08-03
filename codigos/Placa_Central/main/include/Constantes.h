@@ -71,4 +71,18 @@ enum Nivel
 // PEDAL ACELERADOR
 #define PEDAL_ACELERADOR 28
 
+struct _Dados
+{
+    short nivelComb;
+    int nivelFreio;
+    double pressaoFreio;
+    double pedal;
+    double tensaoBat;
+    float tmpCvt;
+    float tmpAmb;
+    double rpm;
+    double vel;
+};
+typedef struct _Dados StructDados;
+
 #endif //_CONSTANTES_H
