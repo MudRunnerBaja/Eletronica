@@ -3,13 +3,14 @@
 float rpm = 0;
 const byte interruptPin = 19;
 long told, tpulse;
-int deltaTime;
-int prevTime;
+unsigned long deltaTime;
+unsigned long prevTime;
 const int period = 1;
 unsigned long repetitions = 0;
 int average;
 int deltaTimeSum;
 bool hasFailed = false;
+inline float list[1024];
 
 MPU9250 mpu;
 
@@ -17,7 +18,7 @@ void setup() {
     Serial.begin(2000000);
     Wire.begin();
     pinMode(interruptPin, INPUT_PULLUP);
-    Serial.println("INCIALIZANDO");
+    Serial.println("INICIALIZANDO");
     delay(2000);
     
     if (!mpu.setup(0x68)) {  // change to your own address
@@ -33,6 +34,8 @@ void setup() {
 }
 
 void loop() {
+    
+    print_acc();
 
     // if(mpu.update() && !hasFailed){
     //     print_acc();
@@ -42,8 +45,6 @@ void loop() {
     //     hasFailed = true;
     // }
 
-    mpu.update_accel_gyro();
-    print_acc();
 
     // print_acc();
 
@@ -61,14 +62,48 @@ void loop() {
 }
 
 void print_acc(){
-    // int millisVar = millis();
-    // deltaTime = millisVar - prevTime;
+    unsigned long millisVar = millis();
+    deltaTime = millisVar - prevTime;
+    prevTime = millis();
     Serial.print(millis());
-    // Serial.print(",");
-    // Serial.print(deltaTime);
-
     Serial.print(",");
-    Serial.print(rpm);
+    // Serial.print(deltaTime, 4);
+
+    // Serial.print(",");
+    // Serial.print(rpm);
+
+
+    // Serial.print(",");
+    // Serial.print(mpu.getAccX(), 4);
+    // Serial.print(", ");
+    int prevTotal = millis();
+    // int i;
+    // for (i = 0; i < 1025; i++){
+      mpu.update_accel_gyro();
+      Serial.print(mpu.getAccX());
+      Serial.print(",");
+      Serial.print(mpu.getAccY());
+      Serial.print(",");
+      Serial.println(mpu.getAccZ());
+      // list[i] = mpu.getAccX();
+    // }
+
+
+    // for (i = 0; i < 1025; i++){
+    //   mpu.update_accel_gyro();
+    //   // list[i] = mpu.getAccX();
+    // }
+    //int totalTime = millis() - prevTotal;
+    //Serial.println(totalTime, 4);
+    // for (int j = 0; j < 1025; j++){
+    //   mpu.update_accel_gyro();
+    //   Serial.println(list[j]);
+    // }
+    // Serial.println(list[400], 4);
+
+    // Serial.print(mpu.getAccY(), 4);
+    // Serial.print(", ");
+    // Serial.println(mpu.getAccZ(), 4);
 
     // Serial.print(",");
     // repetitions++;
@@ -77,15 +112,6 @@ void print_acc(){
     // }
     // average = deltaTimeSum/repetitions;
     // Serial.print(average);
-
-    Serial.print(",");
-    Serial.print(mpu.getAccX(), 4);
-    Serial.print(", ");
-    Serial.print(mpu.getAccY(), 4);
-    Serial.print(", ");
-    Serial.println(mpu.getAccZ(), 4);
-
-    // prevTime = millis();
 }
 
 void sinal() {
