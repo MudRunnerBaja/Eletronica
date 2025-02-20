@@ -40,7 +40,7 @@ void setup()
     myInstance = new Instancia(debugMode, callSetup);
 
     pinMode(LED_BUILTIN, OUTPUT);
-    randomSeed(756498465497);
+    // randomSeed(756498465497);
     Serial.println("=======================");
     Serial.println("INICIALIZACAO CONCLUIDA");
     return;

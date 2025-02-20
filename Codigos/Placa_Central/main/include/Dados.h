@@ -49,17 +49,17 @@ public:
      * @param rpm
      * @param vel
      */
-    static void atualizarDados(short nivelComb, int nivelFreio, double pressaoFreio, double pedal, double tensaoBat, float tmpCvt, float tmpAmb, double rpm, double vel)
+    static void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
     {
-        nivelComb = nivelComb;
-        nivelFreio = nivelFreio;
-        pressaoFreio = pressaoFreio;
-        pedal = pedal;
-        tensaoBat = tensaoBat;
-        tmpCvt = tmpCvt;
-        tmpAmb = tmpAmb;
-        rpm = rpm;
-        vel = vel;
+        nivelComb = nivelComb1;
+        nivelFreio = nivelFreio1;
+        pressaoFreio = pressaoFreio1;
+        pedal = pedal1;
+        tensaoBat = tensaoBat1;
+        tmpCvt = tmpCvt1;
+        tmpAmb = tmpAmb1;
+        rpm = rpm1;
+        vel = vel1;
 
         // Ponderar se os novos dados que forem adicionados precisam ser
         // também adicionados à StructDados

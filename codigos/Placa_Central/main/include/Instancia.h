@@ -115,7 +115,7 @@ public:
      */
     bool AtualizarDados()
     {
-        Dados::atualizarDados(0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        Dados::atualizarDados(0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, velocidade.getVel());
         return false;
     }
 
