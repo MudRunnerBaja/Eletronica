@@ -7,7 +7,7 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include <ACAN2515.h>
+#include "libs/acan2515-2.1.4/src/ACAN2515.h"
 #include <Arduino.h>
 #include <SPI.h>
 
@@ -17,7 +17,7 @@ public:
     static Comunicacao *instance;
     static Comunicacao *Setup();
 
-    // static const byte MCP2515_CS  = 10 ; // CS input of MCP2515 (adapt to your design) 
+    // static const byte MCP2515_CS  = 10 ; // CS input of MCP2515 (adapt to your design)
     // static const uint32_t QUARTZ_FREQUENCY = 16UL * 1000UL * 1000UL ; // 16 MHz
 
     // ACAN2515 can (CAN_CSPIN, SPI, 255) ;

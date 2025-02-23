@@ -7,7 +7,7 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include <TinyGPSPlus.h> // http://arduiniana.org/libraries/tinygps/
+#include "libs/TinyGPSPlus-1.0.3a/src/TinyGPSPlus.h" // http://arduiniana.org/libraries/tinygps/
 
 class GPS : public Setupable
 {
