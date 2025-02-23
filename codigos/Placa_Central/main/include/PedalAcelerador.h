@@ -8,7 +8,7 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class PedalAcelerador : public Setupable
+class PedalAcelerador
 {
 public:
     static PedalAcelerador *instance;

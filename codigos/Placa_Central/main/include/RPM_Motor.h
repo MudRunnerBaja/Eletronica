@@ -9,15 +9,13 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class RPM_Motor : public Setupable
+class RPM_Motor
 {
 public:
-    static RPM_Motor *instance;
-    static RPM_Motor *Setup();
+    static RPM_Motor *GetInstance();
 
     /**
      * O AttachInterrupt requer uma referência estática para uma função.
-     * Ele não é pensado para trabalhar com objetos ou classes.
      * Isso é contornável tornando varíaveis e métodos estáticos.
      */
     static void updateRPM();
@@ -31,47 +29,38 @@ public:
         return rpm;
     }
 
-    RPM_Motor(RPM_Motor &outro) = delete;
-
     void setValoresDeTeste()
     {
         rpm = (float)((random(RAND_MAX) / RAND_MAX) * 4200);
     }
 
-    RPM_Motor()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    RPM_Motor() = default;
 
 private:
+    static RPM_Motor *instance;
+
     volatile byte state = LOW;
     static long told;
     static long tpulse;
     static double rpm;
 };
 
-// Implementações de variáveis e métodos estáticos.
-// Especialmente importante que sejam feitos fora da função
-// para o compilador do Arduino
-
 RPM_Motor *RPM_Motor::instance{nullptr};
 long RPM_Motor::told = 0;
 long RPM_Motor::tpulse = 0;
 double RPM_Motor::rpm = 0.0;
 
-RPM_Motor *RPM_Motor::Setup()
+RPM_Motor *RPM_Motor::GetInstance()
 {
     if (instance == nullptr)
     {
         instance = new RPM_Motor();
-    }
 
-    pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
-    told = micros();
+        pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
+        attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
+        told = micros();
+    }
 
     return instance;
 }

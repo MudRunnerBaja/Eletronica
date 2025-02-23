@@ -7,15 +7,14 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include "libs/TinyGPSPlus-1.0.3a/src/TinyGPSPlus.h" // http://arduiniana.org/libraries/tinygps/
+#include "../libs/TinyGPSPlus-1.0.3a/src/TinyGPSPlus.h" // http://arduiniana.org/libraries/tinygps/
 
-class GPS : public Setupable
+class GPS
 {
 public:
-    static GPS *instance;
-    static GPS *Setup();
+    static GPS *GetInstance();
+    static TinyGPSPlus gps;
 
-    TinyGPSPlus gps;
     bool possuiData;
 
     bool Loop()
@@ -149,15 +148,12 @@ public:
         }
     }
 
-    GPS()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    GPS() = default;
 
 private:
+    static GPS *instance;
+
     double speed;
     double latitude;
     double longitude;
@@ -175,25 +171,24 @@ private:
 };
 
 GPS *GPS::instance{nullptr};
-
-GPS *GPS::Setup()
+GPS *GPS::GetInstance()
 {
     if (instance == nullptr)
     {
         instance = new GPS();
-    }
 
-    Serial2.setTX(GPS_TX);
-    Serial2.setRX(GPS_RX);
-    Serial2.begin(GPS_BAUD);
+        Serial2.setTX(GPS_TX);
+        Serial2.setRX(GPS_RX);
+        Serial2.begin(GPS_BAUD);
 
-    if (!Serial2)
-    {
-        Serial.println("Falha Serial GPS");
-    }
-    else
-    {
-        Serial.println("Inicializado Serial do GPS");
+        if (!Serial2)
+        {
+            Serial.println("Falha Serial GPS");
+        }
+        else
+        {
+            Serial.println("Inicializado Serial do GPS");
+        }
     }
 
     return instance;

@@ -1,4 +1,3 @@
-
 #include "TemperaturaCVT.h"
 #include "Combustivel.h"
 #include "RPM_Motor.h"
@@ -11,20 +10,20 @@
  * Struct de dados para uso temporario dos dados de forma
  * organizada se encontra na classe Constantes.h
  */
-class Dados
+class DadosSincronizados
 {
 public:
-    static short nivelComb;
-    static int nivelFreio;
-    static double pressaoFreio;
-    static double pedal;
-    static double tensaoBat;
-    static float tmpCvt;
-    static float tmpAmb;
-    static double rpm;
-    static double vel;
+    short nivelComb = 0;
+    int nivelFreio = 0;
+    double pedal = 0;
+    double pressaoFreio = 0;
+    double tensaoBat = 0;
+    float tmpCvt = 0;
+    float tmpAmb = 0;
+    double rpm = 0;
+    double vel = 0;
 
-    static String formatarDados()
+    String formatarDados()
     {
         String dadosString = "";
         dadosString = dadosString + String(tmpCvt) + " ";
@@ -49,7 +48,7 @@ public:
      * @param rpm
      * @param vel
      */
-    static void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
     {
         nivelComb = nivelComb1;
         nivelFreio = nivelFreio1;
@@ -65,10 +64,10 @@ public:
         // também adicionados à StructDados
     }
 
-    static StructDados getStructDados()
+    DadosCompartilhamento getStructDados()
     {
         // A definicao da struct se encontra em Constantes.h
-        StructDados data = StructDados();
+        DadosCompartilhamento data = DadosCompartilhamento();
         data.nivelComb = nivelComb;
         data.nivelFreio = nivelFreio;
         data.pressaoFreio = pressaoFreio;
@@ -82,13 +81,3 @@ public:
         return data;
     }
 };
-
-short Dados::nivelComb = 0;
-int Dados::nivelFreio = 0;
-double Dados::pedal = 0;
-double Dados::pressaoFreio = 0;
-double Dados::tensaoBat = 0;
-float Dados::tmpCvt = 0;
-float Dados::tmpAmb = 0;
-double Dados::rpm = 0;
-double Dados::vel = 0;

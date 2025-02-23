@@ -13,11 +13,10 @@
     REVISAR PINOUT E SETUP
 */
 
-class TemperaturaCVT : public Setupable
+class TemperaturaCVT
 {
 public:
-    static TemperaturaCVT *instance;
-    static TemperaturaCVT *Setup();
+    static TemperaturaCVT *GetInstance();
 
     float setTemperaturaObjeto()
     {
@@ -65,17 +64,12 @@ public:
         return mlx;
     }
 
-    TemperaturaCVT(TemperaturaCVT &outro) = delete;
-
-    TemperaturaCVT()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    TemperaturaCVT() = default;
 
 private:
+    static TemperaturaCVT *instance;
+
     static Adafruit_MLX90614 mlx;
     float temperaturaObjeto = 0.0;
     float temperaturaAmbiente = 0.0;
@@ -83,16 +77,16 @@ private:
 
 Adafruit_MLX90614 TemperaturaCVT::mlx = Adafruit_MLX90614();
 TemperaturaCVT *TemperaturaCVT::instance{nullptr};
-TemperaturaCVT *TemperaturaCVT::Setup()
+TemperaturaCVT *TemperaturaCVT::GetInstance()
 {
     if (instance == nullptr)
     {
         instance = new TemperaturaCVT();
+
+        // mlx = Adafruit_MLX90614();
+
+        mlx.begin();
     }
-
-    // mlx = Adafruit_MLX90614();
-
-    mlx.begin();
 
     return instance;
 }

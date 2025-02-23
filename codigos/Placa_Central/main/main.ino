@@ -7,6 +7,7 @@
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
 #include <RPi_Pico_ISR_Timer.h>      // Manipuladores de Interrupção
 #include "include/Instancia.h"
+
 void WaitSerial(bool wait); // Esperar pelo serial ou não (testar setup)
 
 /**
@@ -17,7 +18,6 @@ bool WriteSD(struct repeating_timer *t);
 
 /**
  * DECLARAÇÕES DE VARIÁVEIS
-
  */
 bool setupCompleto;
 unsigned long tempoTotal;
@@ -26,18 +26,20 @@ RPI_PICO_Timer Core0Timer0(0);
 RPI_PICO_Timer Core1Timer1(1);
 static bool debugMode = true;
 static bool callSetup = true;
-static Instancia *myInstance;
+Instancia *myInstance;
 
 void setup()
 {
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
+
     Serial.begin(SERIAL_BAUD);
+    // D_SerialBegin(SERIAL_BAUD);
 
     WaitSerial(debugMode);
     Serial.println("INCIALIZANDO INSTANCIA");
     Serial.println("=======================");
-    myInstance = new Instancia(debugMode, callSetup);
+    myInstance = Instancia::GetInstance(debugMode, callSetup);
 
     pinMode(LED_BUILTIN, OUTPUT);
     // randomSeed(756498465497);

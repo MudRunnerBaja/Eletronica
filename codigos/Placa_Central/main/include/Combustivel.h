@@ -11,11 +11,10 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class Combustivel : public Setupable
+class Combustivel
 {
 public:
-    static Combustivel *instance;
-    static Combustivel *Setup();
+    static Combustivel *GetInstance();
 
     /**
      * Imprime o nível atual de combustível no momento da chamada.
@@ -97,30 +96,25 @@ public:
         return nivelAtual;
     }
 
-    Combustivel(Combustivel &outro) = delete;
-
-    Combustivel()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    Combustivel() = default;
 
 private:
+    static Combustivel *instance;
+
     short nivelAtual;
 };
 
 Combustivel *Combustivel::instance{nullptr};
-Combustivel *Combustivel::Setup()
+Combustivel *Combustivel::GetInstance()
 {
-    if (instance == NULL)
+    if (instance == nullptr)
     {
         instance = new Combustivel();
-    }
 
-    pinMode(COMB_SUPERIOR, INPUT);
-    pinMode(COMB_INFERIOR, INPUT);
+        pinMode(COMB_SUPERIOR, INPUT);
+        pinMode(COMB_INFERIOR, INPUT);
+    }
 
     return instance;
 }

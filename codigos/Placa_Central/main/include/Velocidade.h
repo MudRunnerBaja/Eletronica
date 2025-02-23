@@ -9,20 +9,15 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class Velocidade : public Setupable
+class Velocidade
 {
 public:
-    static Velocidade *instance;
-    static Velocidade *Setup();
+    Velocidade() = default;
 
-    /**
-     * O AttachInterrupt requer uma referência estática para uma função.
-     * Ele não é pensado para trabalhar com objetos ou classes.
-     * Uma alternativa é trabalhar com a Velocidade como um singleton, mas tratar
-     *  a função e das variáveis como estáticas envolve menos código.
-     */
+public:
+    static Velocidade *GetInstance();
+
     static void updateVel();
-
     bool Debug()
     {
         return true;
@@ -39,17 +34,9 @@ public:
         return vel;
     }
 
-    Velocidade(Velocidade &outro) = delete;
-
-    Velocidade()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
-
 private:
+    static Velocidade *instance;
+
     volatile byte state = LOW;
     static long told;
     static long tpulse;
@@ -57,16 +44,16 @@ private:
 };
 
 Velocidade *Velocidade::instance{nullptr};
-Velocidade *Velocidade::Setup()
+Velocidade *Velocidade::GetInstance()
 {
     if (instance == nullptr)
     {
         instance = new Velocidade();
-    }
 
-    pinMode(VEL_INTERRUPT_PIN, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(VEL_INTERRUPT_PIN), updateVel, RISING);
-    told = micros();
+        pinMode(VEL_INTERRUPT_PIN, INPUT_PULLUP);
+        attachInterrupt(digitalPinToInterrupt(VEL_INTERRUPT_PIN), updateVel, RISING);
+        told = micros();
+    }
     return instance;
 }
 

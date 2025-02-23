@@ -12,7 +12,7 @@
 #define MINUTO_EM_MICROSSEGUNDOS 60000000
 
 static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
-static const bool DEBUG_MODE = true;
+// static const bool DEBUG_MODE = true;
 
 enum Nivel
 {
@@ -71,7 +71,7 @@ enum Nivel
 // PEDAL ACELERADOR
 #define PEDAL_ACELERADOR 28
 
-struct _Dados
+struct _DadosCompartilhamento
 {
     short nivelComb;
     int nivelFreio;
@@ -83,6 +83,20 @@ struct _Dados
     double rpm;
     double vel;
 };
-typedef struct _Dados StructDados;
+typedef struct _DadosCompartilhamento DadosCompartilhamento;
+
+#define DEBUG 1 // SET TO 0 OUT TO REMOVE TRACES
+
+#if DEBUG
+#define D_SerialBegin(...) Serial.begin(__VA_ARGS__);
+#define D_print(...) Serial.print(__VA_ARGS__)
+#define D_write(...) Serial.print(__VA_ARGS__)
+#define D_println(...) Serial.println(__VA_ARGS__)
+#else
+#define D_SerialBegin(bauds)
+#define D_print(...)
+#define D_write(...)
+#define D_println(...)
+#endif
 
 #endif //_CONSTANTES_H

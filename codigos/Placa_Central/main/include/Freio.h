@@ -14,11 +14,10 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class Freio : public Setupable
+class Freio
 {
 public:
-    static Freio *instance;
-    static Freio *Setup();
+    static Freio *GetInstance();
 
     /**
      * @return bool
@@ -67,31 +66,26 @@ public:
         return pressaoAtual;
     }
 
-    Freio(Freio &outro) = delete;
-
-    Freio()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    Freio() = default;
 
 private:
+    static Freio *instance;
+
     int nivelAtual;
     double pressaoAtual;
 };
 
 Freio *Freio::instance{nullptr};
-Freio *Freio::Setup()
+Freio *Freio::GetInstance()
 {
-    if (instance == NULL)
+    if (instance == nullptr)
     {
         instance = new Freio();
-    }
 
-    pinMode(NIVEL_FREIO, INPUT);
-    pinMode(PRESSAO_FREIO, INPUT);
+        pinMode(NIVEL_FREIO, INPUT);
+        pinMode(PRESSAO_FREIO, INPUT);
+    }
 
     return instance;
 }

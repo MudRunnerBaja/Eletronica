@@ -7,15 +7,14 @@
 
 #include "Setupable.h"
 #include "Constantes.h"
-#include "libs/acan2515-2.1.4/src/ACAN2515.h"
+#include "../libs/acan2515-2.1.4/src/ACAN2515.h"
 #include <Arduino.h>
 #include <SPI.h>
 
-class Comunicacao : public Setupable
+class Comunicacao
 {
 public:
-    static Comunicacao *instance;
-    static Comunicacao *Setup();
+    static Comunicacao *GetInstance();
 
     // static const byte MCP2515_CS  = 10 ; // CS input of MCP2515 (adapt to your design)
     // static const uint32_t QUARTZ_FREQUENCY = 16UL * 1000UL * 1000UL ; // 16 MHz
@@ -87,7 +86,7 @@ public:
     }
 
     /**
-     * @param StructDados struct com todos os dados
+     * @param DadosCompartilhamento struct com todos os dados
      * @param int CAN Id that should receive the message
      * @param byte* Pointer to buffer with data
      * @param int buffer size
@@ -95,7 +94,7 @@ public:
      *
      * REVISAR
      */
-    void sendCanDataTo(StructDados data)
+    void sendCanDataTo(DadosCompartilhamento data)
     {
         // packet0
         // nivelCombustível = short = 2
@@ -232,17 +231,12 @@ public:
         return;
     }
 
-    Comunicacao(Comunicacao &outro) = delete;
-
-    Comunicacao()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
+public:
+    Comunicacao() = default;
 
 private:
+    static Comunicacao *instance;
+
     // short nivelComb;
     // int nivelFreio;
     // double pressaoFreio;
@@ -295,16 +289,16 @@ private:
 };
 
 Comunicacao *Comunicacao::instance{nullptr};
-Comunicacao *Comunicacao::Setup()
+Comunicacao *Comunicacao::GetInstance()
 {
-    if (instance == NULL)
+    if (instance == nullptr)
     {
         instance = new Comunicacao();
-    }
 
-    // TODO:
-    // setupTelemetria();
-    // setupCanBus();
+        // TODO:
+        // setupTelemetria();
+        // setupCanBus();
+    }
 
     return instance;
 }

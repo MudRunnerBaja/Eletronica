@@ -11,11 +11,13 @@
 // #include "GPS.h" // GPS
 #include "Constantes.h"
 
-class CartaoSD : public Setupable
+class CartaoSD
 {
 public:
-    static CartaoSD *instance;
-    static CartaoSD *Setup();
+    CartaoSD() = default;
+
+public:
+    static CartaoSD *GetInstance();
 
     bool possuiNome = false;
     bool arquivoCriado = false;
@@ -87,17 +89,9 @@ void writeData(int a, int b, int c, float d, float e)
         return true;
     }
 
-    CartaoSD(CartaoSD &outro) = delete;
-
-    CartaoSD()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
-
 private:
+    static CartaoSD *instance;
+
     String nomeArquivo;
     File arquivoDados;
     String getNomeArquivo();
@@ -179,24 +173,23 @@ private:
 };
 
 CartaoSD *CartaoSD::instance{nullptr};
-CartaoSD *CartaoSD::Setup()
+CartaoSD *CartaoSD::GetInstance()
 {
     if (instance == NULL)
     {
         instance = new CartaoSD();
-    }
 
-    SPI1.setRX(SD_RXPIN); // MISO
-    SPI1.setTX(SD_TXPIN); // MOSI
-    SPI1.setSCK(SD_SCKPIN);
-    SPI1.setCS(SD_CSPIN);
+        SPI1.setRX(SD_RXPIN); // MISO
+        SPI1.setTX(SD_TXPIN); // MOSI
+        SPI1.setSCK(SD_SCKPIN);
+        SPI1.setCS(SD_CSPIN);
 
-    SPI1.begin(true);
+        SPI1.begin(true);
 
-    if (!SD.begin(SD_CSPIN, SPI1))
-    {
-        Serial.println("Erro inicialização SD");
-        return instance;
+        if (!SD.begin(SD_CSPIN, SPI1))
+        {
+            Serial.println("Erro inicialização SD");
+        }
     }
     return instance;
 }
