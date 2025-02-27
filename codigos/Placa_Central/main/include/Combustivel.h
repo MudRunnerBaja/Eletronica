@@ -38,7 +38,7 @@ public:
                 erro = true;
             }
 
-            Serial.println("Nível de combustível: " + s);
+            D_println("Nível de combustível: " + s);
         }
         return erro;
     }

@@ -28,7 +28,7 @@ public:
     Instancia() = default;
 
 public:
-    static Instancia *GetInstance(bool debugMode, bool callSetup);
+    static Instancia *GetInstance();
 
     bool *estadoSistemas;
     bool *testeSistemas;
@@ -85,7 +85,7 @@ public:
 
     void printarDados()
     {
-        Serial.println(dados.formatarDados());
+        D_println(dados.formatarDados());
     }
 
     /**
@@ -128,11 +128,6 @@ public:
         return false;
     }
 
-    /**
-     * @param debugMode if true waits for Serial USB Port comm. Hangs the program indefinitely.
-     * @param callSetup if true calls default initialization function. Defaults to true.
-     */
-
 private:
     static Instancia *instance;
     byte data[5]; // Dados transmitidos entre dispositivos.
@@ -148,17 +143,11 @@ private:
     DadosSincronizados dados;
 };
 Instancia *Instancia::instance{nullptr};
-// Dados Instancia::dados{
-//     velocidade : 0.0,
-//     tempCvt : 0.0,
-//     rpm : 0.0
-// };
-
-Instancia *Instancia::GetInstance(bool debugMode, bool callSetup)
+Instancia *Instancia::GetInstance()
 {
     if (instance == nullptr)
     {
-        Serial.println("Criando nova instancia");
+        D_println("Criando nova instancia");
 
         instance = new Instancia();
         instance->dados = *(new DadosSincronizados());
@@ -174,58 +163,50 @@ Instancia *Instancia::GetInstance(bool debugMode, bool callSetup)
         }
         digitalWrite(LED_BUILTIN, HIGH);
 
-        if (debugMode)
+        digitalWrite(LED_BUILTIN, LOW);
+        D_println("Iniciando em Debug Mode");
+        D_println("Piscando led");
+
+        i = 0;
+        while (i < 3)
         {
-            digitalWrite(LED_BUILTIN, LOW);
-            Serial.println("Iniciando em Debug Mode");
-            Serial.println("Piscando led");
-            int i = 0;
-            while (i < 3)
-            {
-                digitalWrite(LED_BUILTIN, HIGH);
-                delay(75);
-                digitalWrite(LED_BUILTIN, LOW);
-                delay(75);
-                i++;
-            }
-            Serial.println("Mantendo led aceso");
             digitalWrite(LED_BUILTIN, HIGH);
+            delay(75);
+            digitalWrite(LED_BUILTIN, LOW);
+            delay(75);
+            i++;
         }
 
-        if (callSetup)
-        {
-            Serial.println("Chamando Setup");
+        D_println("Mantendo led aceso");
+        digitalWrite(LED_BUILTIN, HIGH);
 
-            instance->gps = *GPS::GetInstance();
-            Serial.println("Setup GPS concluido");
+        D_println("Chamando Setup");
 
-            instance->comunicacao = *Comunicacao::GetInstance();
-            Serial.println("Setup comunicacao concluido");
+        instance->gps = *GPS::GetInstance();
+        D_println("Setup GPS concluido");
 
-            instance->temperaturaCvt = *TemperaturaCVT::GetInstance();
-            Serial.println("Setup temperaturaCvt concluido");
+        instance->comunicacao = *Comunicacao::GetInstance();
+        D_println("Setup comunicacao concluido");
 
-            instance->rpm = *RPM_Motor::GetInstance();
-            Serial.println("Setup rpm concluido");
+        instance->temperaturaCvt = *TemperaturaCVT::GetInstance();
+        D_println("Setup temperaturaCvt concluido");
 
-            instance->nivelCombustivel = *Combustivel::GetInstance();
-            Serial.println("Setup nivelCombustivel concluido");
+        instance->rpm = *RPM_Motor::GetInstance();
+        D_println("Setup rpm concluido");
 
-            instance->freio = *Freio::GetInstance();
-            Serial.println("Setup freio concluido");
+        instance->nivelCombustivel = *Combustivel::GetInstance();
+        D_println("Setup nivelCombustivel concluido");
 
-            instance->velocidade = *Velocidade::GetInstance();
-            Serial.println("Setup velocidade concluido");
+        instance->freio = *Freio::GetInstance();
+        D_println("Setup freio concluido");
 
-            instance->cartaoSD = *CartaoSD::GetInstance();
-            Serial.println("Setup cartaoSD concluido");
+        instance->velocidade = *Velocidade::GetInstance();
+        D_println("Setup velocidade concluido");
 
-            Serial.println("Setup concluido");
-        }
-        else
-        {
-            Serial.println("Setup não será chamado.");
-        }
+        instance->cartaoSD = *CartaoSD::GetInstance();
+        D_println("Setup cartaoSD concluido");
+
+        D_println("Setup concluido");
     }
     return instance;
 }

@@ -54,7 +54,7 @@ public:
         String s = String("TAmbiente: ");
         s = String(s + temperaturaAmbiente + " | TObjeto: ");
         s = String(s + temperaturaObjeto);
-        Serial.println(s);
+        D_println(s);
 
         return true;
     }

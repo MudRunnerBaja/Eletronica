@@ -5,6 +5,22 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
+#define DEBUG 1 // 0 Para não usar serial, 1 para usar serial
+
+#if DEBUG
+#define D_SerialBegin(...) Serial.begin(__VA_ARGS__); // Substitui Serial.begin
+#define D_print(...) Serial.print(__VA_ARGS__)        // Substitui Serial.print
+#define D_write(...) Serial.print(__VA_ARGS__)        // Substitui Serial.write
+#define D_println(...) Serial.println(__VA_ARGS__)    // Substitui Serial.println
+#else
+#define D_SerialBegin(bauds)
+#define D_print(...)
+#define D_write(...)
+#define D_println(...)
+#endif
+
+// -- Constantes --
+
 #define INTERVALO_TIMER_MS 200
 #define TEMPERATURA_CRITICA_CVT 200
 #define RAIO_PNEU 22
@@ -84,19 +100,5 @@ struct _DadosCompartilhamento
     double vel;
 };
 typedef struct _DadosCompartilhamento DadosCompartilhamento;
-
-#define DEBUG 1 // SET TO 0 OUT TO REMOVE TRACES
-
-#if DEBUG
-#define D_SerialBegin(...) Serial.begin(__VA_ARGS__);
-#define D_print(...) Serial.print(__VA_ARGS__)
-#define D_write(...) Serial.print(__VA_ARGS__)
-#define D_println(...) Serial.println(__VA_ARGS__)
-#else
-#define D_SerialBegin(bauds)
-#define D_print(...)
-#define D_write(...)
-#define D_println(...)
-#endif
 
 #endif //_CONSTANTES_H
