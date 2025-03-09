@@ -21,7 +21,7 @@
 
 // -- Constantes --
 
-#define INTERVALO_TIMER_MS 200
+#define INTERVALO_TIMER_MS 1000
 #define TEMPERATURA_CRITICA_CVT 200
 #define RAIO_PNEU 22
 #define QTD_SENSORES_PNEU 4
@@ -48,6 +48,14 @@ enum Nivel
     TODO
     4 E 5 SÃO DO MLX, REVISAR PINOUT E SETUP
 */
+
+// GPIO Livre
+#define GPIO2_P4_LIVRE 2
+#define GPIO3_P5_LIVRE 3
+
+// I2C
+#define I2C_SDA 4
+#define I2C_SCL 5
 
 // GPS SERIAL1 UART
 #define GPS_TX 8 // PINO TX UART GPS
@@ -94,8 +102,8 @@ struct _DadosCompartilhamento
     double pressaoFreio;
     double pedal;
     double tensaoBat;
-    float tmpCvt;
-    float tmpAmb;
+    double tmpCvt;
+    double tmpAmb;
     double rpm;
     double vel;
 };

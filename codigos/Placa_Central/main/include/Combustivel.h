@@ -46,9 +46,9 @@ public:
     void setValoresDeTeste()
     {
         int sensorSuperior = (random(10) % 2);
-        int sensorInfernior = (random(10) % 2);
+        int sensorInferior = (random(10) % 2);
 
-        if (sensorInfernior == HIGH) // Se o inferior não detecta combustível
+        if (sensorInferior == HIGH) // Se o inferior não detecta combustível
         {
             nivelAtual = BAIXO;
         }
@@ -71,9 +71,9 @@ public:
             FALSE/LOW -> Combustível detectado
         */
         int sensorSuperior = digitalRead(COMB_SUPERIOR);
-        int sensorInfernior = digitalRead(COMB_INFERIOR);
+        int sensorInferior = digitalRead(COMB_INFERIOR);
 
-        if (sensorInfernior == HIGH) // Se o inferior não detecta combustível
+        if (sensorInferior == HIGH) // Se o inferior não detecta combustível
         {
             nivelAtual = BAIXO;
             return nivelAtual;

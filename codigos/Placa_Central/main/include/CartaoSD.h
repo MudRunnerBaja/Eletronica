@@ -22,6 +22,16 @@ public:
     bool possuiNome = false;
     bool arquivoCriado = false;
 
+    void escreverSD(DadosCompartilhamento dados)
+    {
+        if (!arquivoCriado)
+        {
+            return;
+        }
+
+        return;
+    }
+
     bool Loop()
     {
         if (!arquivoCriado)

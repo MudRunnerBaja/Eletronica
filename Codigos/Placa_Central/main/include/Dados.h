@@ -13,15 +13,7 @@
 class DadosSincronizados
 {
 public:
-    short nivelComb = 0;
-    int nivelFreio = 0;
-    double pedal = 0;
-    double pressaoFreio = 0;
-    double tensaoBat = 0;
-    float tmpCvt = 0;
-    float tmpAmb = 0;
-    double rpm = 0;
-    double vel = 0;
+    bool dadosEmAtualizacao = false;
 
     String formatarDados()
     {
@@ -50,6 +42,8 @@ public:
      */
     void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
     {
+        dadosEmAtualizacao = true;
+
         nivelComb = nivelComb1;
         nivelFreio = nivelFreio1;
         pressaoFreio = pressaoFreio1;
@@ -60,24 +54,45 @@ public:
         rpm = rpm1;
         vel = vel1;
 
+        atualizaDadosCompartilhamento();
+        dadosEmAtualizacao = false;
+
         // Ponderar se os novos dados que forem adicionados precisam ser
         // também adicionados à StructDados
     }
 
     DadosCompartilhamento getStructDados()
     {
-        // A definicao da struct se encontra em Constantes.h
-        DadosCompartilhamento data = DadosCompartilhamento();
-        data.nivelComb = nivelComb;
-        data.nivelFreio = nivelFreio;
-        data.pressaoFreio = pressaoFreio;
-        data.pedal = pedal;
-        data.tensaoBat = tensaoBat;
-        data.tmpCvt = tmpCvt;
-        data.tmpAmb = tmpAmb;
-        data.rpm = rpm;
-        data.vel = vel;
+        return dadosCompartilhamento;
+    }
 
-        return data;
+    bool getDadosEmAtualizacao()
+    {
+        return dadosEmAtualizacao;
+    }
+
+private:
+    short nivelComb = 0;
+    int nivelFreio = 0;
+    double pedal = 0;
+    double pressaoFreio = 0;
+    double tensaoBat = 0;
+    float tmpCvt = 0;
+    float tmpAmb = 0;
+    double rpm = 0;
+    double vel = 0;
+
+    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    void atualizaDadosCompartilhamento()
+    {
+        dadosCompartilhamento.nivelComb = nivelComb;
+        dadosCompartilhamento.nivelFreio = nivelFreio;
+        dadosCompartilhamento.pressaoFreio = pressaoFreio;
+        dadosCompartilhamento.pedal = pedal;
+        dadosCompartilhamento.tensaoBat = tensaoBat;
+        dadosCompartilhamento.tmpCvt = tmpCvt;
+        dadosCompartilhamento.tmpAmb = tmpAmb;
+        dadosCompartilhamento.rpm = rpm;
+        dadosCompartilhamento.vel = vel;
     }
 };

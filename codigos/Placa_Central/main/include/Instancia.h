@@ -42,32 +42,29 @@ public:
         velocidade.setValoresDeTeste();
     }
 
-    bool DebugLoop()
+    void EscreverSD()
     {
-        gps.Debug();
-        comunicacao.Debug();
-        temperaturaCvt.Debug();
-        rpm.Debug();
-        nivelCombustivel.Debug();
-        freio.Debug();
-        velocidade.Debug();
-        cartaoSD.Debug();
+        while (dados.getDadosEmAtualizacao)
+        {
+            yield();
+        }
 
-        return false;
+        cartaoSD.escreverDados(dados.getStructDados());
+        return;
     }
 
-    /**
-     * @return bool
-     */
-    bool EscreverSD()
+    void SetDadosSistemas()
     {
-        return false;
+        nivelCombustivel.setNivelAtual();
+        freio.setNivelAtual();
+        freio.setPressaoAtual();
+        // Pedal Acelerador
+        // Tensao Bateria
+        temperaturaCvt.setTemperaturaObjeto();
+        temperaturaCvt.setTemperaturaAmbiente();
     }
 
-    /**
-     * @return bool
-     */
-    bool AtualizarDados()
+    bool SincronizarDados()
     {
         dados.atualizarDados(
             nivelCombustivel.getNivelAtual(),
@@ -83,14 +80,11 @@ public:
         return false;
     }
 
-    void printarDados()
+    void PrintarDados()
     {
         D_println(dados.formatarDados());
     }
 
-    /**
-     * @return bool
-     */
     bool EnviarDadosTelemetria()
     {
         String data = String(rpm.getRPM());
@@ -182,7 +176,7 @@ Instancia *Instancia::GetInstance()
 
         D_println("Chamando Setup");
 
-        instance->gps = *GPS::GetInstance();
+        // instance->gps = *GPS::GetInstance();
         D_println("Setup GPS concluido");
 
         instance->comunicacao = *Comunicacao::GetInstance();
@@ -203,7 +197,7 @@ Instancia *Instancia::GetInstance()
         instance->velocidade = *Velocidade::GetInstance();
         D_println("Setup velocidade concluido");
 
-        instance->cartaoSD = *CartaoSD::GetInstance();
+        // instance->cartaoSD = *CartaoSD::GetInstance();
         D_println("Setup cartaoSD concluido");
 
         D_println("Setup concluido");
