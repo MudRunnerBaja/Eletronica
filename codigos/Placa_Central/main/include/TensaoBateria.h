@@ -8,7 +8,7 @@
 #include "Setupable.h"
 #include "Constantes.h"
 
-class TensaoBateria : public Setupable
+class TensaoBateria
 {
 public:
     static TensaoBateria *instance;

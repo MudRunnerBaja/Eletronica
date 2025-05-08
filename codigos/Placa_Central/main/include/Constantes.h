@@ -5,14 +5,30 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
-#define INTERVALO_TIMER_MS 200
+#define DEBUG 1 // 0 Para não usar serial, 1 para usar serial
+
+#if DEBUG
+#define D_SerialBegin(...) Serial.begin(__VA_ARGS__); // Substitui Serial.begin
+#define D_print(...) Serial.print(__VA_ARGS__)        // Substitui Serial.print
+#define D_write(...) Serial.print(__VA_ARGS__)        // Substitui Serial.write
+#define D_println(...) Serial.println(__VA_ARGS__)    // Substitui Serial.println
+#else
+#define D_SerialBegin(bauds)
+#define D_print(...)
+#define D_write(...)
+#define D_println(...)
+#endif
+
+// -- Constantes --
+
+#define INTERVALO_TIMER_MS 1000
 #define TEMPERATURA_CRITICA_CVT 200
 #define RAIO_PNEU 22
 #define QTD_SENSORES_PNEU 4
 #define MINUTO_EM_MICROSSEGUNDOS 60000000
 
 static const long MINUTO = 60 * (1000 / INTERVALO_TIMER_MS);
-static const bool DEBUG_MODE = true;
+// static const bool DEBUG_MODE = true;
 
 enum Nivel
 {
@@ -32,6 +48,14 @@ enum Nivel
     TODO
     4 E 5 SÃO DO MLX, REVISAR PINOUT E SETUP
 */
+
+// GPIO Livre
+#define GPIO2_P4_LIVRE 2
+#define GPIO3_P5_LIVRE 3
+
+// I2C
+#define I2C_SDA 4
+#define I2C_SCL 5
 
 // GPS SERIAL1 UART
 #define GPS_TX 8 // PINO TX UART GPS
@@ -71,18 +95,18 @@ enum Nivel
 // PEDAL ACELERADOR
 #define PEDAL_ACELERADOR 28
 
-struct _Dados
+struct _DadosCompartilhamento
 {
     short nivelComb;
     int nivelFreio;
     double pressaoFreio;
     double pedal;
     double tensaoBat;
-    float tmpCvt;
-    float tmpAmb;
+    double tmpCvt;
+    double tmpAmb;
     double rpm;
     double vel;
 };
-typedef struct _Dados StructDados;
+typedef struct _DadosCompartilhamento DadosCompartilhamento;
 
 #endif //_CONSTANTES_H

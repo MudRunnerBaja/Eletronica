@@ -11,14 +11,26 @@
 // #include "GPS.h" // GPS
 #include "Constantes.h"
 
-class CartaoSD : public Setupable
+class CartaoSD
 {
 public:
-    static CartaoSD *instance;
-    static CartaoSD *Setup();
+    CartaoSD() = default;
+
+public:
+    static CartaoSD *GetInstance();
 
     bool possuiNome = false;
     bool arquivoCriado = false;
+
+    void escreverSD(DadosCompartilhamento dados)
+    {
+        if (!arquivoCriado)
+        {
+            return;
+        }
+
+        return;
+    }
 
     bool Loop()
     {
@@ -37,16 +49,16 @@ public:
             return true;
         }
 
-        Serial.println("=== CARTÃO SD ===");
+        D_println("=== CARTÃO SD ===");
         if (!arquivoCriado)
         {
-            Serial.println("Não há arquivo criado.");
+            D_println("Não há arquivo criado.");
             return true;
         }
 
         if (!SD.exists(nomeArquivo))
         {
-            Serial.println("O sistema acredita que o arquivo foi criado, mas não detecta o arquivo pelo nome.");
+            D_println("O sistema acredita que o arquivo foi criado, mas não detecta o arquivo pelo nome.");
             return false;
         }
 
@@ -54,14 +66,14 @@ public:
 
         if (!arquivoDados)
         {
-            Serial.println("O sistema encontrou o arquivo pelo nome, mas não conseguiu abrí-lo.");
+            D_println("O sistema encontrou o arquivo pelo nome, mas não conseguiu abrí-lo.");
 
             arquivoDados.close();
             return false;
         }
 
         arquivoDados.close();
-        Serial.println("A gravação no cartão SD parece normal.");
+        D_println("A gravação no cartão SD parece normal.");
         return true;
     }
 
@@ -87,17 +99,9 @@ void writeData(int a, int b, int c, float d, float e)
         return true;
     }
 
-    CartaoSD(CartaoSD &outro) = delete;
-
-    CartaoSD()
-    {
-        if (instance == nullptr)
-        {
-            instance = this;
-        }
-    }
-
 private:
+    static CartaoSD *instance;
+
     String nomeArquivo;
     File arquivoDados;
     String getNomeArquivo();
@@ -145,16 +149,16 @@ private:
 
             if (!SD.exists(nomeArquivo))
             {
-                Serial.println("Erro ao criar o arquivo.");
+                D_println("Erro ao criar o arquivo.");
                 arquivoCriado = false;
                 return;
             }
 
             if (Serial)
             {
-                Serial.print("Arquivo ");
-                Serial.print(nomeArquivo);
-                Serial.println(" criado.");
+                D_print("Arquivo ");
+                D_print(nomeArquivo);
+                D_println(" criado.");
             }
 
             if (arquivoDados)
@@ -165,13 +169,13 @@ private:
                 t2 = micros();
                 unsigned long t = t2 - t1;
                 String dt = String(t, DEC);
-                Serial.println("Feito. Tempo para criar: " + dt);
+                D_println("Feito. Tempo para criar: " + dt);
 
                 arquivoDados.close();
             }
             else
             {
-                Serial.println("Erro ao abrir o arquivo.");
+                D_println("Erro ao abrir o arquivo.");
                 return;
             }
         }
@@ -179,24 +183,23 @@ private:
 };
 
 CartaoSD *CartaoSD::instance{nullptr};
-CartaoSD *CartaoSD::Setup()
+CartaoSD *CartaoSD::GetInstance()
 {
     if (instance == NULL)
     {
         instance = new CartaoSD();
-    }
 
-    SPI1.setRX(SD_RXPIN); // MISO
-    SPI1.setTX(SD_TXPIN); // MOSI
-    SPI1.setSCK(SD_SCKPIN);
-    SPI1.setCS(SD_CSPIN);
+        SPI1.setRX(SD_RXPIN); // MISO
+        SPI1.setTX(SD_TXPIN); // MOSI
+        SPI1.setSCK(SD_SCKPIN);
+        SPI1.setCS(SD_CSPIN);
 
-    SPI1.begin(true);
+        SPI1.begin(true);
 
-    if (!SD.begin(SD_CSPIN, SPI1))
-    {
-        Serial.println("Erro inicialização SD");
-        return instance;
+        if (!SD.begin(SD_CSPIN, SPI1))
+        {
+            D_println("Erro inicialização SD");
+        }
     }
     return instance;
 }

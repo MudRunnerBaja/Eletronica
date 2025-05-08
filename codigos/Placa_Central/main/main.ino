@@ -7,7 +7,7 @@
 #include <RPi_Pico_TimerInterrupt.h> // Interrupção com Timer
 #include <RPi_Pico_ISR_Timer.h>      // Manipuladores de Interrupção
 #include "include/Instancia.h"
-void WaitSerial(bool wait); // Esperar pelo serial ou não (testar setup)
+#include "main.h"
 
 /**
  * DECLARAÇÕES DE FUNÇÕES
@@ -17,46 +17,75 @@ bool WriteSD(struct repeating_timer *t);
 
 /**
  * DECLARAÇÕES DE VARIÁVEIS
-
  */
 bool setupCompleto;
 unsigned long tempoTotal;
 unsigned long tempoInicial;
 RPI_PICO_Timer Core0Timer0(0);
 RPI_PICO_Timer Core1Timer1(1);
-static bool debugMode = true;
-static bool callSetup = true;
-static Instancia *myInstance;
+Instancia *myInstance;
 
 void setup()
 {
+    pinMode(GPIO2_P4_LIVRE, OUTPUT);
+    pinMode(GPIO3_P5_LIVRE, OUTPUT);
     pinMode(LED_BUILTIN, OUTPUT);
+
+    digitalWrite(GPIO2_P4_LIVRE, HIGH);
+    digitalWrite(GPIO3_P5_LIVRE, HIGH);
     digitalWrite(LED_BUILTIN, HIGH);
-    Serial.begin(SERIAL_BAUD);
 
-    WaitSerial(debugMode);
-    Serial.println("INCIALIZANDO INSTANCIA");
-    Serial.println("=======================");
-    myInstance = new Instancia(debugMode, callSetup);
+    D_SerialBegin(SERIAL_BAUD);
 
-    pinMode(LED_BUILTIN, OUTPUT);
-    randomSeed(756498465497);
-    Serial.println("=======================");
-    Serial.println("INICIALIZACAO CONCLUIDA");
+    // DEBUG é uma constante definida em Constantes.h
+    WaitSerial(DEBUG);
+
+    D_println("INCIALIZANDO INSTANCIA");
+    D_println("=======================");
+    myInstance = Instancia::GetInstance();
+
+    // randomSeed(756498465497);
+    D_println("=======================");
+    D_println("INICIALIZACAO CONCLUIDA");
+
+    setupCompleto = true;
+    D_println("Setup core0 finalizado.");
+
     return;
 }
 
 void setup1()
 {
+    while (!setupCompleto)
+    {
+        delay(1);
+    }
+
+    D_println("Setup1 iniciando");
+    delay(10);
+
+    if (Core1Timer1.attachInterruptInterval(INTERVALO_TIMER_MS * 1000, UpdateData))
+        D_println("Core1Timer1 OK. Timer de: " + INTERVALO_TIMER_MS);
+    else
+        D_println("Falha no Core1Timer1. Sem timer de escrita no SD");
+
     return;
 }
 
+unsigned long tempo = millis();
+bool teste = LOW;
 void loop()
 {
-    myInstance->AtualizarDados();
-    delay(5);
-    myInstance->printarDados();
-    delay(995);
+    // myInstance->AtualizarDados();
+    // delay(5);
+    // myInstance->printarDados();
+    // delay(995);
+    // if (tempo < millis())
+    // {
+    //     teste = !teste;
+    //     digitalWrite(GPIO2_P4_LIVRE, teste);
+    //     tempo = millis() + 20;
+    // }
 }
 
 void loop1()
@@ -64,21 +93,11 @@ void loop1()
     return;
 }
 
-void WaitSerial(bool wait) // Esperar pelo serial ou não (testar setup)
+bool UpdateData(struct repeating_timer *t)
 {
-    if (wait) // Se esperar == true
-    {
-        while (!Serial)
-        { // Esperar o serial (abrir comunicação com o pc)
-            yield();
-        }
-        delay(50);
-
-        Serial.println(F("Type any character to start")); // Após inicializada a comunicação, aguardar um input do serial
-        while (!Serial.available())
-        { // Enquanto não houver input, esperar
-            yield();
-        }
-    }
-    return;
+    myInstance->SetDadosSistemas();
+    myInstance->SincronizarDados();
+    myInstance->PrintarDados();
+    D_println(digitalRead(GPIO3_P5_LIVRE));
+    return true;
 }

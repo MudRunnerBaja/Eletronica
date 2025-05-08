@@ -1,4 +1,3 @@
-
 #include "TemperaturaCVT.h"
 #include "Combustivel.h"
 #include "RPM_Motor.h"
@@ -11,20 +10,12 @@
  * Struct de dados para uso temporario dos dados de forma
  * organizada se encontra na classe Constantes.h
  */
-class Dados
+class DadosSincronizados
 {
 public:
-    static short nivelComb;
-    static int nivelFreio;
-    static double pressaoFreio;
-    static double pedal;
-    static double tensaoBat;
-    static float tmpCvt;
-    static float tmpAmb;
-    static double rpm;
-    static double vel;
+    bool dadosEmAtualizacao = false;
 
-    static String formatarDados()
+    String formatarDados()
     {
         String dadosString = "";
         dadosString = dadosString + String(tmpCvt) + " ";
@@ -49,46 +40,59 @@ public:
      * @param rpm
      * @param vel
      */
-    static void atualizarDados(short nivelComb, int nivelFreio, double pressaoFreio, double pedal, double tensaoBat, float tmpCvt, float tmpAmb, double rpm, double vel)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
     {
-        nivelComb = nivelComb;
-        nivelFreio = nivelFreio;
-        pressaoFreio = pressaoFreio;
-        pedal = pedal;
-        tensaoBat = tensaoBat;
-        tmpCvt = tmpCvt;
-        tmpAmb = tmpAmb;
-        rpm = rpm;
-        vel = vel;
+        dadosEmAtualizacao = true;
+
+        nivelComb = nivelComb1;
+        nivelFreio = nivelFreio1;
+        pressaoFreio = pressaoFreio1;
+        pedal = pedal1;
+        tensaoBat = tensaoBat1;
+        tmpCvt = tmpCvt1;
+        tmpAmb = tmpAmb1;
+        rpm = rpm1;
+        vel = vel1;
+
+        atualizaDadosCompartilhamento();
+        dadosEmAtualizacao = false;
 
         // Ponderar se os novos dados que forem adicionados precisam ser
         // também adicionados à StructDados
     }
 
-    static StructDados getStructDados()
+    DadosCompartilhamento getStructDados()
     {
-        // A definicao da struct se encontra em Constantes.h
-        StructDados data = StructDados();
-        data.nivelComb = nivelComb;
-        data.nivelFreio = nivelFreio;
-        data.pressaoFreio = pressaoFreio;
-        data.pedal = pedal;
-        data.tensaoBat = tensaoBat;
-        data.tmpCvt = tmpCvt;
-        data.tmpAmb = tmpAmb;
-        data.rpm = rpm;
-        data.vel = vel;
+        return dadosCompartilhamento;
+    }
 
-        return data;
+    bool getDadosEmAtualizacao()
+    {
+        return dadosEmAtualizacao;
+    }
+
+private:
+    short nivelComb = 0;
+    int nivelFreio = 0;
+    double pedal = 0;
+    double pressaoFreio = 0;
+    double tensaoBat = 0;
+    float tmpCvt = 0;
+    float tmpAmb = 0;
+    double rpm = 0;
+    double vel = 0;
+
+    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    void atualizaDadosCompartilhamento()
+    {
+        dadosCompartilhamento.nivelComb = nivelComb;
+        dadosCompartilhamento.nivelFreio = nivelFreio;
+        dadosCompartilhamento.pressaoFreio = pressaoFreio;
+        dadosCompartilhamento.pedal = pedal;
+        dadosCompartilhamento.tensaoBat = tensaoBat;
+        dadosCompartilhamento.tmpCvt = tmpCvt;
+        dadosCompartilhamento.tmpAmb = tmpAmb;
+        dadosCompartilhamento.rpm = rpm;
+        dadosCompartilhamento.vel = vel;
     }
 };
-
-short Dados::nivelComb = 0;
-int Dados::nivelFreio = 0;
-double Dados::pedal = 0;
-double Dados::pressaoFreio = 0;
-double Dados::tensaoBat = 0;
-float Dados::tmpCvt = 0;
-float Dados::tmpAmb = 0;
-double Dados::rpm = 0;
-double Dados::vel = 0;
