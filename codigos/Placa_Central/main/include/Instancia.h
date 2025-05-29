@@ -44,17 +44,18 @@ public:
 
     void EscreverSD()
     {
-        while (dados.getDadosEmAtualizacao)
-        {
-            yield();
-        }
+        // while (dados.getDadosEmAtualizacao)
+        // {
+        //     yield();
+        // }
 
-        cartaoSD.escreverDados(dados.getStructDados());
+        // cartaoSD.escreverDados(dados.getStructDados());
         return;
     }
 
     void SetDadosSistemas()
     {
+        rpm.updateRPM();
         nivelCombustivel.setNivelAtual();
         freio.setNivelAtual();
         freio.setPressaoAtual();
