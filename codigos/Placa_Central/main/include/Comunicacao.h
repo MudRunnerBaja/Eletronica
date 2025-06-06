@@ -119,10 +119,10 @@ public:
         }
         
         
-        frame0.data[1] = lowByte(data.nivelComb);
         frame0.data[0] = highByte(data.nivelComb);
-        frame0.data[3] = lowByte(data.nivelFreio);
+        frame0.data[1] = lowByte(data.nivelComb);
         frame0.data[2] = highByte(data.nivelFreio);
+        frame0.data[3] = lowByte(data.nivelFreio);
         frame0.data[4] = pickDoubleByte(data.pressaoFreio, 3);
         frame0.data[5] = pickDoubleByte(data.pressaoFreio, 2);
         frame0.data[6] = pickDoubleByte(data.pressaoFreio, 1);
@@ -141,14 +141,14 @@ public:
             Serial.println("CAN Send failure 1");
         }
         
-        frame1.data[0] = pickDoubleByte(data.pedal, 3);
-        frame1.data[1] = pickDoubleByte(data.pedal, 2);
-        frame1.data[2] = pickDoubleByte(data.pedal, 1);
-        frame1.data[3] = pickDoubleByte(data.pedal, 0);
-        frame1.data[4] = pickDoubleByte(data.tensaoBat, 3);
-        frame1.data[5] = pickDoubleByte(data.tensaoBat, 2);
-        frame1.data[6] = pickDoubleByte(data.tensaoBat, 1);
-        frame1.data[7] = pickDoubleByte(data.tensaoBat, 0);
+        frame1.data[0] = pickDoubleByte(data.pedal, 0);
+        frame1.data[1] = pickDoubleByte(data.pedal, 1);
+        frame1.data[2] = pickDoubleByte(data.pedal, 2);
+        frame1.data[3] = pickDoubleByte(data.pedal, 3);
+        frame1.data[4] = pickDoubleByte(data.tensaoBat, 0);
+        frame1.data[5] = pickDoubleByte(data.tensaoBat, 1);
+        frame1.data[6] = pickDoubleByte(data.tensaoBat, 2);
+        frame1.data[7] = pickDoubleByte(data.tensaoBat, 3);
 
         // packet2
         // tempObj = float = 4
@@ -187,14 +187,14 @@ public:
             Serial.println("CAN Send failure 3");
         }
 
-        frame3.data[0] = pickDoubleByte(data.rpm, 3);
-        frame3.data[1] = pickDoubleByte(data.rpm, 2);
-        frame3.data[2] = pickDoubleByte(data.rpm, 1);
-        frame3.data[3] = pickDoubleByte(data.rpm, 0);
-        frame3.data[4] = pickDoubleByte(data.vel, 3);
-        frame3.data[5] = pickDoubleByte(data.vel, 2);
-        frame3.data[6] = pickDoubleByte(data.vel, 1);
-        frame3.data[7] = pickDoubleByte(data.vel, 0);
+        frame3.data[0] = pickDoubleByte(data.rpm, 0);
+        frame3.data[1] = pickDoubleByte(data.rpm, 1);
+        frame3.data[2] = pickDoubleByte(data.rpm, 2);
+        frame3.data[3] = pickDoubleByte(data.rpm, 3);
+        frame3.data[4] = pickDoubleByte(data.vel, 0);
+        frame3.data[5] = pickDoubleByte(data.vel, 1);
+        frame3.data[6] = pickDoubleByte(data.vel, 2);
+        frame3.data[7] = pickDoubleByte(data.vel, 3);
 
 
 

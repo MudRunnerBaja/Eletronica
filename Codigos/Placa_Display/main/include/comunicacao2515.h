@@ -1,5 +1,27 @@
 #include <ACAN2515.h>
 
+typedef union {
+  float f;
+  uint32_t u32;
+} FloatUnion;
+
+typedef union {
+  double d;
+  uint32_t u32;
+} DoubleUnion;
+
+typedef union {
+  int i;
+  uint8_t u8;
+} IntUnion;
+
+typedef union {
+  short s;
+  uint8_t u8;
+} ShortUnion;
+
+
+
 
 //Ver quais são os pinos
 static const byte MCP2515_SCK  = 6; // SCK input of MCP2515
@@ -29,7 +51,59 @@ static void receiveMessage() {
   CANMessage frame ;
   if (can.available ()) {
     if (can.receive (frame)){
+
+      //frame0 -> 
+      // nivelCombustível = short = 2
+      // nivelAtualFreio = int = 2
+      // pressaoAtualFreio = double = 4
+      if (frame.id == 0x1FFFFFFF){
         ;
+      }
+      //frame1 ->
+      // pedalAcel = double = 4
+      // tensaoBat = double = 4
+      else if (frame.id == 0x11FFFFFF){
+        DoubleUnion dAcel;
+        DoubleUnion dBat;
+
+        uint32_t u32Acel = (frame.data[0] | (frame.data[1] << 8)) | ((frame.data[2] | (frame.data[3] << 8)) << 16);
+        dAcel.u32 = u32Acel;
+        double pedalAcel = dAcel.d;
+
+        uint32_t u32Bat = (frame.data[4] | (frame.data[5] << 8)) | ((frame.data[6] | (frame.data[7] << 8)) << 16);
+        dBat.u32 = u32Bat;
+        double tensaoBat = dBat.d;
+      }
+      //frame2
+      // tempObj = float = 4
+      // tempAmb = float = 4
+      else if (frame.id == 0x111FFFFF){
+        FloatUnion dObj;
+        FloatUnion dAmb;
+
+        uint32_t u32Obj = (frame.data[0] | (frame.data[1] << 8)) | ((frame.data[2] | (frame.data[3] << 8)) << 16);
+        dObj.u32 = u32Obj;
+        double tempObj = dObj.f;
+
+        uint32_t u32Amb = (frame.data[4] | (frame.data[5] << 8)) | ((frame.data[6] | (frame.data[7] << 8)) << 16);
+        dAmb.u32 = u32Amb;
+        double tempAmb = dAmb.f;
+      }
+      //frame0
+      // rpm = double = 4
+      // vel = double = 4
+      else if (frame.id == 0x1111FFFF){
+        DoubleUnion dRpm;
+        DoubleUnion dVel;
+
+        uint32_t u32Rpm = (frame.data[0] | (frame.data[1] << 8)) | ((frame.data[2] | (frame.data[3] << 8)) << 16);
+        dRpm.u32 = u32Rpm;
+        double pedalAcel = dRpm.d;
+
+        uint32_t u32Vel = (frame.data[4] | (frame.data[5] << 8)) | ((frame.data[6] | (frame.data[7] << 8)) << 16);
+        dVel.u32 = u32Vel;
+        double vel = dVel.d;
+      }
     }
     
     // gReceivedFrameCount ++ ;

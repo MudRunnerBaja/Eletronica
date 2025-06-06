@@ -3,7 +3,7 @@
 //Funcionalidades
 #include "include/combustivel.c"
 #include "include/comunicacao.c"
-#include "include/comunicacao2515.c"
+#include "include/comunicacao2515.h"
 #include "include/display.c"
 //#include "include/encoder.c"
 #include "include/leds.c"
