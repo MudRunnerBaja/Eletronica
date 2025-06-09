@@ -27,7 +27,7 @@ void setup1(){
     }
     setupComunicacao();   //FALTA CONSTRUIR
     setupComb();
-    //setupMenu():          //FALTA CONSTRUIR
+    setupMenu():          //FALTA CONSTRUIR
     intialized = true;
     digitalWrite(LED_BUILTIN, HIGH);
 }

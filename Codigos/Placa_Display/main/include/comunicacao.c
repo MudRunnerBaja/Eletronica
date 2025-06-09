@@ -35,9 +35,9 @@ void canUpdate(){
     }
 }
 
-void setupComunicacao(){
+// void setupComunicacao(){
 
-}
+// }
 
 void randomValues(){
     comb = random(3);

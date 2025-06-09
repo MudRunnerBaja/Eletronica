@@ -11,15 +11,13 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-ACAN2515 can(13, SPI, 10);
+ACAN2515 can(CAN_CSPIN, SPI, 255);
 
 class Comunicacao
 {
 public:
     static Comunicacao *instance;
     static Comunicacao *Setup();
-    // mudar isso cara
-    int algumValor = 10;
 
     static Comunicacao *GetInstance();
 
@@ -196,84 +194,6 @@ public:
         frame3.data[6] = pickDoubleByte(data.vel, 2);
         frame3.data[7] = pickDoubleByte(data.vel, 3);
 
-
-
-
-        // CANMessage frame0;
-        // frame0.ext = true;
-        // frame0.id = 0x1FFFFFFF;
-        // frame0.len = 8;
-        // frame0.data = packet0;
-        // const bool ok0 = can.tryToSend(frame0);
-        // if (!ok0)
-        // {
-        //     Serial.println("CAN Send failure 0");
-        // }
-
-        // CANMessage frame1;
-        // frame1.ext = true;
-        // frame1.id = 0x11FFFFFF;
-        // frame1.len = 8;
-        // frame1.data = packet1;
-        // const bool ok1 = can.tryToSend(frame1);
-        // if (!ok1)
-        // {
-        //     Serial.println("CAN Send failure 1");
-        // }
-
-        // CANMessage frame2;
-        // frame2.ext = true;
-        // frame2.id = 0x111FFFFF;
-        // frame2.len = 8;
-        // frame2.data = packet2;
-        // const bool ok2 = can.tryToSend(frame2);
-        // if (!ok2)
-        // {
-        //     Serial.println("CAN Send failure 2");
-        // }
-
-        // CANMessage frame3;
-        // frame3.ext = true;
-        // frame3.id = 0x1111FFFF;
-        // frame3.len = 8;
-        // frame3.data = packet3;
-        // const bool ok3 = can.tryToSend(frame3);
-        // if (!ok3)
-        // {
-        //     Serial.println("CAN Send failure 3");
-        // }
-
-        // CAN.beginPacket(0x12, 8);
-        // for (int i = 0; i <= 7; i++)
-        // {
-        //     CAN.write(packet0[i]);
-        // }
-        // CAN.endPacket();
-
-        // CAN.beginPacket(0x13, 8);
-        // for (int i = 0; i <= 7; i++)
-        // {
-        //     CAN.write(packet1[i]);
-        // }
-        // CAN.endPacket();
-
-        // CAN.beginPacket(0x14, 8);
-        // for (int i = 0; i <= 7; i++)
-        // {
-        //     CAN.write(packet2[i]);
-        // }
-        // CAN.endPacket();
-
-        // CAN.beginPacket(0x15, 8);
-        // for (int i = 0; i <= 7; i++)
-        // {
-        //     CAN.write(packet3[i]);
-        // }
-        // CAN.endPacket();
-
-        // int dlc, rtr;
-        // CAN.beginPacket(receiverId, dlc, rtr);
-
         return;
     }
 
@@ -315,10 +235,6 @@ private:
         SPI.setTX(CAN_TXPIN);
         // CAN.setPins(CAN_CSPIN);
 
-        //mudar isso cara
-        // int algumValor = 10;
-        
-        // ACAN2515 can(CAN_CSPIN, SPI, algumValor);
 
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
         settings.mRequestedMode = ACAN2515Settings::NormalMode;      // Select loopback mode
