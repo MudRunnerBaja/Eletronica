@@ -14,6 +14,9 @@ int rpmold;
 void setup(){
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
+    while(!Serial.available()){
+        ;
+    }
     Serial.print("Inicializando setup...");
     // setupDisplay();
     // setupEncoder();
@@ -46,6 +49,6 @@ void loop1(){
     // setCombustivel(comb);
     // updateEncoder();
     // canUpdate();
-    receiveMessage();
+    receiveMessage(true);
     
 }

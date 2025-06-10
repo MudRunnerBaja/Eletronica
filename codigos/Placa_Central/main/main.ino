@@ -98,6 +98,7 @@ bool UpdateData(struct repeating_timer *t)
     myInstance->SetDadosSistemas();
     myInstance->SincronizarDados();
     myInstance->PrintarDados();
+    myInstance->EnviarDadosCanBus();
     D_println(digitalRead(GPIO3_P5_LIVRE));
     return true;
 }

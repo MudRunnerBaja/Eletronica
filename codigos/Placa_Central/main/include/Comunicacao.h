@@ -101,6 +101,7 @@ public:
      */
     void sendCanDataTo(DadosCompartilhamento data)
     {
+        can.poll();
         // packet0
         // nivelCombustível = short = 2
         // nivelAtualFreio = int = 2
@@ -114,6 +115,9 @@ public:
         if (!ok0)
         {
             Serial.println("CAN Send failure 0");
+        }
+        else{
+            Serial.println("message 0 sent");
         }
         
         
@@ -233,13 +237,13 @@ private:
         SPI.setSCK(CAN_SCKPIN);
         SPI.setRX(CAN_RXPIN);
         SPI.setTX(CAN_TXPIN);
+        SPI.begin();
         // CAN.setPins(CAN_CSPIN);
 
 
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
         settings.mRequestedMode = ACAN2515Settings::NormalMode;      // Select loopback mode
-        const uint16_t errorCode = can.begin(settings, []
-                                             { can.isr(); });
+        const uint16_t errorCode = can.begin(settings, NULL);
         if (errorCode == 0)
         {
             Serial.print("CAN init sucess");
@@ -278,7 +282,7 @@ Comunicacao *Comunicacao::GetInstance()
 
         // TODO:
         // setupTelemetria();
-        // setupCanBus();
+        setupCanBus();
     }
 
     return instance;

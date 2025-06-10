@@ -46,13 +46,30 @@ static void setupComunicacao() {
   SPI.begin ();
   
   ACAN2515Settings settings (QUARTZ_FREQUENCY, 125UL * 1000UL) ; // CAN bit rate 125 kb/s
-  settings.mRequestedMode = ACAN2515Settings::ListenOnlyMode ;
-  const uint16_t errorCode = can.begin (settings, [] { can.isr () ; }) ;
+  settings.mRequestedMode = ACAN2515Settings::NormalMode ;
+  const uint16_t errorCode = can.begin (settings, NULL) ;
+  CANMessage frame;
+  if (errorCode == 0)
+        {
+            Serial.print("CAN init success");
+            frame.id = 10;
+
+            can.tryToSend(frame);
+            can.poll();
+
+        }
+        else
+        {
+            Serial.print("CAN Configuration error 0x");
+            Serial.println(errorCode, HEX);
+        }
 }
 
 static void receiveMessage(bool debug = false) {
+  can.poll();
   CANMessage frame ;
   if (can.available ()) {
+    // Serial.println("available");
     if (can.receive (frame)){
 
       //frame0 -> 
@@ -66,6 +83,7 @@ static void receiveMessage(bool debug = false) {
       // pedalAcel = double = 4
       // tensaoBat = double = 4
       else if (frame.id == 0x11FFFFFF){
+        Serial.println("frame1");
         DoubleUnion dAcel;
         DoubleUnion dBat;
 
@@ -114,6 +132,6 @@ static void receiveMessage(bool debug = false) {
     // Serial.println (gReceivedFrameCount) ;
   }
   if (debug){
-    Serial.println(vel);
+    // Serial.println(vel);
   }
 }
