@@ -1,14 +1,14 @@
 #include <ACAN2515.h>
 
-typedef union {
+union FloatUnion{
   float f;
   uint32_t u32;
-} FloatUnion;
+};
 
-typedef union {
+union DoubleUnion{
   double d;
   uint32_t u32;
-} DoubleUnion;
+};
 
 typedef union {
   int i;
@@ -71,34 +71,47 @@ static void receiveMessage(bool debug = false) {
   if (can.available ()) {
     // Serial.println("available");
     if (can.receive (frame)){
+      Serial.print("frame id:");
+      Serial.println(frame.id);
 
       //frame0 -> 
       // nivelCombustível = short = 2
       // nivelAtualFreio = int = 2
       // pressaoAtualFreio = double = 4
-      if (frame.id == 0x1FFFFFFF){
-        ;
+      if (frame.id == 1){
+        // Serial.println("frame0");
       }
       //frame1 ->
       // pedalAcel = double = 4
       // tensaoBat = double = 4
-      else if (frame.id == 0x11FFFFFF){
-        Serial.println("frame1");
+      else if (frame.id == 2){
         DoubleUnion dAcel;
         DoubleUnion dBat;
-
+        
         uint32_t u32Acel = gather4bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3]);
         dAcel.u32 = u32Acel;
         double pedalAcel = dAcel.d;
-
+        
         uint32_t u32Bat = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         dBat.u32 = u32Bat;
         double tensaoBat = dBat.d;
+
+        Serial.print("frame data: ");
+        for (int i = 0; i < 8; i++){
+          Serial.print(frame.data[i]);
+          Serial.print(", ");
+        }
+        Serial.print("frame len: ");
+        Serial.println(frame.len);
+        Serial.print("Valor do pedalAcel:");
+        Serial.print(dAcel.d);
+        Serial.print(", ");
+        Serial.println(dAcel.u32);
       }
       //frame2
       // tempObj = float = 4
       // tempAmb = float = 4
-      else if (frame.id == 0x111FFFFF){
+      else if (frame.id == 3){
         FloatUnion dObj;
         FloatUnion dAmb;
 

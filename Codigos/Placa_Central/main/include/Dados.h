@@ -82,7 +82,7 @@ private:
     double rpm = 0;
     double vel = 0;
 
-    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 2, 0, 0, 0, 0, 0};
     void atualizaDadosCompartilhamento()
     {
         dadosCompartilhamento.nivelComb = nivelComb;
