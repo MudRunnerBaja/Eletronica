@@ -62,33 +62,24 @@ public:
     //     vel = vel;
     // }
 
-    uint8_t pickDoubleByte(double d, int index)
+    uint8_t pickDoubleByte(double D, int index)
     {
-        uint8_t *p = (uint8_t *)&d;
+        double d = D;
+        uint8_t b[sizeof(d)];
+        memcpy(&b, &d, sizeof(b));
 
-        uint8_t byteArr[4];
-
-        for (int i = 0; i != sizeof(double); ++i)
-        {
-            byteArr[i] = p[i];
-        }
-
-        return byteArr[index];
+        return b[index];
     }
 
-    uint8_t pickFloatByte(float d, int index)
+    uint8_t pickFloatByte(float D, int index)
     {
-        uint8_t *p = (uint8_t *)&d;
+        float d = D;
+        uint8_t b[sizeof(d)];
+        memcpy(&b, &d, sizeof(b));
 
-        uint8_t byteArr[4];
-
-        for (int i = 0; i != sizeof(float); ++i)
-        {
-            byteArr[i] = p[i];
-        }
-
-        return byteArr[index];
+        return b[index];
     }
+
 
     /**
      * @param DadosCompartilhamento struct com todos os dados
@@ -142,10 +133,10 @@ public:
         frame1.data[1] = pickDoubleByte(data.pedal, 1);
         frame1.data[2] = pickDoubleByte(data.pedal, 2);
         frame1.data[3] = pickDoubleByte(data.pedal, 3);
-        frame1.data[4] = pickDoubleByte(data.tensaoBat, 0);
-        frame1.data[5] = pickDoubleByte(data.tensaoBat, 1);
-        frame1.data[6] = pickDoubleByte(data.tensaoBat, 2);
-        frame1.data[7] = pickDoubleByte(data.tensaoBat, 3);
+        frame1.data[4] = pickDoubleByte(data.pedal, 4);
+        frame1.data[5] = pickDoubleByte(data.pedal, 5);
+        frame1.data[6] = pickDoubleByte(data.pedal, 6);
+        frame1.data[7] = pickDoubleByte(data.pedal, 7);
 
         for (int i = 0; i < 8; i++){
             Serial.print(frame1.data[i]);
@@ -153,15 +144,13 @@ public:
         }
         Serial.println(""); 
 
-        double a = 10;
+        // double teste = 10;
 
-        Serial.print("Estou começando a perder a esperança");
-        Serial.print(pickDoubleByte(a, 0));
-        Serial.print(pickDoubleByte(a, 1));
-        Serial.print(pickDoubleByte(a, 2));
-        Serial.println(pickDoubleByte(a, 3));
-        Serial.print("nmrl mn, olha o valor dessa merda: ");
-        Serial.println(data.pedal);
+        // Serial.print("Estou começando a perder a esperança");
+        // Serial.print(pickDoubleByte(teste, 0));
+        // Serial.print(pickDoubleByte(teste, 1));
+        // Serial.print(pickDoubleByte(teste, 2));
+        // Serial.println(pickDoubleByte(teste, 3));
         const bool ok1 = can.tryToSend(frame1);
         if (!ok1)
         {

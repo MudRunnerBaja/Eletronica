@@ -14,8 +14,8 @@ int rpmold;
 void setup(){
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
-    // while(!Serial.available()){;}
     Serial.print("Inicializando setup...");
+    while(!Serial.available()){;}
     // setupDisplay();
     // setupEncoder();
     setup0Completed = true;
