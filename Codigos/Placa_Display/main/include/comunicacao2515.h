@@ -5,10 +5,50 @@ uint32_t gather4bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3){
   return (b0 | (b1 << 8)) | ((b2 | (b3 << 8)) << 16);
 };
 
-uint64_t gather8bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7){
-  return (b0 | (b1 << 8)) | ((b2 | (b3 << 8)) << 16) | (((b4 | (b5 << 8)) | ((b6 | (b7 << 8)) << 16)) << 32);
-};
+void int32print(uint32_t A){
+  uint32_t a = A;
+  float f;
+  
+  memcpy(&f, &a, sizeof(f));
+  Serial.println(f);
+  Serial.println("\n");
+}
 
+void int64print(uint64_t I){
+  uint64_t i = I;
+  double dd;
+  memcpy(&dd, &i, 8);
+  uint8_t prr [8];
+  memcpy(&prr, &dd, 8);
+  float um = gather4bytes(prr[0], prr[1], prr[2], prr[3]);
+  float dois = gather4bytes(prr[4], prr[5], prr[6], prr[7]);
+  Serial.println("---int64print---");
+  Serial.println(um);
+  Serial.println(dois);
+  Serial.println("---------");
+}
+// uint64_t gather8bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7){
+//   return (b0 | (b1 << 8)) | ((b2 | (b3 << 8)) << 16) | (((b4 | (b5 << 8)) | ((b6 | (b7 << 8)) << 16)) << 32);
+// };
+uint64_t gather8bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7){
+  uint64_t high;
+  uint32_t high32 = gather4bytes(b0, b1, b2, b3);
+  int32print(high32);
+  memcpy(&high, &high32, 8);
+  int64print(high);
+  //printf("%i", high);
+  //printf("\n");
+  //printf("%f", high);
+  //printf("\n");
+  uint64_t low;
+  low = gather4bytes(b4, b5, b6, b7);
+  low = low << 32;
+  int64print(low);
+  //printf("%f", low);
+  //printf("\n");
+  
+  return  high | low;
+};
 
 
 //Ver quais são os pinos
@@ -70,10 +110,12 @@ static void receiveMessage(bool debug = false) {
       // pedalAcel = double = 4
       // tensaoBat = double = 4
       else if (frame.id == 2){
-        uint32_t u32Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3], frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
+          frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        int64print(u64Acel);
         double pedalAcel;
 
-        memcpy(&pedalAcel, &u32Acel, sizeof(pedalAcel));
+        memcpy(&pedalAcel, &u64Acel, sizeof(pedalAcel));
         Serial.println(pedalAcel);
         // dAcel.u32 = u32Acel;
         // double pedalAcel = dAcel.d;
@@ -90,7 +132,7 @@ static void receiveMessage(bool debug = false) {
         Serial.print("frame len: ");
         Serial.println(frame.len);
         Serial.print("Valor do pedalAcel:");
-        Serial.println(u32Acel);
+        Serial.println(u64Acel);
       }
       //frame2
       // tempObj = float = 4

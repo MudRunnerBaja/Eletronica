@@ -128,8 +128,8 @@ public:
         frame1.len = 8;
         frame1.idx = 1;
         
-        frame1.data[0] = 10;
-        // frame1.data[0] = pickDoubleByte(data.pedal, 0);
+        // frame1.data[0] = 10;
+        frame1.data[0] = pickDoubleByte(data.pedal, 0);
         frame1.data[1] = pickDoubleByte(data.pedal, 1);
         frame1.data[2] = pickDoubleByte(data.pedal, 2);
         frame1.data[3] = pickDoubleByte(data.pedal, 3);
