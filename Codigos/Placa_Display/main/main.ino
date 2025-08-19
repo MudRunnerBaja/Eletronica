@@ -15,8 +15,9 @@ void setup(){
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
     Serial.print("Inicializando setup...");
+    while(!Serial.available()){;}
     setupDisplay();
-    setupEncoder();
+    // setupEncoder();
     setup0Completed = true;
 }
 
@@ -26,8 +27,8 @@ void setup1(){
         delay(1);
     }
     setupComunicacao();   //FALTA CONSTRUIR
-    setupComb();
-    setupMenu():          //FALTA CONSTRUIR
+    // setupComb();
+    // setupMenu():          //FALTA CONSTRUIR
     intialized = true;
     digitalWrite(LED_BUILTIN, HIGH);
 }
@@ -43,9 +44,9 @@ void loop(){
 }
 
 void loop1(){
-    setCombustivel(comb);
-    updateEncoder();
+    // setCombustivel(comb);
+    // updateEncoder();
     // canUpdate();
-    receiveMessage();
+    receiveMessage(true);
     
 }

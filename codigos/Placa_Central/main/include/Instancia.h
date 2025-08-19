@@ -67,16 +67,17 @@ public:
 
     bool SincronizarDados()
     {
-        dados.atualizarDados(
-            nivelCombustivel.getNivelAtual(),
-            freio.getNivelAtual(),
-            freio.getPressaoAtual(),
-            0.0, // Pedal Acelerador
-            0.0, // Tensao Bateria
-            temperaturaCvt.getTemperaturaObjeto(),
-            temperaturaCvt.getTemperaturaAmbiente(),
-            rpm.getRPM(),
-            velocidade.getVel());
+        // dados.atualizarDados(
+        //     nivelCombustivel.getNivelAtual(),
+        //     freio.getNivelAtual(),
+        //     freio.getPressaoAtual(),
+        //     0.0, // Pedal Acelerador
+        //     0.0, // Tensao Bateria
+        //     temperaturaCvt.getTemperaturaObjeto(),
+        //     temperaturaCvt.getTemperaturaAmbiente(),
+        //     rpm.getRPM(),
+        //     velocidade.getVel());
+        dados.atualizarDados(0, 1, 2, 500, 4, 5, 6, 7, 200);
 
         return false;
     }
