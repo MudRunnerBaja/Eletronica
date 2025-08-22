@@ -60,6 +60,7 @@ RPM_Motor *RPM_Motor::GetInstance()
         pinMode(RPM_INTERRUPT_PIN, INPUT_PULLUP);
         attachInterrupt(digitalPinToInterrupt(RPM_INTERRUPT_PIN), updateRPM, RISING);
         told = micros();
+        // Serial.println("Prr mano n era pro outro bagulho ativar isso nmrl");
     }
 
     return instance;

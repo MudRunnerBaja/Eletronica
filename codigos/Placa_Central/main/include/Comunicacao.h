@@ -11,7 +11,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-ACAN2515 can(CAN_CSPIN, SPI, SD_CSPIN);
+ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
 
 class Comunicacao
 {
@@ -71,6 +71,15 @@ public:
         return b[index];
     }
 
+    uint8_t pickIntByte(int D, int index)
+    {
+        int d = D;
+        uint8_t b[sizeof(d)];
+        memcpy(&b, &d, sizeof(b));
+
+        return b[index];
+    }
+
     uint8_t pickFloatByte(float D, int index)
     {
         float d = D;
@@ -97,9 +106,7 @@ public:
         can.receive(receive);
         Serial.println(receive.id);
         // packet0
-        // nivelCombustível = short = 2
-        // nivelAtualFreio = int = 2
-        // pressaoAtualFreio = double = 4
+        // vel
         CANMessage frame0;
         frame0.ext = false;
         frame0.rtr = false;
@@ -107,14 +114,14 @@ public:
         frame0.len = 8;
         
         
-        frame0.data[0] = highByte(data.nivelComb);
-        frame0.data[1] = lowByte(data.nivelComb);
-        frame0.data[2] = highByte(data.nivelFreio);
-        frame0.data[3] = lowByte(data.nivelFreio);
-        frame0.data[4] = pickDoubleByte(data.pressaoFreio, 3);
-        frame0.data[5] = pickDoubleByte(data.pressaoFreio, 2);
-        frame0.data[6] = pickDoubleByte(data.pressaoFreio, 1);
-        frame0.data[7] = pickDoubleByte(data.pressaoFreio, 0);
+        frame0.data[0] = pickDoubleByte(data.vel, 0);
+        frame0.data[1] = pickDoubleByte(data.vel, 1);
+        frame0.data[2] = pickDoubleByte(data.vel, 2);
+        frame0.data[3] = pickDoubleByte(data.vel, 3);
+        frame0.data[4] = pickDoubleByte(data.vel, 4);
+        frame0.data[5] = pickDoubleByte(data.vel, 5);
+        frame0.data[6] = pickDoubleByte(data.vel, 6);
+        frame0.data[7] = pickDoubleByte(data.vel, 7);
         
         const bool ok0 = can.tryToSend(frame0);
         if (!ok0)
@@ -122,7 +129,6 @@ public:
             Serial.println("CAN Send failure 0");
         }
         // packet1
-        // pedalAcel = double = 4
         // tensaoBat = double = 4
         CANMessage frame1;
         frame1.ext = false;
@@ -132,21 +138,16 @@ public:
         frame1.idx = 1;
         
         // frame1.data[0] = 10;
-        frame1.data[0] = pickDoubleByte(data.pedal, 0);
-        frame1.data[1] = pickDoubleByte(data.pedal, 1);
-        frame1.data[2] = pickDoubleByte(data.pedal, 2);
-        frame1.data[3] = pickDoubleByte(data.pedal, 3);
-        frame1.data[4] = pickDoubleByte(data.pedal, 4);
-        frame1.data[5] = pickDoubleByte(data.pedal, 5);
-        frame1.data[6] = pickDoubleByte(data.pedal, 6);
-        frame1.data[7] = pickDoubleByte(data.pedal, 7);
+        frame1.data[0] = pickDoubleByte(data.tensaoBat, 0);
+        frame1.data[1] = pickDoubleByte(data.tensaoBat, 1);
+        frame1.data[2] = pickDoubleByte(data.tensaoBat, 2);
+        frame1.data[3] = pickDoubleByte(data.tensaoBat, 3);
+        frame1.data[4] = pickDoubleByte(data.tensaoBat, 4);
+        frame1.data[5] = pickDoubleByte(data.tensaoBat, 5);
+        frame1.data[6] = pickDoubleByte(data.tensaoBat, 6);
+        frame1.data[7] = pickDoubleByte(data.tensaoBat, 7);
 
-        for (int i = 0; i < 8; i++){
-            Serial.print(frame1.data[i]);
-            Serial.print(", ");
-        }
-        Serial.println(""); 
-
+        
         // double teste = 10;
 
         // Serial.print("Estou começando a perder a esperança");
@@ -187,7 +188,6 @@ public:
         }
         // packet3
         // rpm = double = 4
-        // vel = double = 4
 
         CANMessage frame3;
         frame3.ext = false;
@@ -199,23 +199,41 @@ public:
         frame3.data[1] = pickDoubleByte(data.rpm, 1);
         frame3.data[2] = pickDoubleByte(data.rpm, 2);
         frame3.data[3] = pickDoubleByte(data.rpm, 3);
-        frame3.data[4] = pickDoubleByte(data.vel, 0);
-        frame3.data[5] = pickDoubleByte(data.vel, 1);
-        frame3.data[6] = pickDoubleByte(data.vel, 2);
-        frame3.data[7] = pickDoubleByte(data.vel, 3);
+        frame3.data[4] = pickDoubleByte(data.rpm, 4);
+        frame3.data[5] = pickDoubleByte(data.rpm, 5);
+        frame3.data[6] = pickDoubleByte(data.rpm, 6);
+        frame3.data[7] = pickDoubleByte(data.rpm, 7);
         const bool ok3 = can.tryToSend(frame3);
         if (!ok3)
         {
             Serial.println("CAN Send failure 3");
         }
 
-        Serial.print("Buffer 0:" );
+        CANMessage frame4;
+        frame1.ext = false;
+        frame1.rtr = false;
+        frame1.id = 5;
+        frame1.len = 8;
+        frame1.idx = 1;
+
+        frame4.data[0] = pickIntByte(data.nivelFreio, 0);
+        frame4.data[1] = pickIntByte(data.nivelFreio, 1);
+        frame4.data[2] = pickIntByte(data.nivelFreio, 2);
+        frame4.data[3] = pickIntByte(data.nivelFreio, 3);
+        
+
+        Serial.print("Buffer 0: " );
         Serial.println(can.transmitBufferCount(0));
-        Serial.print("Buffer 1:" );
+        Serial.print("Buffer 1: " );
         Serial.println(can.transmitBufferCount(1));
-        Serial.print("Buffer 2:" );
+        Serial.print("Buffer 2: " );
         Serial.println(can.transmitBufferCount(2));
         
+        for (int i = 0; i < 8; i++){
+            Serial.print(frame0.data[i]);
+            Serial.print(", ");
+        }
+        Serial.println(""); 
 
         return;
     }

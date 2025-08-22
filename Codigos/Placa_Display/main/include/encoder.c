@@ -3,13 +3,15 @@
 int S1PIN = 20;
 int S2PIN = 21;
 int KEY = 22;
-RotaryEncoder encoder(S1PIN, S2PIN, RotaryEncoder::LatchMode::FOUR3);
+RotaryEncoder encoder(S1PIN, S2PIN, RotaryEncoder::LatchMode::TWO03);
 
 bool bnt, menu = false;
 
 
 int encoderPosition(){
+    // Serial.println(encoder.getPosition());
     return encoder.getPosition();
+    
 }
 
 void updateEncoder(){
@@ -17,6 +19,7 @@ void updateEncoder(){
 }
 
 void overrideEnc(int valor){
+    // Serial.println("overrideEnc");
     encoder.setPosition(valor);
 }
 
@@ -61,5 +64,5 @@ int encoderKey(){
 
 void setupEncoder(){
     pinMode(KEY, INPUT);
-    digitalWrite(KEY, HIGH);
+    digitalRead(KEY);
 }

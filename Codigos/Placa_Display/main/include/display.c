@@ -28,10 +28,12 @@ void rawInfos();
 void setupDisplay(){
     u8g2.begin();
     wprpm = 128/rpmmax;
-    itoa(vel/10, &tvel[0], 10);
-    itoa(vel%10, &tvel[1], 10);
-    itoa(rpm/1000, &trpm[0], 10);
-    itoa((rpm/100)%10, &trpm[1], 10);
+    sprintf(tvel, "%f", vel); 
+    // itoa(vel/10, &tvel[0], 10);
+    // itoa(vel%10, &tvel[1], 10);
+    sprintf(trpm, "%f", rpm); 
+    // itoa(rpm/1000, &trpm[0], 10);
+    // itoa((rpm/100)%10, &trpm[1], 10);
     loadScreen();
 }
 
@@ -112,16 +114,16 @@ void updateMenu(bool menuInUse){
         break;
     }
   } while ( u8g2.nextPage() );
-  Serial.print(menu);  Serial.print(raw);
-  Serial.println();
+  // Serial.print(menu);  Serial.print(raw);
+  // Serial.println();
 
   if(toogleButton(500)){
-    if(encoderPosition()==0){
+    if(encoderPosition()==1){
      setLap = true;// Depois que a placa central setar a volta tem que retornar a FALSE
     }
 
-    if(encoderPosition()==1){
-      Serial.println("HUD PRINCIPAL");
+    if(encoderPosition()==0){
+      // Serial.println("HUD PRINCIPAL");
       overrideEnc(0);
       menu = false;
       raw = false;

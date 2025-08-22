@@ -17,7 +17,7 @@ void randomValues();
 
 void canUpdate(){
     if(millis() >= told + 500){
-        randomValues();
+        // randomValues();
 
         itoa(vel/10, &tvel[0], 10);
         itoa(vel%10, &tvel[1], 10);

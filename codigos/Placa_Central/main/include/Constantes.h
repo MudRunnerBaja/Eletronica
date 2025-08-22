@@ -51,7 +51,6 @@ enum Nivel
 
 // GPIO Livre
 #define GPIO2_P4_LIVRE 2
-#define GPIO3_P5_LIVRE 3
 
 // I2C
 #define I2C_SDA 4
@@ -77,6 +76,7 @@ enum Nivel
 #define CAN_TXPIN 19 // MOSI/TX CAN
 #define CAN_RXPIN 16 // MISO/RX CAN
 #define CAN_CSPIN 17
+#define CAN_INPIN 3
 
 // FREIO
 #define NIVEL_FREIO 20

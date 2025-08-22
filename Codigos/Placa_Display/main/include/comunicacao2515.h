@@ -1,6 +1,25 @@
 #include <ACAN2515.h>
 
 
+
+bool CVT = false, gps_conn = false, sd_rw = false, conn = false;
+bool can_conn = false, update = false, nivelFreio = false, setLap = false;
+short comb = 0;
+double vel, velGps, rpm, rpmMovida, volta;
+float tensao = 13, pressFreio, posAcelerador;
+long told, tlap, tlapOld, tOn;
+double TCvt, TProtecao;
+
+
+char tvel[10]; // String responsável por mostrar o valor da velocidade
+char trpm[10]; // String responsável por mostrar o valor do RPM
+char mrpm[10];
+
+// String tvel;
+// String trpm;
+// String mrpm;
+
+
 uint32_t gather4bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3){
   return (b0 | (b1 << 8)) | ((b2 | (b3 << 8)) << 16);
 };
@@ -33,7 +52,7 @@ uint64_t gather8bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4
   uint32_t high32 = gather4bytes(b0, b1, b2, b3);
   int32print(high32);
   memcpy(&high, &high32, 8);
-  int64print(high);
+  // int64print(high);
   //printf("%i", high);
   //printf("\n");
   //printf("%f", high);
@@ -89,7 +108,7 @@ static void setupComunicacao() {
 }
 
 static void receiveMessage(bool debug = false) {
-  // can.poll();
+  can.poll();
   CANMessage frame ;
   frame.id = 10;
   can.tryToSend(frame);
@@ -100,29 +119,10 @@ static void receiveMessage(bool debug = false) {
       Serial.println(frame.id);
 
       //frame0 -> 
-      // nivelCombustível = short = 2
-      // nivelAtualFreio = int = 2
-      // pressaoAtualFreio = double = 4
+      // vel -> double = 8
       if (frame.id == 1){
-        // Serial.println("frame0");
-      }
-      //frame1 ->
-      // pedalAcel = double = 4
-      // tensaoBat = double = 4
-      else if (frame.id == 2){
-        uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
+        uint64_t u64vel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        int64print(u64Acel);
-        double pedalAcel;
-
-        memcpy(&pedalAcel, &u64Acel, sizeof(pedalAcel));
-        Serial.println(pedalAcel);
-        // dAcel.u32 = u32Acel;
-        // double pedalAcel = dAcel.d;
-        
-        uint32_t u32Bat = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        // dBat.u32 = u32Bat;
-        // double tensaoBat = dBat.d;
 
         Serial.print("frame data: ");
         for (int i = 0; i < 8; i++){
@@ -131,8 +131,31 @@ static void receiveMessage(bool debug = false) {
         }
         Serial.print("frame len: ");
         Serial.println(frame.len);
-        Serial.print("Valor do pedalAcel:");
-        Serial.println(u64Acel);
+        Serial.print("Valor da vel:");
+        // Serial.println(u64vel);
+        memcpy(&vel, &u64vel, sizeof(vel));
+        Serial.println(vel);
+        // Serial.println("frame0");
+      }
+      //frame1 ->
+      // pedalAcel = double = 4
+      // tensaoBat = double = 4
+      else if (frame.id == 2){
+        uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
+          frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        // int64print(u64Acel);
+        double pedalAcel;
+
+        memcpy(&pedalAcel, &u64Acel, sizeof(pedalAcel));
+        // Serial.println(pedalAcel);
+        // dAcel.u32 = u32Acel;
+        // double pedalAcel = dAcel.d;
+        
+        uint32_t u32Bat = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        // dBat.u32 = u32Bat;
+        // double tensaoBat = dBat.d;
+
+        
       }
       //frame2
       // tempObj = float = 4
@@ -167,4 +190,19 @@ static void receiveMessage(bool debug = false) {
   if (debug){
     // Serial.println(vel);
   }
+  sprintf(tvel, "%f", vel); 
+  sprintf(trpm, "%f", rpm); 
+  itoa(vel/10, &tvel[0], 10);
+        // itoa(vel%10, &tvel[1], 10);
+
+        // itoa(rpm/1000, &trpm[0], 10);
+        // itoa((rpm/100)%10, &trpm[1], 10);
+
+
+        // itoa(rpm/1000, &mrpm[0], 10);
+        // itoa((rpm/100)%10, &mrpm[1], 10);
+        // itoa((rpm%100)/10, &mrpm[2], 10);
+        // itoa(rpm%10, &mrpm[3], 10);
+        told = millis();
+        update = true;
 }

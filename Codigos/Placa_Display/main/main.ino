@@ -2,22 +2,22 @@
 #include <Arduino.h>
 //Funcionalidades
 #include "include/combustivel.c"
-#include "include/comunicacao.c"
+// #include "include/comunicacao.c"
 #include "include/comunicacao2515.h"
 #include "include/display.c"
-//#include "include/encoder.c"
+// #include "include/encoder.c"
 #include "include/leds.c"
 
 bool intialized = false, setup0Completed = false;
 int rpmold;
 
 void setup(){
+    while(!Serial.available()){;}
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
     Serial.print("Inicializando setup...");
-    while(!Serial.available()){;}
     setupDisplay();
-    // setupEncoder();
+    setupEncoder();
     setup0Completed = true;
 }
 
@@ -30,22 +30,24 @@ void setup1(){
     // setupComb();
     // setupMenu():          //FALTA CONSTRUIR
     intialized = true;
+    Serial.println("Inicializacao completa");
     digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop(){
     while(!intialized){
-        delay(1);
+        delay(1000);
     }
     menuButton(menu);
-    updateHUDMain(update, menu, raw); 
-    updateHUDRaw(update, menu, raw);
+    updateHUDMain(update, menu, menu); 
+    updateHUDRaw(update, menu, menu);
     updateMenu(menu);
+    // updateHUDMain(update, menu, raw);    
 }
 
 void loop1(){
     // setCombustivel(comb);
-    // updateEncoder();
+    updateEncoder();
     // canUpdate();
     receiveMessage(true);
     
