@@ -190,9 +190,11 @@ static void receiveMessage(bool debug = false) {
   if (debug){
     // Serial.println(vel);
   }
-  sprintf(tvel, "%f", vel); 
-  sprintf(trpm, "%f", rpm); 
-  itoa(vel/10, &tvel[0], 10);
+  int vel1 = (int)vel;
+  int rpm1 = (int)rpm;
+  sprintf(tvel, "%i", vel1); 
+  sprintf(trpm, "%i", rpm1); 
+  // itoa(vel/10, &tvel[0], 10);
         // itoa(vel%10, &tvel[1], 10);
 
         // itoa(rpm/1000, &trpm[0], 10);
