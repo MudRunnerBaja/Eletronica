@@ -90,14 +90,14 @@ public:
 
     bool EnviarDadosTelemetria()
     {
-        String data = String(rpm.getRPM());
-        data = String(data + ",");
-        data = String(data + temperaturaCvt.getTemperaturaObjeto());
-        data = String(data + ",");
-        data = String(data + gps.getSpeed());
-        data = String(data + ",");
-        data = String(data + nivelCombustivel.getNivelAtual());
-        comunicacao.enviarDadosTelemetria(data);
+        // String data = String(rpm.getRPM());
+        // data = String(data + ",");
+        // data = String(data + temperaturaCvt.getTemperaturaObjeto());
+        // data = String(data + ",");
+        // data = String(data + gps.getSpeed());
+        // data = String(data + ",");
+        // data = String(data + nivelCombustivel.getNivelAtual());
+        comunicacao.enviarDadosTelemetria(dados.getStructDados());
         return false;
     }
 

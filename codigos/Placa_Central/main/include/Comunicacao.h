@@ -264,12 +264,14 @@ private:
         e32ttl100.begin();  
         ResponseStructContainer c;
         c = e32ttl100.getConfiguration();
+        Serial.println(c.status.getResponseDescription());
+        Serial.println(c.status.code);
         Configuration configuration = *(Configuration*) c.data;
         configuration.ADDL = 0x01;
         configuration.ADDH = 0x00;
         configuration.CHAN = 0x02;
         configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
-        e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
+        // e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
         c.close();
         
 
@@ -329,7 +331,7 @@ Comunicacao *Comunicacao::GetInstance()
         instance = new Comunicacao();
 
         // TODO:
-        // setupTelemetria();
+        setupTelemetria();
         setupCanBus();
     }
 

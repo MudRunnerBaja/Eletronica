@@ -107,6 +107,8 @@ struct _DadosCompartilhamento
     double rpm;
     double vel;
 };
+
+
 typedef struct _DadosCompartilhamento DadosCompartilhamento;
 
 #endif //_CONSTANTES_H
