@@ -10,8 +10,12 @@
 #include "../libs/acan2515-2.1.4/src/ACAN2515.h"
 #include <Arduino.h>
 #include <SPI.h>
+#include "LoRa_E32.h"
 
 ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
+
+SoftwareSerial serialTelemetria(TELEMETRIA_RX, TELEMETRIA_TX); // RX, TX
+LoRa_E32 e32ttl100(&serialTelemetria); //  RX AUX M0 M1
 
 class Comunicacao
 {
@@ -36,10 +40,11 @@ public:
         return false;
     }
 
-    void enviarDadosTelemetria(String data)
+    void enviarDadosTelemetria(DadosCompartilhamento data)
     {
-
-        Serial1.println(data);
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0,3,4,&data, sizeof(DadosCompartilhamento));
+        Serial.println(rs.getResponseDescription());
+        
     }
 
     void updateData()
@@ -256,11 +261,17 @@ private:
 
     static bool setupTelemetria()
     {
-
-        Serial1.setRX(TELEMETRIA_RX);
-        Serial1.setTX(TELEMETRIA_TX);
-        Serial1.setFIFOSize(128);
-        Serial1.begin(9600);
+        e32ttl100.begin();  
+        ResponseStructContainer c;
+        c = e32ttl100.getConfiguration();
+        Configuration configuration = *(Configuration*) c.data;
+        configuration.ADDL = 0x01;
+        configuration.ADDH = 0x00;
+        configuration.CHAN = 0x02;
+        configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
+        e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
+        c.close();
+        
 
         return false;
     }
