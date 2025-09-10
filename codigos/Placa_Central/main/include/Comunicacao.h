@@ -42,6 +42,7 @@ public:
 
     void enviarDadosTelemetria(DadosCompartilhamento data)
     {
+        DadosCompartilhamento d = data;
         // struct nadaLmao {
         //     int a;
         //     int b;
@@ -49,7 +50,7 @@ public:
 
         // coisa.a = 10;   
         // coisa.b = 14;
-        ResponseStatus rs = e32ttl100.sendFixedMessage(0,3,0x04,&data, sizeof(DadosCompartilhamento));
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04,&d , sizeof(DadosCompartilhamento));
         Serial.println(rs.getResponseDescription());
         
     }
@@ -136,10 +137,10 @@ public:
         frame0.data[7] = pickDoubleByte(data.vel, 7);
         
         const bool ok0 = can.tryToSend(frame0);
-        if (!ok0)
-        {
-            Serial.println("CAN Send failure 0");
-        }
+        // if (!ok0)
+        // {
+        //     Serial.println("CAN Send failure 0");
+        // }
         // packet1
         // tensaoBat = double = 4
         CANMessage frame1;
@@ -160,18 +161,12 @@ public:
         frame1.data[7] = pickDoubleByte(data.tensaoBat, 7);
 
         
-        // double teste = 10;
-
-        // Serial.print("Estou começando a perder a esperança");
-        // Serial.print(pickDoubleByte(teste, 0));
-        // Serial.print(pickDoubleByte(teste, 1));
-        // Serial.print(pickDoubleByte(teste, 2));
-        // Serial.println(pickDoubleByte(teste, 3));
+        
         const bool ok1 = can.tryToSend(frame1);
-        if (!ok1)
-        {
-            Serial.println("CAN Send failure 1");
-        }
+        // if (!ok1)
+        // {
+        //     // Serial.println("CAN Send failure 1");
+        // }
         
         // packet2
         // tempObj = float = 4
@@ -194,10 +189,10 @@ public:
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
         
         const bool ok2 = can.tryToSend(frame2);
-        if (!ok2)
-        {
-            Serial.println("CAN Send failure 2");
-        }
+        // if (!ok2)
+        // {
+        //     // Serial.println("CAN Send failure 2");
+        // }
         // packet3
         // rpm = double = 4
 
@@ -216,10 +211,10 @@ public:
         frame3.data[6] = pickDoubleByte(data.rpm, 6);
         frame3.data[7] = pickDoubleByte(data.rpm, 7);
         const bool ok3 = can.tryToSend(frame3);
-        if (!ok3)
-        {
-            Serial.println("CAN Send failure 3");
-        }
+        // if (!ok3)
+        // {
+        //     // Serial.println("CAN Send failure 3");
+        // }
 
         CANMessage frame4;
         frame1.ext = false;
@@ -234,12 +229,12 @@ public:
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
         
 
-        Serial.print("Buffer 0: " );
-        Serial.println(can.transmitBufferCount(0));
-        Serial.print("Buffer 1: " );
-        Serial.println(can.transmitBufferCount(1));
-        Serial.print("Buffer 2: " );
-        Serial.println(can.transmitBufferCount(2));
+        // Serial.print("Buffer 0: " );
+        // Serial.println(can.transmitBufferCount(0));
+        // Serial.print("Buffer 1: " );
+        // Serial.println(can.transmitBufferCount(1));
+        // Serial.print("Buffer 2: " );
+        // Serial.println(can.transmitBufferCount(2));
         
         for (int i = 0; i < 8; i++){
             Serial.print(frame0.data[i]);

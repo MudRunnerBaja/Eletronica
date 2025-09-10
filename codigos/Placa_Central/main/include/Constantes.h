@@ -99,9 +99,9 @@ struct _DadosCompartilhamento
 {
     short nivelComb;
     int nivelFreio;
-    double pressaoFreio;
-    double pedal;
-    double tensaoBat;
+    float pressaoFreio;
+    float pedal;
+    float tensaoBat;
     double tmpCvt;
     double tmpAmb;
     double rpm;
