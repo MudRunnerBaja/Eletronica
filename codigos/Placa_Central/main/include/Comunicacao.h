@@ -42,7 +42,14 @@ public:
 
     void enviarDadosTelemetria(DadosCompartilhamento data)
     {
-        ResponseStatus rs = e32ttl100.sendFixedMessage(0,3,4,&data, sizeof(DadosCompartilhamento));
+        // struct nadaLmao {
+        //     int a;
+        //     int b;
+        // } coisa;
+
+        // coisa.a = 10;   
+        // coisa.b = 14;
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0,3,0x04,&data, sizeof(DadosCompartilhamento));
         Serial.println(rs.getResponseDescription());
         
     }
