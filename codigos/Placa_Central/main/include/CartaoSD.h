@@ -99,6 +99,26 @@ void writeData(int a, int b, int c, float d, float e)
         return true;
     }
 
+    char *getNumberFromString(char name[]){
+    int numlen = 0;
+    bool firstNum = true;
+    int definitiveNum;
+    for (int i = 0; i < strlen(name); i++){
+    if (isdigit(name[i]) && firstNum){
+      numlen = strlen(name) - i;
+      firstNum = false;
+    }
+    return name;
+    }
+  }
+
+  char namenum[numlen];
+
+  for (int i = 0; i < numlen; i++){
+    namenum[i] = name[strlen(name) - numlen + i];
+  }
+  definitiveNum = atoi(namenum);
+
 private:
     static CartaoSD *instance;
 
