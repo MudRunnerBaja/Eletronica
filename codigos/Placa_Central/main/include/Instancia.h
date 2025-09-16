@@ -49,8 +49,12 @@ public:
         //     yield();
         // }
 
-        // cartaoSD.escreverDados(dados.getStructDados());
+        cartaoSD.escreverSD(dados.formatarDadosSD());
         return;
+    }
+
+    void InicializarArquivo(){
+        cartaoSD.criarArquivoDados();
     }
 
     void SetDadosSistemas()
@@ -200,7 +204,7 @@ Instancia *Instancia::GetInstance()
         instance->velocidade = *Velocidade::GetInstance();
         D_println("Setup velocidade concluido");
 
-        // instance->cartaoSD = *CartaoSD::GetInstance();
+        instance->cartaoSD = *CartaoSD::GetInstance();
         D_println("Setup cartaoSD concluido");
 
         D_println("Setup concluido");

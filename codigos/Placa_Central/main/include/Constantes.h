@@ -61,11 +61,11 @@ enum Nivel
 #define GPS_RX 9 // PINO RX UART GPS
 #define GPS_BAUD 9600
 
-// SD SPI0
+// SD SPI1
 #define SD_RXPIN 12 // MISO
 #define SD_CSPIN 13
 #define SD_SCKPIN 10
-#define SD_TXPIN 11 // MOSI
+#define SD_TXPIN 11 // MOSI 
 
 // COMBUSTIVEL
 #define COMB_INFERIOR 14

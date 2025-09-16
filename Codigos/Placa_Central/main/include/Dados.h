@@ -18,14 +18,26 @@ public:
     String formatarDados()
     {
         String dadosString = "";
-        dadosString = dadosString + "tmpCVT " + String(tmpCvt) + " / ";
-        dadosString = dadosString + "nivelCOmb "+ String(nivelComb) + " / ";
         dadosString = dadosString + "vel " + String(vel) + " / ";
         dadosString = dadosString + "rpm " + String(rpm) + " / ";
+        dadosString = dadosString + "tmpCVT " + String(tmpCvt) + " / ";
+        dadosString = dadosString + "nivelComb " + String(nivelComb) + " / ";
         dadosString = dadosString + "nivelFreio " + String(nivelFreio) + " / ";
         dadosString = dadosString + "pressaoFreio " + String(pressaoFreio);
         return dadosString;
     };
+
+    String formatarDadosSD()
+    {
+        String dadosString = "";
+        dadosString = dadosString + String(vel) + ",";
+        dadosString = dadosString + String(rpm) + ",";
+        dadosString = dadosString + String(tmpCvt) + ",";
+        dadosString = dadosString + String(nivelComb) + ",";
+        dadosString = dadosString + String(nivelFreio) + ",";
+        dadosString = dadosString + String(pressaoFreio);
+        return dadosString;
+    }
 
     /**
      * @brief
@@ -83,6 +95,7 @@ private:
     double vel = 0;
 
     DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
     void atualizaDadosCompartilhamento()
     {
         dadosCompartilhamento.nivelComb = nivelComb;

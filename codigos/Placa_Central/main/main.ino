@@ -44,6 +44,8 @@ void setup()
     D_println("=======================");
     myInstance = Instancia::GetInstance();
 
+    myInstance->InicializarArquivo();
+
     // randomSeed(756498465497);
     D_println("=======================");
     D_println("INICIALIZACAO CONCLUIDA");
@@ -86,6 +88,7 @@ void loop()
     //     digitalWrite(GPIO2_P4_LIVRE, teste);
     //     tempo = millis() + 20;
     // }
+    
 }
 
 void loop1()
@@ -100,6 +103,7 @@ bool UpdateData(struct repeating_timer *t)
     myInstance->EnviarDadosCanBus();
     myInstance->PrintarDados();
     myInstance->EnviarDadosTelemetria();
+    myInstance->EscreverSD();
     // D_println(digitalRead(GPIO3_P5_LIVRE));
     return true;
 }
