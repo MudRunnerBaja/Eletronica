@@ -15,7 +15,7 @@
 ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
 
 SoftwareSerial serialTelemetria(TELEMETRIA_RX, TELEMETRIA_TX); // RX, TX
-LoRa_E32 e32ttl100(&serialTelemetria); //  RX AUX M0 M1
+LoRa_E32 e32ttl100(&serialTelemetria);                         //  RX AUX M0 M1
 
 class Comunicacao
 {
@@ -43,16 +43,8 @@ public:
     void enviarDadosTelemetria(DadosCompartilhamento data)
     {
         DadosCompartilhamento d = data;
-        // struct nadaLmao {
-        //     int a;
-        //     int b;
-        // } coisa;
-
-        // coisa.a = 10;   
-        // coisa.b = 14;
-        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04,&d , sizeof(DadosCompartilhamento));
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(DadosCompartilhamento));
         Serial.println(rs.getResponseDescription());
-        
     }
 
     void updateData()
@@ -102,7 +94,6 @@ public:
         return b[index];
     }
 
-
     /**
      * @param DadosCompartilhamento struct com todos os dados
      * @param int CAN Id that should receive the message
@@ -114,10 +105,14 @@ public:
      */
     void sendCanDataTo(DadosCompartilhamento data)
     {
+        //dados
+        //vel
+        //
         CANMessage receive;
         can.poll();
         can.receive(receive);
         Serial.println(receive.id);
+
         // packet0
         // vel
         CANMessage frame0;
@@ -125,8 +120,7 @@ public:
         frame0.rtr = false;
         frame0.id = 1;
         frame0.len = 8;
-        
-        
+
         frame0.data[0] = pickDoubleByte(data.vel, 0);
         frame0.data[1] = pickDoubleByte(data.vel, 1);
         frame0.data[2] = pickDoubleByte(data.vel, 2);
@@ -135,12 +129,13 @@ public:
         frame0.data[5] = pickDoubleByte(data.vel, 5);
         frame0.data[6] = pickDoubleByte(data.vel, 6);
         frame0.data[7] = pickDoubleByte(data.vel, 7);
-        
+
         const bool ok0 = can.tryToSend(frame0);
         // if (!ok0)
         // {
         //     Serial.println("CAN Send failure 0");
         // }
+
         // packet1
         // tensaoBat = double = 4
         CANMessage frame1;
@@ -149,7 +144,7 @@ public:
         frame1.id = 2;
         frame1.len = 8;
         frame1.idx = 1;
-        
+
         // frame1.data[0] = 10;
         frame1.data[0] = pickDoubleByte(data.tensaoBat, 0);
         frame1.data[1] = pickDoubleByte(data.tensaoBat, 1);
@@ -160,14 +155,12 @@ public:
         frame1.data[6] = pickDoubleByte(data.tensaoBat, 6);
         frame1.data[7] = pickDoubleByte(data.tensaoBat, 7);
 
-        
-        
         const bool ok1 = can.tryToSend(frame1);
         // if (!ok1)
         // {
         //     // Serial.println("CAN Send failure 1");
         // }
-        
+
         // packet2
         // tempObj = float = 4
         // tempAmb = float = 4
@@ -178,7 +171,7 @@ public:
         frame2.id = 3;
         frame2.len = 8;
         frame2.idx = 2;
-        
+
         frame2.data[0] = pickFloatByte(data.tmpCvt, 3);
         frame2.data[1] = pickFloatByte(data.tmpCvt, 2);
         frame2.data[2] = pickFloatByte(data.tmpCvt, 1);
@@ -187,7 +180,7 @@ public:
         frame2.data[5] = pickFloatByte(data.tmpAmb, 2);
         frame2.data[6] = pickFloatByte(data.tmpAmb, 1);
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
-        
+
         const bool ok2 = can.tryToSend(frame2);
         // if (!ok2)
         // {
@@ -201,7 +194,7 @@ public:
         frame3.rtr = false;
         frame3.id = 4;
         frame3.len = 8;
-        
+
         frame3.data[0] = pickDoubleByte(data.rpm, 0);
         frame3.data[1] = pickDoubleByte(data.rpm, 1);
         frame3.data[2] = pickDoubleByte(data.rpm, 2);
@@ -216,6 +209,8 @@ public:
         //     // Serial.println("CAN Send failure 3");
         // }
 
+        //packet4
+        //nivelDeFreio
         CANMessage frame4;
         frame1.ext = false;
         frame1.rtr = false;
@@ -227,7 +222,6 @@ public:
         frame4.data[1] = pickIntByte(data.nivelFreio, 1);
         frame4.data[2] = pickIntByte(data.nivelFreio, 2);
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
-        
 
         // Serial.print("Buffer 0: " );
         // Serial.println(can.transmitBufferCount(0));
@@ -235,12 +229,13 @@ public:
         // Serial.println(can.transmitBufferCount(1));
         // Serial.print("Buffer 2: " );
         // Serial.println(can.transmitBufferCount(2));
-        
-        for (int i = 0; i < 8; i++){
+
+        for (int i = 0; i < 8; i++)
+        {
             Serial.print(frame0.data[i]);
             Serial.print(", ");
         }
-        Serial.println(""); 
+        Serial.println("");
 
         return;
     }
@@ -263,19 +258,18 @@ private:
 
     static bool setupTelemetria()
     {
-        e32ttl100.begin();  
+        e32ttl100.begin();
         ResponseStructContainer c;
         c = e32ttl100.getConfiguration();
         Serial.println(c.status.getResponseDescription());
         Serial.println(c.status.code);
-        Configuration configuration = *(Configuration*) c.data;
+        Configuration configuration = *(Configuration *)c.data;
         configuration.ADDL = 0x01;
         configuration.ADDH = 0x00;
         configuration.CHAN = 0x02;
         configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
         // e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
         c.close();
-        
 
         return false;
     }
@@ -292,10 +286,10 @@ private:
         SPI.begin();
         // CAN.setPins(CAN_CSPIN);
 
-
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
-        settings.mRequestedMode = ACAN2515Settings::NormalMode;      // Select loopback mode
-        const uint16_t errorCode = can.begin(settings, [] { can.isr () ; });
+        settings.mRequestedMode = ACAN2515Settings::NormalMode;            // Select loopback mode
+        const uint16_t errorCode = can.begin(settings, []
+                                             { can.isr(); });
         if (errorCode == 0)
         {
             Serial.print("CAN init success");

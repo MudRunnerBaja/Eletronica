@@ -23,7 +23,8 @@ public:
         dadosString = dadosString + "tmpCVT " + String(tmpCvt) + " / ";
         dadosString = dadosString + "nivelComb " + String(nivelComb) + " / ";
         dadosString = dadosString + "nivelFreio " + String(nivelFreio) + " / ";
-        dadosString = dadosString + "pressaoFreio " + String(pressaoFreio);
+        dadosString = dadosString + "pressaoFreio " + String(pressaoFreio) + " / ";
+        dadosString = dadosString + "tensaoBat" + String(tensaoBat);
         return dadosString;
     };
 
@@ -35,7 +36,8 @@ public:
         dadosString = dadosString + String(tmpCvt) + ",";
         dadosString = dadosString + String(nivelComb) + ",";
         dadosString = dadosString + String(nivelFreio) + ",";
-        dadosString = dadosString + String(pressaoFreio);
+        dadosString = dadosString + String(pressaoFreio) + ",";
+        dadosString = dadosString + String(tensaoBat);
         return dadosString;
     }
 

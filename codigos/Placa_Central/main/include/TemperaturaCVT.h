@@ -8,10 +8,7 @@
 #include "Setupable.h"
 #include <Adafruit_MLX90614.h>
 #include "Constantes.h"
-
-/*
-    REVISAR PINOUT E SETUP
-*/
+#include "Wire.h"
 
 class TemperaturaCVT
 {
@@ -83,9 +80,12 @@ TemperaturaCVT *TemperaturaCVT::GetInstance()
     {
         instance = new TemperaturaCVT();
 
-        // mlx = Adafruit_MLX90614();
+        Wire.setSDA(4);
+        Wire.setSCL(5);
+        Wire.begin();
+        mlx = Adafruit_MLX90614();
 
-        mlx.begin();
+        mlx.begin(0x5A, Wire);
     }
 
     return instance;
