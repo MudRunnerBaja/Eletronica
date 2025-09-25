@@ -37,7 +37,9 @@ public:
         dadosString = dadosString + String(nivelComb) + ",";
         dadosString = dadosString + String(nivelFreio) + ",";
         dadosString = dadosString + String(pressaoFreio) + ",";
-        dadosString = dadosString + String(tensaoBat);
+        dadosString = dadosString + String(tensaoBat) + ",";
+        dadosString = dadosString + String(latitude) + ",";
+        dadosString = dadosString + String(longitude);
         return dadosString;
     }
 
@@ -53,8 +55,10 @@ public:
      * @param tmpAmb
      * @param rpm
      * @param vel
+     * @param latitude
+     * @param longitude
      */
-    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude, float longitude)
     {
         dadosEmAtualizacao = true;
 
@@ -67,6 +71,8 @@ public:
         tmpAmb = tmpAmb1;
         rpm = rpm1;
         vel = vel1;
+        latitude = latitude1;
+        longitude = longitude1;
 
         atualizaDadosCompartilhamento();
         dadosEmAtualizacao = false;
@@ -95,6 +101,8 @@ private:
     float tmpAmb = 0;
     double rpm = 0;
     double vel = 0;
+    float longitude = 0;
+    float latitude = 0;
 
     DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -109,5 +117,8 @@ private:
         dadosCompartilhamento.tmpAmb = tmpAmb;
         dadosCompartilhamento.rpm = rpm;
         dadosCompartilhamento.vel = vel;
+        dadosCompartilhamento.latitude = latitude;
+        DadosCompartilhamento.longitude = longitude;
+
     }
 };

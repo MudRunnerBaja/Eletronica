@@ -12,7 +12,7 @@ bool intialized = false, setup0Completed = false;
 int rpmold;
 
 void setup(){ 
-    //while(!Serial.available()){;}     //Espera um enter no serial para inicializar a placa (p/ DEBUG?)
+    while(!Serial.available()){;}     //Espera um enter no serial para inicializar a placa (p/ DEBUG?)
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
     Serial.print("Inicializando setup...");

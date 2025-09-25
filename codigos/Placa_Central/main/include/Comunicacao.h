@@ -15,7 +15,7 @@
 ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
 
 SoftwareSerial serialTelemetria(TELEMETRIA_RX, TELEMETRIA_TX); // RX, TX
-LoRa_E32 e32ttl100(&serialTelemetria);                         //  RX AUX M0 M1
+LoRa_E32 e32ttl100(&serialTelemetria);                         
 
 class Comunicacao
 {
@@ -283,6 +283,7 @@ private:
         SPI.setSCK(CAN_SCKPIN);
         SPI.setRX(CAN_RXPIN);
         SPI.setTX(CAN_TXPIN);
+        SPI.setCS(CAN_CSPIN);
         SPI.begin();
         // CAN.setPins(CAN_CSPIN);
 

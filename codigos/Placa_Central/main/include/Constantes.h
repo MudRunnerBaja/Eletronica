@@ -44,10 +44,10 @@ enum Nivel
 #define TELEMETRIA_TX 0 // PINO TX UART LORA
 
 // TEMP CVT
-/*
-    TODO
-    4 E 5 SÃO DO MLX, REVISAR PINOUT E SETUP
-*/
+
+
+    // 4 E 5 SÃO DO MLX, REVISAR PINOUT E SETUP
+
 
 // GPIO Livre
 #define GPIO2_P4_LIVRE 2
@@ -106,6 +106,8 @@ struct _DadosCompartilhamento
     double tmpAmb;
     double rpm;
     double vel;
+    float latitude;
+    float longitude;
 };
 
 

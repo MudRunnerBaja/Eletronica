@@ -80,12 +80,12 @@ TemperaturaCVT *TemperaturaCVT::GetInstance()
     {
         instance = new TemperaturaCVT();
 
-        Wire.setSDA(4);
-        Wire.setSCL(5);
+        Wire.setSDA(I2C_SDA);
+        Wire.setSCL(I2C_SCL);
         Wire.begin();
         mlx = Adafruit_MLX90614();
 
-        mlx.begin(0x5A, Wire);
+        mlx.begin(0x5A, &Wire);
     }
 
     return instance;

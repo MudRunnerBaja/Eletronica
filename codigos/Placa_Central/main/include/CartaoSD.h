@@ -177,7 +177,7 @@ void writeData(int a, int b, int c, float d, float e)
         if (arquivoDados)
         {
             Serial.println("Arquivo Criado");
-            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;");
+            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;latitude;longitude");
             arquivoDados.close();
         }
     }

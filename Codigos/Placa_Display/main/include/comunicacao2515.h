@@ -115,8 +115,8 @@ static void receiveMessage(bool debug = false) {
   if (can.available ()) {
     // Serial.println("available");
     if (can.receive (frame)){
-      Serial.print("frame id:");
-      Serial.println(frame.id);
+      // Serial.print("frame id:");
+      // Serial.println(frame.id);
 
       //frame0 -> 
       // vel -> double = 8
@@ -124,17 +124,17 @@ static void receiveMessage(bool debug = false) {
         uint64_t u64vel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
 
-        Serial.print("frame data: ");
-        for (int i = 0; i < 8; i++){
-          Serial.print(frame.data[i]);
-          Serial.print(", ");
-        }
-        Serial.print("frame len: ");
-        Serial.println(frame.len);
-        Serial.print("Valor da vel:");
+        // Serial.print("frame data: ");
+        // for (int i = 0; i < 8; i++){
+        //   Serial.print(frame.data[i]);
+        //   Serial.print(", ");
+        // }
+        // Serial.print("frame len: ");
+        // Serial.println(frame.len);
+        // Serial.print("Valor da vel:");
         // Serial.println(u64vel);
         memcpy(&vel, &u64vel, sizeof(vel));
-        Serial.println(vel);
+        // Serial.println(vel);
         // Serial.println("frame0");
       }
       //frame1 ->
@@ -172,12 +172,12 @@ static void receiveMessage(bool debug = false) {
       //frame0
       // rpm = double = 4
       // vel = double = 4
-      else if (frame.id == 0x1111FFFF){
-        uint32_t u32Rpm = gather4bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3]);
-        // dRpm.u32 = u32Rpm;
-        // double pedalAcel = dRpm.d;
+      else if (frame.id == 4){
+        uint32_t u64Rpm = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
+          frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        memcpy(&rpm, &u64Rpm, sizeof(u64Rpm));  z 
 
-        uint32_t u32Vel = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
+        // uint32_t u32Vel = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         // dVel.u32 = u32Vel;
         // double vel = dVel.d;
       }
