@@ -175,7 +175,7 @@ static void receiveMessage(bool debug = false) {
       else if (frame.id == 4){
         uint32_t u64Rpm = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        memcpy(&rpm, &u64Rpm, sizeof(u64Rpm));  z 
+        memcpy(&rpm, &u64Rpm, sizeof(u64Rpm));
 
         // uint32_t u32Vel = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         // dVel.u32 = u32Vel;
