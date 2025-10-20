@@ -25,11 +25,6 @@ public:
 
     static Comunicacao *GetInstance();
 
-    // static const byte MCP2515_CS  = 10 ; // CS input of MCP2515 (adapt to your design)
-    // static const uint32_t QUARTZ_FREQUENCY = 16UL * 1000UL * 1000UL ; // 16 MHz
-
-    // ACAN2515 can (CAN_CSPIN, SPI, 255) ;
-
     bool Loop()
     {
         return false;
@@ -52,21 +47,7 @@ public:
         return;
     }
 
-    // Apagar se o código morrer
-    //
-    // void receberDados(short nivelComb, int nivelFreio, double pressaoFreio, double pedal, double tensaoBat, float tmpCvt, float tmpAmb, double rpm, double vel)
-    // {
-    //     nivelComb = nivelComb;
-    //     nivelFreio = nivelFreio;
-    //     pressaoFreio = pressaoFreio;
-    //     pedal = pedal;
-    //     tensaoBat = tensaoBat;
-    //     tmpCvt = tmpCvt;
-    //     tmpAmb = tmpAmb;
-    //     rpm = rpm;
-    //     vel = vel;
-    // }
-
+    
     uint8_t pickDoubleByte(double D, int index)
     {
         double d = D;
@@ -105,9 +86,6 @@ public:
      */
     void sendCanDataTo(DadosCompartilhamento data)
     {
-        //dados
-        //vel
-        //
         CANMessage receive;
         can.poll();
         can.receive(receive);
@@ -131,13 +109,7 @@ public:
         frame0.data[7] = pickDoubleByte(data.vel, 7);
 
         const bool ok0 = can.tryToSend(frame0);
-        // if (!ok0)
-        // {
-        //     Serial.println("CAN Send failure 0");
-        // }
-
-        // packet1
-        // tensaoBat = double = 4
+        
         CANMessage frame1;
         frame1.ext = false;
         frame1.rtr = false;
@@ -145,7 +117,6 @@ public:
         frame1.len = 8;
         frame1.idx = 1;
 
-        // frame1.data[0] = 10;
         frame1.data[0] = pickDoubleByte(data.tensaoBat, 0);
         frame1.data[1] = pickDoubleByte(data.tensaoBat, 1);
         frame1.data[2] = pickDoubleByte(data.tensaoBat, 2);
@@ -156,14 +127,6 @@ public:
         frame1.data[7] = pickDoubleByte(data.tensaoBat, 7);
 
         const bool ok1 = can.tryToSend(frame1);
-        // if (!ok1)
-        // {
-        //     // Serial.println("CAN Send failure 1");
-        // }
-
-        // packet2
-        // tempObj = float = 4
-        // tempAmb = float = 4
 
         CANMessage frame2;
         frame2.ext = false;
@@ -182,12 +145,6 @@ public:
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
 
         const bool ok2 = can.tryToSend(frame2);
-        // if (!ok2)
-        // {
-        //     // Serial.println("CAN Send failure 2");
-        // }
-        // packet3
-        // rpm = double = 4
 
         CANMessage frame3;
         frame3.ext = false;
@@ -204,13 +161,7 @@ public:
         frame3.data[6] = pickDoubleByte(data.rpm, 6);
         frame3.data[7] = pickDoubleByte(data.rpm, 7);
         const bool ok3 = can.tryToSend(frame3);
-        // if (!ok3)
-        // {
-        //     // Serial.println("CAN Send failure 3");
-        // }
-
-        //packet4
-        //nivelDeFreio
+      
         CANMessage frame4;
         frame1.ext = false;
         frame1.rtr = false;
@@ -222,13 +173,6 @@ public:
         frame4.data[1] = pickIntByte(data.nivelFreio, 1);
         frame4.data[2] = pickIntByte(data.nivelFreio, 2);
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
-
-        // Serial.print("Buffer 0: " );
-        // Serial.println(can.transmitBufferCount(0));
-        // Serial.print("Buffer 1: " );
-        // Serial.println(can.transmitBufferCount(1));
-        // Serial.print("Buffer 2: " );
-        // Serial.println(can.transmitBufferCount(2));
 
         for (int i = 0; i < 8; i++)
         {
@@ -244,17 +188,6 @@ public:
     Comunicacao() = default;
 
 private:
-    // static Comunicacao *instance;
-
-    // short nivelComb;
-    // int nivelFreio;
-    // double pressaoFreio;
-    // double pedal;
-    // double tensaoBat;
-    // float tmpCvt;
-    // float tmpAmb;
-    // double rpm;
-    // double vel;
 
     static bool setupTelemetria()
     {
@@ -268,23 +201,19 @@ private:
         configuration.ADDH = 0x00;
         configuration.CHAN = 0x02;
         configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
-        // e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
+
         c.close();
 
         return false;
     }
 
-    /**
-     * CAN-BUS by Sandeep Mistry
-     * https://github.com/sandeepmistry/arduino-CAN/blob/master/API.md
-     */
     static bool setupCanBus()
     {
         SPI.setSCK(CAN_SCKPIN);
         SPI.setRX(CAN_RXPIN);
         SPI.setTX(CAN_TXPIN);
         SPI.begin();
-        // CAN.setPins(CAN_CSPIN);
+        
 
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
         settings.mRequestedMode = ACAN2515Settings::NormalMode;            // Select loopback mode
@@ -301,21 +230,7 @@ private:
         }
 
         return true;
-        // CAN.setPins(CAN_CSPIN);
-
-        // ACAN2515Settings settings(QUARTZ_FREQUENCY, 125UL * 1000UL); // CAN bit rate 125 kb/s
-        // settings.mRequestedMode = ACAN2515Settings::NormalMode;      // Select loopback mode
-        // const uint16_t errorCode = can.begin(settings, []
-        //                                      { can.isr(); });
-        // if (errorCode == 0)
-        // {
-        //     Serial.print("CAN init sucess");
-        // }
-        // else
-        // {
-        //     Serial.print("CAN Configuration error 0x");
-        //     Serial.println(errorCode, HEX);
-        // }
+        
     }
 };
 

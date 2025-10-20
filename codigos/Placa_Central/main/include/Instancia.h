@@ -44,10 +44,7 @@ public:
 
     void EscreverSD()
     {
-        // while (dados.getDadosEmAtualizacao)
-        // {
-        //     yield();
-        // }
+       
 
         cartaoSD.escreverSD(dados.formatarDadosSD());
         return;
@@ -59,15 +56,12 @@ public:
 
     void SetDadosSistemas()
     {
-        // rpm.updateRPM();
         nivelCombustivel.setNivelAtual();
         freio.setNivelAtual();
         freio.setPressaoAtual();
-        // Pedal Acelerador
-        // Tensao Bateria
+        
         temperaturaCvt.setTemperaturaObjeto();
         temperaturaCvt.setTemperaturaAmbiente();
-        // velocidade.updateVel();
     }
 
     bool SincronizarDados()
@@ -82,7 +76,6 @@ public:
             temperaturaCvt.getTemperaturaAmbiente(),
             rpm.getRPM(),
             velocidade.getVel());
-        // dados.atualizarDados(0, 1, 2, 500, 4, 5, 6, 7, 200);
 
         return false;
     }
@@ -94,13 +87,6 @@ public:
 
     bool EnviarDadosTelemetria()
     {
-        // String data = String(rpm.getRPM());
-        // data = String(data + ",");
-        // data = String(data + temperaturaCvt.getTemperaturaObjeto());
-        // data = String(data + ",");
-        // data = String(data + gps.getSpeed());
-        // data = String(data + ",");
-        // data = String(data + nivelCombustivel.getNivelAtual());
         comunicacao.enviarDadosTelemetria(dados.getStructDados());
         return false;
     }

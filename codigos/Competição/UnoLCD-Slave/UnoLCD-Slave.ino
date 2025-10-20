@@ -116,8 +116,7 @@ int SCKPIN = 10, CSPIN = 13;
 int TXPIN = 11; // MOSI
 int RXPIN = 12; // MISO
 U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R2, SCKPIN, TXPIN, CSPIN);
-//U8G2_ST7920_128X64_1_HW_SPI u8g2(U8G2_R2, 10);
-//U8G2_ST7920_128X64_1_2ND_HW_SPI u8g2(U8G2_R0, 17);
+
 
 
 
@@ -146,13 +145,6 @@ void setup(void)
   Wire.setSDA(sdaPin);
   Wire.setSCL(sclPin);
   
-  /*
-  SPI1.setRX(RXPIN);
-  SPI1.setTX(TXPIN);
-  SPI1.setSCK(SCKPIN);
-  SPI1.setCS(CSPIN);
-  SPI1.begin(true);
-  */
   
   Serial.begin(9600);
   u8g2.begin();
@@ -377,8 +369,6 @@ void loop(void) {
     UpdateDisplay();
     int timetest = millis() - test;
     
-    //Serial.print("\nTempo Trocando:");Serial.println(timetest);
-    //Serial.print("vel:");Serial.println(vel);
 }
 
 void WaitSerial(bool wait)

@@ -29,11 +29,7 @@ void setupDisplay(){
     u8g2.begin();
     wprpm = 128/rpmmax;
     sprintf(tvel, "%f", vel); 
-    // itoa(vel/10, &tvel[0], 10);
-    // itoa(vel%10, &tvel[1], 10);
     sprintf(trpm, "%f", rpm); 
-    // itoa(rpm/1000, &trpm[0], 10);
-    // itoa((rpm/100)%10, &trpm[1], 10);
     loadScreen();
 }
 
@@ -114,8 +110,6 @@ void updateMenu(bool menuInUse){
         break;
     }
   } while ( u8g2.nextPage() );
-  // Serial.print(menu);  Serial.print(raw);
-  // Serial.println();
 
   if(toogleButton(500)){
     if(encoderPosition()==1){
@@ -123,7 +117,6 @@ void updateMenu(bool menuInUse){
     }
 
     if(encoderPosition()==0){
-      // Serial.println("HUD PRINCIPAL");
       overrideEnc(0);
       menu = false;
       raw = false;
@@ -258,66 +251,55 @@ void displayAvisos(){
   bool warning = false;
 
   u8g2.setDrawColor(1);
-  //NIVEL DE COMBUSTIVEL BAIXO
-    //if (checkReserva()){}
 
+  //TEMPERATURA CVT ALTA
+  if (CVT){
+    u8g2.drawXBM(96, 13, 32, 32, TCVT_xbm);
+    warning = true;
+  }
+
+  //CONECTADO AO MASTER
+  if(can_conn){    
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(114, 9, 0xe20e);
+  }else{
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(114, 9, 0xe20f);
+  }
+
+ //GRAVAÇÃO CARTÃO SD
+  if(sd_rw){
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(102, 10, 0xe1e1);
+  }else{
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(102, 10, 0xe0ae);
+  }
     
 
-    //TEMPERATURA CVT ALTA
-   if (CVT){
-      u8g2.drawXBM(96, 13, 32, 32, TCVT_xbm);
-      warning = true;
-    }
-
-    //CONECTADO AO MASTER
-    if(can_conn){     //TALVEZ POR SER IMPORTANTE BOTAR ALGUM INDICADOR MAIOR
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(114, 9, 0xe20e);
-    }else{
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(114, 9, 0xe20f);
-    }
+  //SINAL DE GPS
+  if (gps_conn){
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(91, 10, 0xe1ba);
+  }else{
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(91, 9, 0xe217);
+  }
 
 
-    //GRAVAÇÃO CARTÃO SD
-    if(sd_rw){
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(102, 10, 0xe1e1);
-    }else{
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(102, 10, 0xe0ae);
-    }
-    
-
-    //SINAL DE GPS
-    if (gps_conn){
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(91, 10, 0xe1ba);
-    }else{
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(91, 9, 0xe217);
-    }
-
-
-    //INDICADOR DE BATERIA
-    if (tensao >= 12){
-      u8g2.setDrawColor(2);
-      u8g2.setFont(u8g2_font_siji_t_6x10);
-      u8g2.drawGlyph(2, 10, 0xe24B);
-    }
-    
-    //INDICADOR DE ATENÇÃO
-    if (warning){/*
-      u8g2.setDrawColor(0);
-      u8g2.setFont(u8g2_font_streamline_interface_essential_circle_triangle_t);
-      u8g2.drawGlyph(100,36, 0x34); */
-    }
+  //INDICADOR DE BATERIA
+ if (tensao >= 12){
+    u8g2.setDrawColor(2);
+    u8g2.setFont(u8g2_font_siji_t_6x10);
+    u8g2.drawGlyph(2, 10, 0xe24B);
+  }
+  }
 }
 
 void rawInfos(){// RPM, Vel eixo, vel gps, press freio, nivel comb, nivel freio, acelerador, temp cvt, tensão bat, tempos, volta

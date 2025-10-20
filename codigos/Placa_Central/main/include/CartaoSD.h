@@ -22,15 +22,6 @@ public:
     bool possuiNome = false;
     bool arquivoCriado = false;
 
-    // void escreverSD(DadosCompartilhamento dados)
-    // {
-    //     if (!arquivoCriado)
-    //     {
-    //         return;
-    //     }
-
-    //     return;
-    // }
 
     bool Loop()
     {
@@ -83,17 +74,7 @@ public:
      * @param int
      * @param float float
      */
-    /*
-void writeData(int a, int b, int c, float d, float e)
-{
-    if (!arquivoCriado)
-    {
-        return;
-    }
 
-    return;
-}
-*/
     bool testarCartaoSD()
     {
         return true;
@@ -120,9 +101,7 @@ void writeData(int a, int b, int c, float d, float e)
             namenum[i] = name[strlen(name) - numlen + i];
         }
         definitiveNum = atoi(namenum);
-        // Serial.print(">");
-        // Serial.print(definitiveNum);
-        // Serial.println("<");
+        
         return definitiveNum;
     }
 
@@ -188,81 +167,7 @@ private:
     static CartaoSD *instance;
 
     static String getNomeArquivo();
-    // static constexpr const char HEADER_STRING = "tempo(ms);velo;rpm;tempcvt;comb;nivelxFreio;pressaoFreio";
 
-    /*
-        void criarArquivoDados()
-        {
-            // TODO/WIP
-            // Lógica de criação dos arquivos csv
-            // O nome dos arquivos sem referência de tempo serão dados000.csv, onde 000 representam números.
-            // O nome de arquivos com referência de tempo serão datahoje no formato dd-mm-aaaa
-
-            if (gps.possuiData)
-            {
-                nomeArquivo = String("");
-                nomeArquivo = String(gps.getDataHoje().replace('/', '-'));
-                nomeArquivo = String(nomeArquivo)
-            }
-            else
-            {
-                int i = 0; // Incremetará o dígito no nome do arquivo até que não haja um arquivo com mesmo nome
-                char *nomeTemporario = "dados000";
-                while ((SD.exists(nomeTemporario)) && i < 1000)
-                {
-                    int count = i.toInt();
-                    count++;
-
-                    int unidade = (i % 10),
-                        dezena = ((i / 10) % 10),
-                        centena = (i / 100);
-                    char y[1]; // Buffer. itoa converte um int em char e posiciona em um endereço de memória.
-
-                    itoa(centena, y, 10);
-                    nomeTemporario[5] = y[0];
-                    itoa(dezena, y, 10);
-                    nomeTemporario[6] = y[0];
-                    itoa(unidade, y, 10);
-                    nomeTemporario[7] = y[0];
-                }
-                nomeArquivo = String(nomeTemporario);
-            }
-
-            File arquivoDados = SD.open(nomeArquivo, FILE_WRITE);
-
-            if (!SD.exists(nomeArquivo))
-            {
-                D_println("Erro ao criar o arquivo.");
-                arquivoCriado = false;
-                return;
-            }
-
-            if (Serial)
-            {
-                D_print("Arquivo ");
-                D_print(nomeArquivo);
-                D_println(" criado.");
-            }
-
-            if (arquivoDados)
-            {
-                arquivoCriado = true;
-                arquivoDados.println(HEADER_STRING);
-
-                t2 = micros();
-                unsigned long t = t2 - t1;
-                String dt = String(t, DEC);
-                D_println("Feito. Tempo para criar: " + dt);
-
-                arquivoDados.close();
-            }
-            else
-            {
-                D_println("Erro ao abrir o arquivo.");
-                return;
-            }
-        }
-    */
 };
 
 CartaoSD *CartaoSD::instance{nullptr};

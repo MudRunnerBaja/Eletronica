@@ -9,7 +9,6 @@ bool bnt, menu = false;
 
 
 int encoderPosition(){
-    // Serial.println(encoder.getPosition());
     return encoder.getPosition();
     
 }
@@ -19,7 +18,6 @@ void updateEncoder(){
 }
 
 void overrideEnc(int valor){
-    // Serial.println("overrideEnc");
     encoder.setPosition(valor);
 }
 

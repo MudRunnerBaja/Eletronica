@@ -25,11 +25,7 @@ public:
 
     bool Debug()
     {
-        // Não há GPS_INVALID_AGE na TinyGPSPlus?
-        // if (age == TinyGPSPlus::GPS_INVALID_AGE) {
-        //     Serial.println("No fix detected");
-        // }
-
+    
         if (!Serial)
             return false;
 
@@ -71,7 +67,6 @@ public:
                 newData = true;
 
             tf = millis();
-            // unsigned int tTotal = tf - t0;
         }
         return;
     }
@@ -90,9 +85,7 @@ public:
             sat = gps.satellites.value();
             gpstime = gps.time.value();
 
-            // Docs sugerem que existe, compilador diz que nao
-            // gps.crack_datetime(&ano, &mes, &dia, &hora, &minuto, &segundo, &centissegundos, &fix_age);
-
+            
             if (!possuiData)
             {
 

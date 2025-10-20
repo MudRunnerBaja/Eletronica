@@ -37,7 +37,7 @@ void setup()
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.begin(9600);
 
-  // Esperar pela resposta do monitor serial?
+  // Esperar pela resposta do monitor serial
   WaitSerial(false);
 
   Serial.println("Iniciando setup...");

@@ -17,7 +17,7 @@ void randomValues();
 
 void canUpdate(){
     if(millis() >= told + 500){
-        // randomValues();
+        
 
         itoa(vel/10, &tvel[0], 10);
         itoa(vel%10, &tvel[1], 10);
@@ -35,9 +35,6 @@ void canUpdate(){
     }
 }
 
-// void setupComunicacao(){
-
-// }
 
 void randomValues(){
     comb = random(3);

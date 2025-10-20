@@ -30,7 +30,6 @@ public:
 
     double getVel()
     {
-        // return 2.1;
         if (told + 1000000 < micros()){ // Reset se a velocidade não for atualizada por mais de 1 seg
             vel = 0;
         }
