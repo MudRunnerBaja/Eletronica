@@ -169,7 +169,7 @@ Instancia *Instancia::GetInstance()
 
         D_println("Chamando Setup");
 
-        // instance->gps = *GPS::GetInstance();
+        //instance->gps = *GPS::GetInstance();
         D_println("Setup GPS concluido");
 
         instance->comunicacao = *Comunicacao::GetInstance();

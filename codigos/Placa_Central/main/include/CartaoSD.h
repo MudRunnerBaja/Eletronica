@@ -8,7 +8,6 @@
 #include "Setupable.h"
 #include <SPI.h> // SPI para cartão SD
 #include <SD.h>  // SD Filesystem
-// #include "GPS.h" // GPS
 #include "Constantes.h"
 
 class CartaoSD
@@ -25,60 +24,14 @@ public:
 
     bool Loop()
     {
-        if (!arquivoCriado)
-        {
-            // criarArquivoDados();
-        }
-
         return arquivoCriado;
     }
 
     bool Debug()
     {
-        if (!Serial)
-        {
-            return true;
-        }
-
-        D_println("=== CARTÃO SD ===");
-        if (!arquivoCriado)
-        {
-            D_println("Não há arquivo criado.");
-            return true;
-        }
-
-        if (!SD.exists(nomeArquivo))
-        {
-            D_println("O sistema acredita que o arquivo foi criado, mas não detecta o arquivo pelo nome.");
-            return false;
-        }
-
-        arquivoDados = SD.open(nomeArquivo, O_READ);
-
-        if (!arquivoDados)
-        {
-            D_println("O sistema encontrou o arquivo pelo nome, mas não conseguiu abrí-lo.");
-
-            arquivoDados.close();
-            return false;
-        }
-
-        arquivoDados.close();
-        D_println("A gravação no cartão SD parece normal.");
-        return true;
+        return false;
     }
 
-    /**
-     * @param int
-     * @param int
-     * @param int
-     * @param float float
-     */
-
-    bool testarCartaoSD()
-    {
-        return true;
-    }
 
     int getNumFromString(const char name[])
     {
