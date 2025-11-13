@@ -44,7 +44,16 @@ public:
     {
         DadosCompartilhamento d = data;
         ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(DadosCompartilhamento));
-        Serial.println(rs.getResponseDescription());
+    }
+
+    void enviarDadosTelemetria(double data){
+        double d = data;
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(double));
+    }
+
+    void enviarDadosTelemetria(DadosLight data){
+        DadosLight d = data;
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(DadosLight));
     }
 
     void updateData()

@@ -12,7 +12,7 @@ class TensaoBateria
 {
 public:
     static TensaoBateria *instance;
-    static TensaoBateria *Setup();
+    static TensaoBateria *GetInstance();
 
     double updateTensaoBateria()
     {
@@ -27,6 +27,7 @@ public:
 
     double getTensaoBateria()
     {
+        tensaoBateria = analogRead(A0);
         return tensaoBateria;
     }
 
@@ -45,7 +46,7 @@ private:
 };
 
 TensaoBateria *TensaoBateria::instance{nullptr};
-TensaoBateria *TensaoBateria::Setup()
+TensaoBateria *TensaoBateria::GetInstance()
 {
     if (instance == nullptr)
     {

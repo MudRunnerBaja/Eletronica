@@ -58,7 +58,7 @@ public:
      * @param latitude
      * @param longitude
      */
-    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude, float longitude)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude1, float longitude1)
     {
         dadosEmAtualizacao = true;
 
@@ -86,6 +86,10 @@ public:
         return dadosCompartilhamento;
     }
 
+    DadosLight getStructDadosLight(){
+        return dadosLight;
+    }
+
     bool getDadosEmAtualizacao()
     {
         return dadosEmAtualizacao;
@@ -106,6 +110,8 @@ private:
 
     DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+    DadosLight dadosLight = {0, 0, 0};
+
     void atualizaDadosCompartilhamento()
     {
         dadosCompartilhamento.nivelComb = nivelComb;
@@ -118,7 +124,11 @@ private:
         dadosCompartilhamento.rpm = rpm;
         dadosCompartilhamento.vel = vel;
         dadosCompartilhamento.latitude = latitude;
-        DadosCompartilhamento.longitude = longitude;
+        dadosCompartilhamento.longitude = longitude;
+
+        dadosLight.vel = vel;
+        dadosLight.rpm = rpm;
+        dadosLight.tensaoBat = tensaoBat;
 
     }
 };

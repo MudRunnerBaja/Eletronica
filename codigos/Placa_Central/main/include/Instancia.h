@@ -9,6 +9,7 @@
 #include "Setupable.h"
 #include "Comunicacao.h"
 #include "CartaoSD.h"
+#include "TensaoBateria.h"
 #include "TemperaturaCVT.h"
 #include "Combustivel.h"
 #include "RPM_Motor.h"
@@ -77,7 +78,7 @@ public:
             freio.getNivelAtual(),
             freio.getPressaoAtual(),
             0.0, // Pedal Acelerador
-            0.0, // Tensao Bateria
+            tensaoBat.getTensaoBateria(), // Tensao Bateria
             temperaturaCvt.getTemperaturaObjeto(),
             temperaturaCvt.getTemperaturaAmbiente(),
             rpm.getRPM(),
@@ -104,7 +105,7 @@ public:
         // data = String(data + gps.getSpeed());
         // data = String(data + ",");
         // data = String(data + nivelCombustivel.getNivelAtual());
-        comunicacao.enviarDadosTelemetria(dados.getStructDados());
+        comunicacao.enviarDadosTelemetria(dados.getStructDadosLight());
         return false;
     }
 
@@ -143,6 +144,7 @@ private:
     RPM_Motor rpm;
     GPS gps;
     Freio freio;
+    TensaoBateria tensaoBat;
     Velocidade velocidade;
     DadosSincronizados dados;
 };
@@ -203,6 +205,9 @@ Instancia *Instancia::GetInstance()
 
         instance->freio = *Freio::GetInstance();
         D_println("Setup freio concluido");
+
+        instance->tensaoBat = *TensaoBateria::GetInstance();
+        D_println("Setup tensao bateria concluido");
 
         instance->velocidade = *Velocidade::GetInstance();
         D_println("Setup velocidade concluido");

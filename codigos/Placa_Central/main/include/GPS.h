@@ -89,8 +89,8 @@ public:
             speed = gps.speed.kmph();
             sat = gps.satellites.value();
             gpstime = gps.time.value();
-            gps.courseTo();
-            gps.distanceBetween();
+            // gps.courseTo();
+            // gps.distanceBetween();
 
             // Docs sugerem que existe, compilador diz que nao
             // gps.crack_datetime(&ano, &mes, &dia, &hora, &minuto, &segundo, &centissegundos, &fix_age);
