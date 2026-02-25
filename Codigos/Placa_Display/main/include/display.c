@@ -28,10 +28,10 @@ void rawInfos();
 void setupDisplay(){
     u8g2.begin();
     wprpm = 128/rpmmax;
-    sprintf(tvel, "%f", vel); 
+    // sprintf(tvel, "%f", vel); 
     // itoa(vel/10, &tvel[0], 10);
     // itoa(vel%10, &tvel[1], 10);
-    sprintf(trpm, "%f", rpm); 
+    // sprintf(trpm, "%f", rpm); 
     // itoa(rpm/1000, &trpm[0], 10);
     // itoa((rpm/100)%10, &trpm[1], 10);
     loadScreen();

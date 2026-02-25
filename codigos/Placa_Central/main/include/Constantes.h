@@ -5,7 +5,7 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
-#define DEBUG 0 // 0 Para não usar serial, 1 para usar serial
+#define DEBUG 1 // 0 Para não usar serial, 1 para usar serial
 
 #if DEBUG
 #define D_SerialBegin(...) Serial.begin(__VA_ARGS__); // Substitui Serial.begin
@@ -42,6 +42,7 @@ enum Nivel
 // TELEMETRIA SERIAL1 UART
 #define TELEMETRIA_RX 1 // PINO RX UART LORA
 #define TELEMETRIA_TX 0 // PINO TX UART LORA
+#define TELEMETRIA_AUX 2
 
 // TEMP CVT
 
@@ -50,7 +51,7 @@ enum Nivel
 
 
 // GPIO Livre
-#define GPIO2_P4_LIVRE 2
+// #define GPIO2_P4_LIVRE 2
 
 // I2C
 #define I2C_SDA 4
@@ -115,6 +116,12 @@ struct _DadosLight
     double rpm;
     double vel;
     double tensaoBat;
+    double nada1;
+    double nada2;
+    // double nada3;
+    // double nada4;
+    // int nada5;
+
 };
 
 typedef struct _DadosLight DadosLight;

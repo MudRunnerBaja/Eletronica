@@ -15,7 +15,7 @@
 ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
 
 SoftwareSerial serialTelemetria(TELEMETRIA_RX, TELEMETRIA_TX); // RX, TX
-LoRa_E32 e32ttl100(&serialTelemetria);                         
+LoRa_E32 e32ttl100(&serialTelemetria, TELEMETRIA_AUX, UART_BPS_RATE_9600);                         
 
 class Comunicacao
 {
@@ -53,7 +53,8 @@ public:
 
     void enviarDadosTelemetria(DadosLight data){
         DadosLight d = data;
-        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(DadosLight));
+        ResponseStatus rs = e32ttl100.sendFixedMessage(1, 0 , 0x04, &d, sizeof(DadosLight));
+        Serial.println(rs.getResponseDescription());
     }
 
     void updateData()
@@ -130,6 +131,8 @@ public:
         frame0.id = 1;
         frame0.len = 8;
 
+        // frame0.data64 = data.vel;
+
         frame0.data[0] = pickDoubleByte(data.vel, 0);
         frame0.data[1] = pickDoubleByte(data.vel, 1);
         frame0.data[2] = pickDoubleByte(data.vel, 2);
@@ -140,10 +143,10 @@ public:
         frame0.data[7] = pickDoubleByte(data.vel, 7);
 
         const bool ok0 = can.tryToSend(frame0);
-        // if (!ok0)
-        // {
-        //     Serial.println("CAN Send failure 0");
-        // }
+        if (!ok0)
+        {
+            Serial.println("CAN Send failure 0");
+        }
 
         // packet1
         // tensaoBat = double = 4
@@ -165,10 +168,10 @@ public:
         frame1.data[7] = pickDoubleByte(data.tensaoBat, 7);
 
         const bool ok1 = can.tryToSend(frame1);
-        // if (!ok1)
-        // {
-        //     // Serial.println("CAN Send failure 1");
-        // }
+        if (!ok1)
+        {
+            Serial.println("CAN Send failure 1");
+        }
 
         // packet2
         // tempObj = float = 4
@@ -191,10 +194,10 @@ public:
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
 
         const bool ok2 = can.tryToSend(frame2);
-        // if (!ok2)
-        // {
-        //     // Serial.println("CAN Send failure 2");
-        // }
+        if (!ok2)
+        {
+            Serial.println("CAN Send failure 2");
+        }
         // packet3
         // rpm = double = 4
 
@@ -213,31 +216,31 @@ public:
         frame3.data[6] = pickDoubleByte(data.rpm, 6);
         frame3.data[7] = pickDoubleByte(data.rpm, 7);
         const bool ok3 = can.tryToSend(frame3);
-        // if (!ok3)
-        // {
-        //     // Serial.println("CAN Send failure 3");
-        // }
+        if (!ok3)
+        {
+            Serial.println("CAN Send failure 3");
+        }
 
         //packet4
         //nivelDeFreio
         CANMessage frame4;
-        frame1.ext = false;
-        frame1.rtr = false;
-        frame1.id = 5;
-        frame1.len = 8;
-        frame1.idx = 1;
+        frame4.ext = false;
+        frame4.rtr = false;
+        frame4.id = 5;
+        frame4.len = 8;
+        frame4.idx = 1;
 
         frame4.data[0] = pickIntByte(data.nivelFreio, 0);
         frame4.data[1] = pickIntByte(data.nivelFreio, 1);
         frame4.data[2] = pickIntByte(data.nivelFreio, 2);
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
 
-        // Serial.print("Buffer 0: " );
-        // Serial.println(can.transmitBufferCount(0));
-        // Serial.print("Buffer 1: " );
-        // Serial.println(can.transmitBufferCount(1));
-        // Serial.print("Buffer 2: " );
-        // Serial.println(can.transmitBufferCount(2));
+        Serial.print("Buffer 0: " );
+        Serial.println(can.transmitBufferCount(0));
+        Serial.print("Buffer 1: " );
+        Serial.println(can.transmitBufferCount(1));
+        Serial.print("Buffer 2: " );
+        Serial.println(can.transmitBufferCount(2));
 
         for (int i = 0; i < 8; i++)
         {
@@ -294,7 +297,6 @@ private:
         SPI.setTX(CAN_TXPIN);
         SPI.setCS(CAN_CSPIN);
         SPI.begin();
-        // CAN.setPins(CAN_CSPIN);
 
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
         settings.mRequestedMode = ACAN2515Settings::NormalMode;            // Select loopback mode

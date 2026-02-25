@@ -66,8 +66,8 @@ public:
         freio.setPressaoAtual();
         // Pedal Acelerador
         // Tensao Bateria
-        temperaturaCvt.setTemperaturaObjeto();
-        temperaturaCvt.setTemperaturaAmbiente();
+        // temperaturaCvt.setTemperaturaObjeto();
+        // temperaturaCvt.setTemperaturaAmbiente();
         // velocidade.updateVel();
     }
 
@@ -79,12 +79,12 @@ public:
             freio.getPressaoAtual(),
             0.0, // Pedal Acelerador
             tensaoBat.getTensaoBateria(), // Tensao Bateria
-            temperaturaCvt.getTemperaturaObjeto(),
-            temperaturaCvt.getTemperaturaAmbiente(),
+            0, //temperaturaCvt.getTemperaturaObjeto()
+            0, //temperaturaCvt.getTemperaturaAmbiente()
             rpm.getRPM(),
             velocidade.getVel(),
-            gps.getLatitude(),
-            gps.getLongitude());
+            0, //gps.getLatitude()
+            0); //gps.getLongitude()
             
         // dados.atualizarDados(0, 1, 2, 500, 4, 5, 6, 7, 200);
 
@@ -194,7 +194,7 @@ Instancia *Instancia::GetInstance()
         instance->comunicacao = *Comunicacao::GetInstance();
         D_println("Setup comunicacao concluido");
 
-        instance->temperaturaCvt = *TemperaturaCVT::GetInstance();
+        // instance->temperaturaCvt = *TemperaturaCVT::GetInstance();
         D_println("Setup temperaturaCvt concluido");
 
         instance->rpm = *RPM_Motor::GetInstance();
@@ -212,7 +212,7 @@ Instancia *Instancia::GetInstance()
         instance->velocidade = *Velocidade::GetInstance();
         D_println("Setup velocidade concluido");
 
-        instance->cartaoSD = *CartaoSD::GetInstance();
+        // instance->cartaoSD = *CartaoSD::GetInstance();
         D_println("Setup cartaoSD concluido");
 
         D_println("Setup concluido");

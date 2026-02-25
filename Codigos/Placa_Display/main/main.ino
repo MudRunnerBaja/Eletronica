@@ -11,7 +11,7 @@
 bool intialized = false, setup0Completed = false;
 int rpmold;
 
-void setup(){ 
+void setup(){
     while(!Serial.available()){;}     //Espera um enter no serial para inicializar a placa (p/ DEBUG?)
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
@@ -42,7 +42,7 @@ void loop(){
     updateHUDMain(update, menu, menu); 
     updateHUDRaw(update, menu, menu);
     updateMenu(menu);
-    // updateHUDMain(update, menu, raw);    
+    // updateHUDMain(true, false, false);    
 }
 
 void loop1(){

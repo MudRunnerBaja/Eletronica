@@ -99,58 +99,60 @@ void writeData(int a, int b, int c, float d, float e)
         return true;
     }
 
-    int getNumFromString(const char name[])
-    {
-        int numlen = 0;
-        bool firstNum = true;
-        int definitiveNum;
-        for (int i = 0; i < strlen(name); i++)
-        {
-            if (isdigit(name[i]) && firstNum)
-            {
-                numlen = strlen(name) - i;
-                firstNum = false;
-            }
-        }
+    int getNumFromString(const char* name)
+{
+    if (!name) return -1;
 
-        char namenum[numlen];
-
-        for (int i = 0; i < numlen; i++)
-        {
-            namenum[i] = name[strlen(name) - numlen + i];
+    const char* p = name;
+    while (*p) {
+        if (isdigit((unsigned char)*p)) {
+            char* endptr;
+            long val = strtol(p, &endptr, 10); // base 10
+            // Se necessário, limita ao intervalo de int
+            if (val > INT_MAX) val = INT_MAX;
+            if (val < INT_MIN) val = INT_MIN;
+            return (int)val;
         }
-        definitiveNum = atoi(namenum);
-        // Serial.print(">");
-        // Serial.print(definitiveNum);
-        // Serial.println("<");
-        return definitiveNum;
+        ++p;
+    }
+    return -1; // nenhum dígito encontrado
+}
+
+int getHighestNumFromFiles()
+{
+    File dir = SD.open("/");
+    if (!dir) {
+        Serial.println("Falha ao abrir o diretório raiz do SD.");
+        return -1;
     }
 
-    int getHighestNumFromFiles()
-    {
+    int highestNumber = -1;
 
-        File dir = SD.open("/");
-        int highestNumber;
-        int currentNumber;
-        while (true)
-        {
-
-            File entry = dir.openNextFile();
-            if (!entry)
-            {
-                break;
-            }
-            currentNumber = getNumFromString(entry.name());
-            Serial.println(currentNumber);
-            if (currentNumber > highestNumber && currentNumber < 1000)
-            {
-                highestNumber = currentNumber;
-            }
-            entry.close();
+    while (true) {
+        File entry = dir.openNextFile();
+        if (!entry) {
+            break;
         }
-        dir.close();
-        return highestNumber;
+
+        const char* fname = entry.name();
+        int currentNumber = getNumFromString(fname);
+
+        // Debug opcional
+        // Serial.print("Arquivo: ");
+        // Serial.print(fname);
+        // Serial.print(" -> número: ");
+        // Serial.println(currentNumber);
+
+        if (currentNumber >= 0 && currentNumber < 1000 && currentNumber > highestNumber) {
+            highestNumber = currentNumber;
+        }
+
+        entry.close();
     }
+
+    dir.close();
+    return highestNumber;
+}
 
     void escreverSD(String dados)
     {
@@ -168,16 +170,16 @@ void writeData(int a, int b, int c, float d, float e)
         Serial.print(">");
         Serial.print(num);
         Serial.println("<");
-        nomeArquivo = "test" + String(num + 1) + ".txt";
+        nomeArquivo = "test" + String(num + 1) + "testesbelle" + ".txt";
         Serial.print("nome do arquivo: ");
         Serial.println(nomeArquivo);
         Serial.println("final do nome do arquivo");
         
-        arquivoDados = SD.open(nomeArquivo, FILE_WRITE);
+        arquivoDados = SD.open(nomeArquivo , FILE_WRITE);
         if (arquivoDados)
         {
             Serial.println("Arquivo Criado");
-            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;latitude;longitude");
+            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;latitude;longitude;nadanaum");
             arquivoDados.close();
         }
     }

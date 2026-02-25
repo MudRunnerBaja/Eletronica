@@ -110,7 +110,7 @@ private:
 
     DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    DadosLight dadosLight = {0, 0, 0};
+    DadosLight dadosLight = {0, 0, 0, 0, 0};
 
     void atualizaDadosCompartilhamento()
     {
@@ -129,6 +129,7 @@ private:
         dadosLight.vel = vel;
         dadosLight.rpm = rpm;
         dadosLight.tensaoBat = tensaoBat;
-
+        dadosLight.nada1 = rpm;
+        dadosLight.nada2 = rpm;
     }
 };

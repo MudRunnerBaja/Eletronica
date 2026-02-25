@@ -85,7 +85,7 @@ TemperaturaCVT *TemperaturaCVT::GetInstance()
         Wire.begin();
         mlx = Adafruit_MLX90614();
 
-        mlx.begin(0x5A, &Wire);
+        mlx.begin(0x5A, &Wire); 
     }
 
     return instance;

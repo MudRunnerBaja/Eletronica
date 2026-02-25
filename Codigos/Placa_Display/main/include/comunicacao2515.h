@@ -48,23 +48,36 @@ void int64print(uint64_t I){
 }
 
 uint64_t gather8bytes(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7){
-  uint64_t high;
-  uint32_t high32 = gather4bytes(b0, b1, b2, b3);
-  int32print(high32);
-  memcpy(&high, &high32, 8);
-  // int64print(high);
-  //printf("%i", high);
-  //printf("\n");
-  //printf("%f", high);
-  //printf("\n");
-  uint64_t low;
-  low = gather4bytes(b4, b5, b6, b7);
-  low = low << 32;
-  int64print(low);
-  //printf("%f", low);
-  //printf("\n");
+  // uint64_t high;
+  // uint32_t high32 = gather4bytes(b0, b1, b2, b3);
+  // // int32print(high32);
+  // uint64_t high = (uint64_t)high32;
+
+  // // int64print(high);
+  // //printf("%i", high);
+  // //printf("\n");
+  // //printf("%f", high);
+  // //printf("\n");
+  // uint64_t low;
+  // low = gather4bytes(b4, b5, b6, b7);
+  // low = low << 32;
+  // int64print(low);
+  // //printf("%f", low);
+  // //printf("\n");
   
-  return  high | low;
+
+  uint64_t value = 
+    ((uint64_t)b7 << 56) |
+    ((uint64_t)b6 << 48) |
+    ((uint64_t)b5 << 40) |
+    ((uint64_t)b4 << 32) |
+    ((uint64_t)b3 << 24) |
+    ((uint64_t)b2 << 16) |
+    ((uint64_t)b1 << 8)  |
+    ((uint64_t)b0);
+
+  // return  high | low;
+  return value;
 };
 
 
@@ -113,47 +126,29 @@ static void receiveMessage(bool debug = false) {
   frame.id = 10;
   can.tryToSend(frame);
   if (can.available ()) {
-    // Serial.println("available");
     if (can.receive (frame)){
-      // Serial.print("frame id:");
-      // Serial.println(frame.id);
 
       //frame0 -> 
       // vel -> double = 8
       if (frame.id == 1){
         uint64_t u64vel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-
-        // Serial.print("frame data: ");
-        // for (int i = 0; i < 8; i++){
-        //   Serial.print(frame.data[i]);
-        //   Serial.print(", ");
-        // }
-        // Serial.print("frame len: ");
-        // Serial.println(frame.len);
-        // Serial.print("Valor da vel:");
-        // Serial.println(u64vel);
+  
         memcpy(&vel, &u64vel, sizeof(vel));
-        // Serial.println(vel);
-        // Serial.println("frame0");
+        Serial.println(vel);
+
       }
       //frame1 ->
       // pedalAcel = double = 4
       // tensaoBat = double = 4
-      else if (frame.id == 2){
+      else if (frame.id == 99){
         uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        // int64print(u64Acel);
         double pedalAcel;
 
         memcpy(&pedalAcel, &u64Acel, sizeof(pedalAcel));
-        // Serial.println(pedalAcel);
-        // dAcel.u32 = u32Acel;
-        // double pedalAcel = dAcel.d;
         
         uint32_t u32Bat = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        // dBat.u32 = u32Bat;
-        // double tensaoBat = dBat.d;
 
         
       }
@@ -162,30 +157,18 @@ static void receiveMessage(bool debug = false) {
       // tempAmb = float = 4
       else if (frame.id == 3){
         uint32_t u32Obj = gather4bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3]);
-        // dObj.u32 = u32Obj;
-        // double tempObj = dObj.f;
 
         uint32_t u32Amb = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        // dAmb.u32 = u32Amb;
-        // double tempAmb = dAmb.f;
       }
       //frame0
       // rpm = double = 4
       // vel = double = 4
-      else if (frame.id == 4){
+      else if (frame.id == 88777){
         uint32_t u64Rpm = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         memcpy(&rpm, &u64Rpm, sizeof(u64Rpm));
-
-        // uint32_t u32Vel = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
-        // dVel.u32 = u32Vel;
-        // double vel = dVel.d;
       }
     }
-    
-    // gReceivedFrameCount ++ ;
-    // Serial.print ("Received: ") ;
-    // Serial.println (gReceivedFrameCount) ;
   }
   if (debug){
     // Serial.println(vel);

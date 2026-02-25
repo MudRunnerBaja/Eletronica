@@ -27,11 +27,11 @@ Instancia *myInstance;
 
 void setup()
 {
-    pinMode(GPIO2_P4_LIVRE, OUTPUT);
+    //pinMode(GPIO2_P4_LIVRE, OUTPUT);
     // pinMode(GPIO3_P5_LIVRE, OUTPUT);
     pinMode(LED_BUILTIN, OUTPUT);
 
-    digitalWrite(GPIO2_P4_LIVRE, HIGH);
+    //digitalWrite(GPIO2_P4_LIVRE, HIGH);
     // digitalWrite(GPIO3_P5_LIVRE, HIGH);
     digitalWrite(LED_BUILTIN, HIGH);
 
@@ -44,7 +44,7 @@ void setup()
     D_println("=======================");
     myInstance = Instancia::GetInstance();
 
-    myInstance->InicializarArquivo();
+    // myInstance->InicializarArquivo();
 
     // randomSeed(756498465497);
     D_println("=======================");
@@ -66,7 +66,7 @@ void setup1()
     D_println("Setup1 iniciando");
     delay(10);
 
-    if (Core1Timer1.attachInterruptInterval(INTERVALO_TIMER_MS * 500, UpdateData))
+    if (Core1Timer1.attachInterruptInterval(INTERVALO_TIMER_MS * 700, UpdateData))
         D_println("Core1Timer1 OK. Timer de: " + INTERVALO_TIMER_MS);
     else
         D_println("Falha no Core1Timer1. Sem timer de escrita no SD");
@@ -98,12 +98,14 @@ void loop1()
 
 bool UpdateData(struct repeating_timer *t)
 {
+    digitalWrite(LED_BUILTIN, LOW);
     myInstance->SetDadosSistemas();
     myInstance->SincronizarDados();
     myInstance->EnviarDadosCanBus();
     myInstance->PrintarDados();
-    myInstance->EnviarDadosTelemetria();
-    myInstance->EscreverSD();
+    // myInstance->EnviarDadosTelemetria();
+    //myInstance->EscreverSD();
+    digitalWrite(LED_BUILTIN, HIGH);
     // D_println(digitalRead(GPIO3_P5_LIVRE));
     return true;
 }
