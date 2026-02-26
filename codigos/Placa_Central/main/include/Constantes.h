@@ -5,7 +5,7 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
-#define DEBUG 1 // 0 Para não usar serial, 1 para usar serial
+#define DEBUG 0 // 0 Para não usar serial, 1 para usar serial
 
 #if DEBUG
 #define D_SerialBegin(...) Serial.begin(__VA_ARGS__); // Substitui Serial.begin

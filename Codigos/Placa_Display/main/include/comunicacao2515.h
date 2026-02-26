@@ -135,7 +135,7 @@ static void receiveMessage(bool debug = false) {
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
   
         memcpy(&vel, &u64vel, sizeof(vel));
-        Serial.println(vel);
+        //Serial.println(vel);//
 
       }
       //frame1 ->

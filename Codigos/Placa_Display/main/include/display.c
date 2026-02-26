@@ -175,7 +175,7 @@ void loadScreen(){
         u8g2.setFont(u8g2_font_t0_13_te);
         u8g2.drawButtonUTF8(16, 62, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Inicializando...");
         u8g2.setFont(u8g2_font_5x8_tf);
-        u8g2.drawButtonUTF8(2, 7, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Eletronica MudRunner 2024");
+        u8g2.drawButtonUTF8(2, 7, U8G2_BTN_INV|U8G2_BTN_BW1, 0, 0, 0, "Intel MudRunner 2026");
   } while (u8g2.nextPage());
 }
 

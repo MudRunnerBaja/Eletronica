@@ -193,11 +193,11 @@ public:
         frame2.data[6] = pickFloatByte(data.tmpAmb, 1);
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
 
-        const bool ok2 = can.tryToSend(frame2);
-        if (!ok2)
-        {
-            Serial.println("CAN Send failure 2");
-        }
+        // const bool ok2 = can.tryToSend(frame2);
+        // if (!ok2)
+        // {
+        //     Serial.println("CAN Send failure 2");
+        // }
         // packet3
         // rpm = double = 4
 
