@@ -103,7 +103,7 @@ bool UpdateData(struct repeating_timer *t)
     myInstance->SincronizarDados();
     myInstance->EnviarDadosCanBus();
     myInstance->PrintarDados();
-    // myInstance->EnviarDadosTelemetria();
+    myInstance->EnviarDadosTelemetria();
     //myInstance->EscreverSD();
     digitalWrite(LED_BUILTIN, HIGH);
     // D_println(digitalRead(GPIO3_P5_LIVRE));

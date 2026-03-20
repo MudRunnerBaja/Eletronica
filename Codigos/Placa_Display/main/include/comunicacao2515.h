@@ -6,7 +6,7 @@ bool CVT = false, gps_conn = false, sd_rw = false, conn = false;
 bool can_conn = false, update = false, nivelFreio = false, setLap = false;
 short comb = 0;
 double vel, velGps, rpm, rpmMovida, volta;
-float tensao = 13, pressFreio, posAcelerador;
+float tensao = 12, pressFreio, posAcelerador;
 long told, tlap, tlapOld, tOn;
 double TCvt, TProtecao;
 
@@ -128,20 +128,16 @@ static void receiveMessage(bool debug = false) {
   if (can.available ()) {
     if (can.receive (frame)){
 
-      //frame0 -> 
-      // vel -> double = 8
       if (frame.id == 1){
         uint64_t u64vel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
   
         memcpy(&vel, &u64vel, sizeof(vel));
-        //Serial.println(vel);//
+
 
       }
-      //frame1 ->
-      // pedalAcel = double = 4
-      // tensaoBat = double = 4
-      else if (frame.id == 99){
+      
+      else if (frame.id == 99){ 
         uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         double pedalAcel;

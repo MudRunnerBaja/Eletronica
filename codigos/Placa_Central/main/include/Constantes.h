@@ -5,7 +5,7 @@
 #ifndef _CONSTANTES_H
 #define _CONSTANTES_H
 
-#define DEBUG 0 // 0 Para não usar serial, 1 para usar serial
+#define DEBUG 1 // 0 Para não usar serial, 1 para usar serial
 
 #if DEBUG
 #define D_SerialBegin(...) Serial.begin(__VA_ARGS__); // Substitui Serial.begin
@@ -40,8 +40,8 @@ enum Nivel
 #define SERIAL_BAUD 115200 // SERIAL DEBUG
 
 // TELEMETRIA SERIAL1 UART
-#define TELEMETRIA_RX 1 // PINO RX UART LORA
-#define TELEMETRIA_TX 0 // PINO TX UART LORA
+#define TELEMETRIA_RX 0 // PINO RX UART LORA
+#define TELEMETRIA_TX 1 // PINO TX UART LORA
 #define TELEMETRIA_AUX 2
 
 // TEMP CVT
@@ -109,6 +109,7 @@ struct _DadosCompartilhamento
     double vel;
     float latitude;
     float longitude;
+    short errorCan;
 };
 
 struct _DadosLight
@@ -116,8 +117,8 @@ struct _DadosLight
     double rpm;
     double vel;
     double tensaoBat;
-    double nada1;
-    double nada2;
+    //double nada1;
+    //double nada2;
     // double nada3;
     // double nada4;
     // int nada5;

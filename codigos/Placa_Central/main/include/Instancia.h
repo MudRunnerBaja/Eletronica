@@ -84,7 +84,8 @@ public:
             rpm.getRPM(),
             velocidade.getVel(),
             0, //gps.getLatitude()
-            0); //gps.getLongitude()
+            0, //gps.getLongitude()
+        comunicacao.getErrorCan()); 
             
         // dados.atualizarDados(0, 1, 2, 500, 4, 5, 6, 7, 200);
 
@@ -106,6 +107,7 @@ public:
         // data = String(data + ",");
         // data = String(data + nivelCombustivel.getNivelAtual());
         comunicacao.enviarDadosTelemetria(dados.getStructDadosLight());
+        Serial.println(dados.getStructDadosLight().rpm);
         return false;
     }
 

@@ -15,7 +15,8 @@
 ACAN2515 can(CAN_CSPIN, SPI, CAN_INPIN);
 
 SoftwareSerial serialTelemetria(TELEMETRIA_RX, TELEMETRIA_TX); // RX, TX
-LoRa_E32 e32ttl100(&serialTelemetria, TELEMETRIA_AUX, UART_BPS_RATE_9600);                         
+LoRa_E32 e32ttl100(&serialTelemetria, TELEMETRIA_AUX, UART_BPS_RATE_9600);  
+static uint16_t errorCode;                       
 
 class Comunicacao
 {
@@ -51,15 +52,19 @@ public:
         ResponseStatus rs = e32ttl100.sendFixedMessage(0, 3, 0x04, &d, sizeof(double));
     }
 
-    void enviarDadosTelemetria(DadosLight data){
+    void enviarDadosTelemetria(DadosLight data){ 
         DadosLight d = data;
-        ResponseStatus rs = e32ttl100.sendFixedMessage(1, 0 , 0x04, &d, sizeof(DadosLight));
+        ResponseStatus rs = e32ttl100.sendFixedMessage(0, 0 , 0x17, &d, sizeof(DadosLight));
         Serial.println(rs.getResponseDescription());
     }
 
     void updateData()
     {
         return;
+    }
+
+    int getErrorCan(){
+        return errorCode;
     }
 
     // Apagar se o código morrer
@@ -130,6 +135,7 @@ public:
         frame0.rtr = false;
         frame0.id = 1;
         frame0.len = 8;
+        frame0.idx = 1;
 
         // frame0.data64 = data.vel;
 
@@ -155,7 +161,7 @@ public:
         frame1.rtr = false;
         frame1.id = 2;
         frame1.len = 8;
-        frame1.idx = 1;
+        frame1.idx = 2;
 
         // frame1.data[0] = 10;
         frame1.data[0] = pickDoubleByte(data.tensaoBat, 0);
@@ -182,7 +188,7 @@ public:
         frame2.rtr = false;
         frame2.id = 3;
         frame2.len = 8;
-        frame2.idx = 2;
+        frame2.idx = 1;
 
         frame2.data[0] = pickFloatByte(data.tmpCvt, 3);
         frame2.data[1] = pickFloatByte(data.tmpCvt, 2);
@@ -206,6 +212,7 @@ public:
         frame3.rtr = false;
         frame3.id = 4;
         frame3.len = 8;
+        frame3.idx = 0;
 
         frame3.data[0] = pickDoubleByte(data.rpm, 0);
         frame3.data[1] = pickDoubleByte(data.rpm, 1);
@@ -227,13 +234,114 @@ public:
         frame4.ext = false;
         frame4.rtr = false;
         frame4.id = 5;
-        frame4.len = 8;
-        frame4.idx = 1;
+        frame4.len = 4;
+        frame4.idx = 0;
 
         frame4.data[0] = pickIntByte(data.nivelFreio, 0);
         frame4.data[1] = pickIntByte(data.nivelFreio, 1);
         frame4.data[2] = pickIntByte(data.nivelFreio, 2);
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
+
+
+        //packet5
+        //latitude
+        CANMessage frame5;
+        frame5.ext = false;
+        frame5.rtr = false;
+        frame5.id = 6;
+        frame5.len = 8;
+        frame5.idx = 0;
+
+        frame5.data[0] = pickIntByte(data.latitude, 0);
+        frame5.data[1] = pickIntByte(data.latitude, 1);
+        frame5.data[2] = pickIntByte(data.latitude, 2);
+        frame5.data[3] = pickIntByte(data.latitude, 3);
+        frame5.data[4] = pickIntByte(data.latitude, 4);
+        frame5.data[5] = pickIntByte(data.latitude, 5);
+        frame5.data[6] = pickIntByte(data.latitude, 6);
+        frame5.data[7] = pickIntByte(data.latitude, 7);
+
+        //packet4
+        //longitude
+        CANMessage frame6;
+        frame6.ext = false;
+        frame6.rtr = false;
+        frame6.id = 7;
+        frame6.len = 8;
+        frame6.idx = 0;
+
+        frame6.data[0] = pickIntByte(data.longitude, 0);
+        frame6.data[1] = pickIntByte(data.longitude, 1);
+        frame6.data[2] = pickIntByte(data.longitude, 2);
+        frame6.data[3] = pickIntByte(data.longitude, 3);
+        frame6.data[4] = pickIntByte(data.longitude, 4);
+        frame6.data[5] = pickIntByte(data.longitude, 5);
+        frame6.data[6] = pickIntByte(data.longitude, 6);
+        frame6.data[7] = pickIntByte(data.longitude, 7);
+
+        //packet7
+        //errorCan
+        CANMessage frame7;
+        frame7.ext = false;
+        frame7.rtr = false;
+        frame7.id = 8;
+        frame7.len = 8;
+        frame7.idx = 1;
+
+        frame7.data[0] = pickIntByte(data.errorCan, 0);
+        frame7.data[1] = pickIntByte(data.errorCan, 1);
+        frame7.data[2] = pickIntByte(data.errorCan, 2);
+        frame7.data[3] = pickIntByte(data.errorCan, 3);
+
+        //packet8
+        //nivelComb
+        CANMessage frame8;
+        frame8.ext = false;
+        frame8.rtr = false;
+        frame8.id = 9;
+        frame8.len = 8;
+        frame8.idx = 2;
+
+        frame8.data[0] = pickIntByte(data.nivelComb, 0);
+        frame8.data[1] = pickIntByte(data.nivelComb, 1);
+        frame8.data[2] = pickIntByte(data.nivelComb, 2);
+        frame8.data[3] = pickIntByte(data.nivelComb, 3);
+
+        //packet9
+        //pedal
+        CANMessage frame9;
+        frame9.ext = false;
+        frame9.rtr = false;
+        frame9.id = 10;
+        frame9.len = 8;
+        frame9.idx = 2;
+
+        frame9.data[0] = pickIntByte(data.pedal, 0);
+        frame9.data[1] = pickIntByte(data.pedal, 1);
+        frame9.data[2] = pickIntByte(data.pedal, 2);
+        frame9.data[3] = pickIntByte(data.pedal, 3);
+        frame9.data[4] = pickIntByte(data.pedal, 4);
+        frame9.data[5] = pickIntByte(data.pedal, 5);
+        frame9.data[6] = pickIntByte(data.pedal, 6);
+        frame9.data[7] = pickIntByte(data.pedal, 7);        
+
+        //packet10
+        //nivelDeFreio
+        CANMessage frame10;
+        frame10.ext = false;
+        frame10.rtr = false;
+        frame10.id = 11;
+        frame10.len = 8;
+        frame10.idx = 2;
+
+        frame10.data[0] = pickIntByte(data.pressaoFreio, 0);
+        frame10.data[1] = pickIntByte(data.pressaoFreio, 1);
+        frame10.data[2] = pickIntByte(data.pressaoFreio, 2);
+        frame10.data[3] = pickIntByte(data.pressaoFreio, 3);
+        frame10.data[4] = pickIntByte(data.pressaoFreio, 4);
+        frame10.data[5] = pickIntByte(data.pressaoFreio, 5);
+        frame10.data[6] = pickIntByte(data.pressaoFreio, 6);
+        frame10.data[7] = pickIntByte(data.pressaoFreio, 7);
 
         Serial.print("Buffer 0: " );
         Serial.println(can.transmitBufferCount(0));
@@ -271,20 +379,61 @@ private:
     static bool setupTelemetria()
     {
         e32ttl100.begin();
-        ResponseStructContainer c;
-        c = e32ttl100.getConfiguration();
-        Serial.println(c.status.getResponseDescription());
-        Serial.println(c.status.code);
-        Configuration configuration = *(Configuration *)c.data;
-        configuration.ADDL = 0x01;
-        configuration.ADDH = 0x00;
-        configuration.CHAN = 0x02;
-        configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
-        // e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
-        c.close();
+        // ResponseStructContainer c;
+        // c = e32ttl100.getConfiguration();
+        // Configuration configuration = *(Configuration *)c.data;
+        // Serial.println(c.status.getResponseDescription());
+        // Serial.println(c.status.code);
+
+        // printParameters(configuration);
+        // ResponseStructContainer cMi;
+        // cMi = e32ttl100.getModuleInformation();
+        // ModuleInformation mi = *(ModuleInformation*)cMi.data;
+
+        // Serial.println(cMi.status.getResponseDescription());
+        // Serial.println(cMi.status.code);
+
+        // printModuleInformation(mi);
+
+        // c.close();
+        // cMi.close();
 
         return false;
     }
+
+    static void printParameters(struct Configuration configuration) {
+	Serial.println("----------------------------------------");
+
+	Serial.print(F("HEAD BIN: "));  Serial.print(configuration.HEAD, BIN);Serial.print(" ");Serial.print(configuration.HEAD, DEC);Serial.print(" ");Serial.println(configuration.HEAD, HEX);
+	Serial.println(F(" "));
+	Serial.print(F("AddH BIN: "));  Serial.println(configuration.ADDH, BIN);
+	Serial.print(F("AddL BIN: "));  Serial.println(configuration.ADDL, BIN);
+	Serial.print(F("Chan BIN: "));  Serial.print(configuration.CHAN, DEC); Serial.print(" -> "); Serial.println(configuration.getChannelDescription());
+	Serial.println(F(" "));
+	Serial.print(F("SpeedParityBit BIN    : "));  Serial.print(configuration.SPED.uartParity, BIN);Serial.print(" -> "); Serial.println(configuration.SPED.getUARTParityDescription());
+	Serial.print(F("SpeedUARTDataRate BIN : "));  Serial.print(configuration.SPED.uartBaudRate, BIN);Serial.print(" -> "); Serial.println(configuration.SPED.getUARTBaudRate());
+	Serial.print(F("SpeedAirDataRate BIN  : "));  Serial.print(configuration.SPED.airDataRate, BIN);Serial.print(" -> "); Serial.println(configuration.SPED.getAirDataRate());
+
+	Serial.print(F("OptionTrans BIN       : "));  Serial.print(configuration.OPTION.fixedTransmission, BIN);Serial.print(" -> "); Serial.println(configuration.OPTION.getFixedTransmissionDescription());
+	Serial.print(F("OptionPullup BIN      : "));  Serial.print(configuration.OPTION.ioDriveMode, BIN);Serial.print(" -> "); Serial.println(configuration.OPTION.getIODroveModeDescription());
+	Serial.print(F("OptionWakeup BIN      : "));  Serial.print(configuration.OPTION.wirelessWakeupTime, BIN);Serial.print(" -> "); Serial.println(configuration.OPTION.getWirelessWakeUPTimeDescription());
+	Serial.print(F("OptionFEC BIN         : "));  Serial.print(configuration.OPTION.fec, BIN);Serial.print(" -> "); Serial.println(configuration.OPTION.getFECDescription());
+	Serial.print(F("OptionPower BIN       : "));  Serial.print(configuration.OPTION.transmissionPower, BIN);Serial.print(" -> "); Serial.println(configuration.OPTION.getTransmissionPowerDescription());
+
+	Serial.println("----------------------------------------");
+
+}
+
+static void printModuleInformation(struct ModuleInformation moduleInformation) {
+	Serial.println("----------------------------------------");
+	Serial.print(F("HEAD BIN: "));  Serial.print(moduleInformation.HEAD, BIN);Serial.print(" ");Serial.print(moduleInformation.HEAD, DEC);Serial.print(" ");Serial.println(moduleInformation.HEAD, HEX);
+
+	Serial.print(F("Freq.: "));  Serial.println(moduleInformation.frequency, HEX);
+	Serial.print(F("Version  : "));  Serial.println(moduleInformation.version, HEX);
+	Serial.print(F("Features : "));  Serial.println(moduleInformation.features, HEX);
+	Serial.println("----------------------------------------");
+
+}
 
     /**
      * CAN-BUS by Sandeep Mistry
@@ -299,8 +448,8 @@ private:
         SPI.begin();
 
         ACAN2515Settings settings(20UL * 1000UL * 1000UL, 125UL * 1000UL); // CAN bit rate 125 kb/s
-        settings.mRequestedMode = ACAN2515Settings::NormalMode;            // Select loopback mode
-        const uint16_t errorCode = can.begin(settings, []
+        settings.mRequestedMode = ACAN2515Settings::NormalMode;      // Select loopback mode
+        errorCode = can.begin(settings, []
                                              { can.isr(); });
         if (errorCode == 0)
         {
@@ -311,6 +460,8 @@ private:
             Serial.print("CAN Configuration error 0x");
             Serial.println(errorCode, HEX);
         }
+
+        
 
         return true;
         // CAN.setPins(CAN_CSPIN);
@@ -329,6 +480,8 @@ private:
         //     Serial.println(errorCode, HEX);
         // }
     }
+
+    
 };
 
 Comunicacao *Comunicacao::instance{nullptr};

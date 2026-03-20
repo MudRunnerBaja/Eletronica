@@ -39,7 +39,8 @@ public:
         dadosString = dadosString + String(pressaoFreio) + ",";
         dadosString = dadosString + String(tensaoBat) + ",";
         dadosString = dadosString + String(latitude) + ",";
-        dadosString = dadosString + String(longitude);
+        dadosString = dadosString + String(longitude) + ",";
+        dadosString = dadosString + String(errorCan);
         return dadosString;
     }
 
@@ -58,7 +59,7 @@ public:
      * @param latitude
      * @param longitude
      */
-    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude1, float longitude1)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude1, float longitude1, int errorCan1)
     {
         dadosEmAtualizacao = true;
 
@@ -69,10 +70,11 @@ public:
         tensaoBat = tensaoBat1;
         tmpCvt = tmpCvt1;
         tmpAmb = tmpAmb1;
-        rpm = rpm1;
+        rpm = pressaoFreio1;
         vel = vel1;
         latitude = latitude1;
         longitude = longitude1;
+        errorCan = errorCan1;
 
         atualizaDadosCompartilhamento();
         dadosEmAtualizacao = false;
@@ -107,10 +109,11 @@ private:
     double vel = 0;
     float longitude = 0;
     float latitude = 0;
+    short errorCan;
 
-    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    DadosLight dadosLight = {0, 0, 0, 0, 0};
+    DadosLight dadosLight = {0, 2, 0};
 
     void atualizaDadosCompartilhamento()
     {
@@ -125,11 +128,10 @@ private:
         dadosCompartilhamento.vel = vel;
         dadosCompartilhamento.latitude = latitude;
         dadosCompartilhamento.longitude = longitude;
+        dadosCompartilhamento.errorCan = errorCan;
 
         dadosLight.vel = vel;
         dadosLight.rpm = rpm;
         dadosLight.tensaoBat = tensaoBat;
-        dadosLight.nada1 = rpm;
-        dadosLight.nada2 = rpm;
     }
 };
