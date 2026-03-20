@@ -74,7 +74,7 @@ public:
     bool SincronizarDados()
     {
         dados.atualizarDados(
-            nivelCombustivel.getNivelAtual(),
+            0,
             freio.getNivelAtual(),
             freio.getPressaoAtual(),
             0.0, // Pedal Acelerador
@@ -85,7 +85,10 @@ public:
             velocidade.getVel(),
             0, //gps.getLatitude()
             0, //gps.getLongitude()
-        comunicacao.getErrorCan()); 
+            comunicacao.getErrorCan(),
+            cartaoSD.getSdrw(),
+            gps.getFix()
+        ); 
             
         // dados.atualizarDados(0, 1, 2, 500, 4, 5, 6, 7, 200);
 
@@ -202,7 +205,7 @@ Instancia *Instancia::GetInstance()
         instance->rpm = *RPM_Motor::GetInstance();
         D_println("Setup rpm concluido");
 
-        instance->nivelCombustivel = *Combustivel::GetInstance();
+        // instance->nivelCombustivel = *Combustivel::GetInstance();
         D_println("Setup nivelCombustivel concluido");
 
         instance->freio = *Freio::GetInstance();
@@ -214,7 +217,7 @@ Instancia *Instancia::GetInstance()
         instance->velocidade = *Velocidade::GetInstance();
         D_println("Setup velocidade concluido");
 
-        // instance->cartaoSD = *CartaoSD::GetInstance();
+        instance->cartaoSD = *CartaoSD::GetInstance();
         D_println("Setup cartaoSD concluido");
 
         D_println("Setup concluido");

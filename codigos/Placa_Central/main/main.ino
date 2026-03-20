@@ -44,7 +44,7 @@ void setup()
     D_println("=======================");
     myInstance = Instancia::GetInstance();
 
-    // myInstance->InicializarArquivo();
+    myInstance->InicializarArquivo();
 
     // randomSeed(756498465497);
     D_println("=======================");
@@ -78,6 +78,7 @@ unsigned long tempo = millis();
 bool teste = LOW;
 void loop()
 {
+    
     // myInstance->AtualizarDados();
     // delay(5);
     // myInstance->printarDados();
@@ -103,8 +104,8 @@ bool UpdateData(struct repeating_timer *t)
     myInstance->SincronizarDados();
     myInstance->EnviarDadosCanBus();
     myInstance->PrintarDados();
-    myInstance->EnviarDadosTelemetria();
-    //myInstance->EscreverSD();
+    // myInstance->EnviarDadosTelemetria();
+    myInstance->EscreverSD();
     digitalWrite(LED_BUILTIN, HIGH);
     // D_println(digitalRead(GPIO3_P5_LIVRE));
     return true;

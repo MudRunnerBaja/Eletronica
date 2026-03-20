@@ -17,6 +17,10 @@ public:
 
     bool possuiData;
 
+    bool getFix(){
+        return gpsOn;
+    }
+
     bool Loop()
     {
         gpsEncoding();

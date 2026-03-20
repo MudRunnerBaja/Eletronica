@@ -40,7 +40,9 @@ public:
         dadosString = dadosString + String(tensaoBat) + ",";
         dadosString = dadosString + String(latitude) + ",";
         dadosString = dadosString + String(longitude) + ",";
-        dadosString = dadosString + String(errorCan);
+        dadosString = dadosString + String(errorCan) + ",";
+        dadosString = dadosString + String(sdrw) + ",";
+        dadosString = dadosString + String(fix_gps);
         return dadosString;
     }
 
@@ -59,7 +61,7 @@ public:
      * @param latitude
      * @param longitude
      */
-    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude1, float longitude1, int errorCan1)
+    void atualizarDados(short nivelComb1, int nivelFreio1, double pressaoFreio1, double pedal1, double tensaoBat1, float tmpCvt1, float tmpAmb1, double rpm1, double vel1, float latitude1, float longitude1, bool errorCan1, bool sdrw1, bool fix_gps1)
     {
         dadosEmAtualizacao = true;
 
@@ -70,11 +72,13 @@ public:
         tensaoBat = tensaoBat1;
         tmpCvt = tmpCvt1;
         tmpAmb = tmpAmb1;
-        rpm = pressaoFreio1;
+        rpm = rpm1;
         vel = vel1;
         latitude = latitude1;
         longitude = longitude1;
         errorCan = errorCan1;
+        sdrw = sdrw1;
+        fix_gps = fix_gps1;
 
         atualizaDadosCompartilhamento();
         dadosEmAtualizacao = false;
@@ -109,9 +113,11 @@ private:
     double vel = 0;
     float longitude = 0;
     float latitude = 0;
-    short errorCan;
+    bool errorCan;
+    bool fix_gps;
+    bool sdrw;
 
-    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    DadosCompartilhamento dadosCompartilhamento = {0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false};
 
     DadosLight dadosLight = {0, 2, 0};
 
@@ -129,6 +135,8 @@ private:
         dadosCompartilhamento.latitude = latitude;
         dadosCompartilhamento.longitude = longitude;
         dadosCompartilhamento.errorCan = errorCan;
+        dadosCompartilhamento.sdrw = sdrw;
+        dadosCompartilhamento.fix_gps = fix_gps;
 
         dadosLight.vel = vel;
         dadosLight.rpm = rpm;

@@ -22,6 +22,8 @@ public:
     bool possuiNome = false;
     bool arquivoCriado = false;
 
+    bool sdrw = false;
+
     // void escreverSD(DadosCompartilhamento dados)
     // {
     //     if (!arquivoCriado)
@@ -31,6 +33,10 @@ public:
 
     //     return;
     // }
+
+    bool getSdrw(){
+        return sdrw;
+    }
 
     bool Loop()
     {
@@ -123,9 +129,11 @@ int getHighestNumFromFiles()
     File dir = SD.open("/");
     if (!dir) {
         Serial.println("Falha ao abrir o diretório raiz do SD.");
+
+        sdrw = false;
         return -1;
     }
-
+    sdrw = true;
     int highestNumber = -1;
 
     while (true) {
@@ -179,7 +187,7 @@ int getHighestNumFromFiles()
         if (arquivoDados)
         {
             Serial.println("Arquivo Criado");
-            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;latitude;longitude;nadanaum");
+            arquivoDados.println("tempo(ms);velo;rpm;tempcvt;comb;nivelFreio;pressaoFreio;TensaoBat;can_conn;sdrw;fixgps");
             arquivoDados.close();
         }
     }

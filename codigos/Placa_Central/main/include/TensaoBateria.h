@@ -27,7 +27,7 @@ public:
 
     double getTensaoBateria()
     {
-        tensaoBateria = analogRead(A0);
+        tensaoBateria = (analogRead(A0) / 1023) * 13.2;
         return tensaoBateria;
     }
 

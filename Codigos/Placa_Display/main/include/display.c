@@ -264,10 +264,10 @@ void displayAvisos(){
     
 
     //TEMPERATURA CVT ALTA
-   if (CVT){
-      u8g2.drawXBM(96, 13, 32, 32, TCVT_xbm);
-      warning = true;
-    }
+  //  if (CVT){
+  //     u8g2.drawXBM(96, 13, 32, 32, TCVT_xbm);
+  //     warning = true;
+  //   }
 
     //CONECTADO AO MASTER
     if(can_conn){     //TALVEZ POR SER IMPORTANTE BOTAR ALGUM INDICADOR MAIOR

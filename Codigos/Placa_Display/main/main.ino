@@ -38,10 +38,10 @@ void loop(){
     while(!intialized){
         delay(1000);
     }
-    menuButton(menu);
-    updateHUDMain(update, menu, menu); 
-    updateHUDRaw(update, menu, menu);
-    updateMenu(menu);
+    // menuButton(menu);
+    updateHUDMain(update, false, false); 
+    // updateHUDRaw(update, menu, menu);
+    // updateMenu(menu);
     // updateHUDMain(true, false, false);    
 }
 

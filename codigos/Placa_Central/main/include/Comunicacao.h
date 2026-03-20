@@ -63,8 +63,12 @@ public:
         return;
     }
 
-    int getErrorCan(){
-        return errorCode;
+    bool getErrorCan(){
+        if (errorCode == 0){
+            return true;
+        }
+        
+        return false;
     }
 
     // Apagar se o código morrer
@@ -118,6 +122,164 @@ public:
      *
      * REVISAR
      */
+
+     void sendFrameSafe(CANMessage &frame, uint8_t &txIndex) {
+    frame.idx = txIndex;
+
+    if (can.sendBufferNotFullForIndex(txIndex)) {
+        const bool ok = can.tryToSend(frame);
+        if (!ok) {
+            Serial.print("Falha ao enfileirar frame ID ");
+            Serial.println(frame.id);
+        }
+    } else {
+        Serial.print("Buffer cheio no idx ");
+        Serial.print(txIndex);
+        Serial.print(" para frame ID ");
+        Serial.println(frame.id);
+    }
+
+    txIndex = (txIndex + 1) % 3;
+}
+
+void sendCanDataTo(DadosCompartilhamento data)
+{
+    can.poll();
+
+    static uint8_t txIndex = 0;
+
+    // FRAME 0 - vel
+    CANMessage frame0;
+    frame0.ext = false;
+    frame0.rtr = false;
+    frame0.id  = 1;
+    frame0.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame0.data[i] = pickDoubleByte(data.vel, i);
+    }
+    sendFrameSafe(frame0, txIndex);
+
+    // FRAME 1 - tensaoBat
+    CANMessage frame1;
+    frame1.ext = false;
+    frame1.rtr = false;
+    frame1.id  = 2;
+    frame1.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame1.data[i] = pickDoubleByte(data.tensaoBat, i);
+    }
+    sendFrameSafe(frame1, txIndex);
+
+    // FRAME 2 - tmpCvt + tmpAmb
+    CANMessage frame2;
+    frame2.ext = false;
+    frame2.rtr = false;
+    frame2.id  = 3;
+    frame2.len = 8;
+    frame2.data[0] = pickFloatByte(data.tmpCvt, 3);
+    frame2.data[1] = pickFloatByte(data.tmpCvt, 2);
+    frame2.data[2] = pickFloatByte(data.tmpCvt, 1);
+    frame2.data[3] = pickFloatByte(data.tmpCvt, 0);
+    frame2.data[4] = pickFloatByte(data.tmpAmb, 3);
+    frame2.data[5] = pickFloatByte(data.tmpAmb, 2);
+    frame2.data[6] = pickFloatByte(data.tmpAmb, 1);
+    frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
+    sendFrameSafe(frame2, txIndex);
+
+    // FRAME 3 - rpm
+    CANMessage frame3;
+    frame3.ext = false;
+    frame3.rtr = false;
+    frame3.id  = 4;
+    frame3.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame3.data[i] = pickDoubleByte(data.rpm, i);
+    }
+    sendFrameSafe(frame3, txIndex);
+
+    // FRAME 4 - nivelFreio
+    CANMessage frame4;
+    frame4.ext = false;
+    frame4.rtr = false;
+    frame4.id  = 5;
+    frame4.len = 4;
+    for (int i = 0; i < 4; i++) {
+        frame4.data[i] = pickIntByte(data.nivelFreio, i);
+    }
+    sendFrameSafe(frame4, txIndex);
+
+    // FRAME 5 - latitude
+    CANMessage frame5;
+    frame5.ext = false;
+    frame5.rtr = false;
+    frame5.id  = 6;
+    frame5.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame5.data[i] = pickDoubleByte(data.latitude, i);
+    }
+    sendFrameSafe(frame5, txIndex);
+
+    // FRAME 6 - longitude
+    CANMessage frame6;
+    frame6.ext = false;
+    frame6.rtr = false;
+    frame6.id  = 7;
+    frame6.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame6.data[i] = pickDoubleByte(data.longitude, i);
+    }
+    sendFrameSafe(frame6, txIndex);
+
+    // FRAME 7 - sdrw + fix_gps
+    CANMessage frame7;
+    frame7.ext = false;
+    frame7.rtr = false;
+    frame7.id  = 8;
+    frame7.len = 2;
+    frame7.data[0] = data.sdrw;
+    frame7.data[1] = data.fix_gps;
+    sendFrameSafe(frame7, txIndex);
+
+    // FRAME 8 - nivelComb
+    CANMessage frame8;
+    frame8.ext = false;
+    frame8.rtr = false;
+    frame8.id  = 9;
+    frame8.len = 4;
+    for (int i = 0; i < 4; i++) {
+        frame8.data[i] = pickIntByte(data.nivelComb, i);
+    }
+    sendFrameSafe(frame8, txIndex);
+
+    // FRAME 9 - pedal
+    CANMessage frame9;
+    frame9.ext = false;
+    frame9.rtr = false;
+    frame9.id  = 10;
+    frame9.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame9.data[i] = pickDoubleByte(data.pedal, i);
+    }
+    sendFrameSafe(frame9, txIndex);
+
+    // FRAME 10 - pressaoFreio
+    CANMessage frame10;
+    frame10.ext = false;
+    frame10.rtr = false;
+    frame10.id  = 11;
+    frame10.len = 8;
+    for (int i = 0; i < 8; i++) {
+        frame10.data[i] = pickDoubleByte(data.pressaoFreio, i);
+    }
+    sendFrameSafe(frame10, txIndex);
+
+    Serial.print("Buffer 0: ");
+    Serial.println(can.transmitBufferCount(0));
+    Serial.print("Buffer 1: ");
+    Serial.println(can.transmitBufferCount(1));
+    Serial.print("Buffer 2: ");
+    Serial.println(can.transmitBufferCount(2));
+}/*
     void sendCanDataTo(DadosCompartilhamento data)
     {
         //dados
@@ -199,6 +361,8 @@ public:
         frame2.data[6] = pickFloatByte(data.tmpAmb, 1);
         frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
 
+        
+
         // const bool ok2 = can.tryToSend(frame2);
         // if (!ok2)
         // {
@@ -242,6 +406,8 @@ public:
         frame4.data[2] = pickIntByte(data.nivelFreio, 2);
         frame4.data[3] = pickIntByte(data.nivelFreio, 3);
 
+        const bool ok4 = can.tryToSend(frame4);
+
 
         //packet5
         //latitude
@@ -261,6 +427,8 @@ public:
         frame5.data[6] = pickIntByte(data.latitude, 6);
         frame5.data[7] = pickIntByte(data.latitude, 7);
 
+        const bool ok5 = can.tryToSend(frame5);
+        
         //packet4
         //longitude
         CANMessage frame6;
@@ -270,17 +438,20 @@ public:
         frame6.len = 8;
         frame6.idx = 0;
 
-        frame6.data[0] = pickIntByte(data.longitude, 0);
-        frame6.data[1] = pickIntByte(data.longitude, 1);
-        frame6.data[2] = pickIntByte(data.longitude, 2);
-        frame6.data[3] = pickIntByte(data.longitude, 3);
-        frame6.data[4] = pickIntByte(data.longitude, 4);
-        frame6.data[5] = pickIntByte(data.longitude, 5);
-        frame6.data[6] = pickIntByte(data.longitude, 6);
-        frame6.data[7] = pickIntByte(data.longitude, 7);
+        frame6.data[0] = pickDoubleByte(data.longitude, 0);
+        frame6.data[1] = pickDoubleByte(data.longitude, 1);
+        frame6.data[2] = pickDoubleByte(data.longitude, 2);
+        frame6.data[3] = pickDoubleByte(data.longitude, 3);
+        frame6.data[4] = pickDoubleByte(data.longitude, 4);
+        frame6.data[5] = pickDoubleByte(data.longitude, 5);
+        frame6.data[6] = pickDoubleByte(data.longitude, 6);
+        frame6.data[7] = pickDoubleByte(data.longitude, 7);
+
+        const bool ok6 = can.tryToSend(frame6);
 
         //packet7
-        //errorCan
+        //sdrw
+        //fix_gps
         CANMessage frame7;
         frame7.ext = false;
         frame7.rtr = false;
@@ -288,10 +459,10 @@ public:
         frame7.len = 8;
         frame7.idx = 1;
 
-        frame7.data[0] = pickIntByte(data.errorCan, 0);
-        frame7.data[1] = pickIntByte(data.errorCan, 1);
-        frame7.data[2] = pickIntByte(data.errorCan, 2);
-        frame7.data[3] = pickIntByte(data.errorCan, 3);
+        frame7.data[1] = data.sdrw;
+        frame7.data[2] = data.fix_gps;
+
+        const bool ok7 = can.tryToSend(frame7);
 
         //packet8
         //nivelComb
@@ -306,6 +477,8 @@ public:
         frame8.data[1] = pickIntByte(data.nivelComb, 1);
         frame8.data[2] = pickIntByte(data.nivelComb, 2);
         frame8.data[3] = pickIntByte(data.nivelComb, 3);
+
+        // const bool ok8 = can.tryToSend(frame8);
 
         //packet9
         //pedal
@@ -323,7 +496,9 @@ public:
         frame9.data[4] = pickIntByte(data.pedal, 4);
         frame9.data[5] = pickIntByte(data.pedal, 5);
         frame9.data[6] = pickIntByte(data.pedal, 6);
-        frame9.data[7] = pickIntByte(data.pedal, 7);        
+        frame9.data[7] = pickIntByte(data.pedal, 7);     
+        
+        // const bool ok9 = can.tryToSend(frame9);
 
         //packet10
         //nivelDeFreio
@@ -343,6 +518,8 @@ public:
         frame10.data[6] = pickIntByte(data.pressaoFreio, 6);
         frame10.data[7] = pickIntByte(data.pressaoFreio, 7);
 
+        const bool ok10 = can.tryToSend(frame10);
+
         Serial.print("Buffer 0: " );
         Serial.println(can.transmitBufferCount(0));
         Serial.print("Buffer 1: " );
@@ -359,7 +536,7 @@ public:
 
         return;
     }
-
+*/
 public:
     Comunicacao() = default;
 
@@ -492,7 +669,7 @@ Comunicacao *Comunicacao::GetInstance()
         instance = new Comunicacao();
 
         // TODO:
-        setupTelemetria();
+        // setupTelemetria();
         setupCanBus();
     }
 

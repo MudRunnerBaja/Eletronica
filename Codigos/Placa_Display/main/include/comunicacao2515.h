@@ -126,6 +126,7 @@ static void receiveMessage(bool debug = false) {
   frame.id = 10;
   can.tryToSend(frame);
   if (can.available ()) {
+    can_conn = true;
     if (can.receive (frame)){
 
       if (frame.id == 1){
@@ -137,7 +138,7 @@ static void receiveMessage(bool debug = false) {
 
       }
       
-      else if (frame.id == 99){ 
+      else if (frame.id == 10){ 
         uint64_t u64Acel = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         double pedalAcel;
@@ -151,18 +152,24 @@ static void receiveMessage(bool debug = false) {
       //frame2
       // tempObj = float = 4
       // tempAmb = float = 4
-      else if (frame.id == 3){
+      else if (frame.id == 333){
         uint32_t u32Obj = gather4bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3]);
 
         uint32_t u32Amb = gather4bytes(frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
       }
-      //frame0
-      // rpm = double = 4
-      // vel = double = 4
-      else if (frame.id == 88777){
+      //frame
+      else if (frame.id == 4){
         uint32_t u64Rpm = gather8bytes(frame.data[0], frame.data[1], frame.data[2], frame.data[3],
           frame.data[4], frame.data[5], frame.data[6], frame.data[7]);
         memcpy(&rpm, &u64Rpm, sizeof(u64Rpm));
+      }
+
+      else if (frame.id == 8){
+        uint8_t uSDRW = frame.data[0];
+        uint8_t ufixgps = frame.data[1];
+
+        memcpy(&sd_rw, &uSDRW, sizeof(uSDRW));
+        memcpy(&gps_conn, &ufixgps, sizeof(ufixgps));
       }
     }
   }
