@@ -122,164 +122,6 @@ public:
      *
      * REVISAR
      */
-
-     void sendFrameSafe(CANMessage &frame, uint8_t &txIndex) {
-    frame.idx = txIndex;
-
-    if (can.sendBufferNotFullForIndex(txIndex)) {
-        const bool ok = can.tryToSend(frame);
-        if (!ok) {
-            Serial.print("Falha ao enfileirar frame ID ");
-            Serial.println(frame.id);
-        }
-    } else {
-        Serial.print("Buffer cheio no idx ");
-        Serial.print(txIndex);
-        Serial.print(" para frame ID ");
-        Serial.println(frame.id);
-    }
-
-    txIndex = (txIndex + 1) % 3;
-}
-
-void sendCanDataTo(DadosCompartilhamento data)
-{
-    can.poll();
-
-    static uint8_t txIndex = 0;
-
-    // FRAME 0 - vel
-    CANMessage frame0;
-    frame0.ext = false;
-    frame0.rtr = false;
-    frame0.id  = 1;
-    frame0.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame0.data[i] = pickDoubleByte(data.vel, i);
-    }
-    sendFrameSafe(frame0, txIndex);
-
-    // FRAME 1 - tensaoBat
-    CANMessage frame1;
-    frame1.ext = false;
-    frame1.rtr = false;
-    frame1.id  = 2;
-    frame1.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame1.data[i] = pickDoubleByte(data.tensaoBat, i);
-    }
-    sendFrameSafe(frame1, txIndex);
-
-    // FRAME 2 - tmpCvt + tmpAmb
-    CANMessage frame2;
-    frame2.ext = false;
-    frame2.rtr = false;
-    frame2.id  = 3;
-    frame2.len = 8;
-    frame2.data[0] = pickFloatByte(data.tmpCvt, 3);
-    frame2.data[1] = pickFloatByte(data.tmpCvt, 2);
-    frame2.data[2] = pickFloatByte(data.tmpCvt, 1);
-    frame2.data[3] = pickFloatByte(data.tmpCvt, 0);
-    frame2.data[4] = pickFloatByte(data.tmpAmb, 3);
-    frame2.data[5] = pickFloatByte(data.tmpAmb, 2);
-    frame2.data[6] = pickFloatByte(data.tmpAmb, 1);
-    frame2.data[7] = pickFloatByte(data.tmpAmb, 0);
-    sendFrameSafe(frame2, txIndex);
-
-    // FRAME 3 - rpm
-    CANMessage frame3;
-    frame3.ext = false;
-    frame3.rtr = false;
-    frame3.id  = 4;
-    frame3.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame3.data[i] = pickDoubleByte(data.rpm, i);
-    }
-    sendFrameSafe(frame3, txIndex);
-
-    // FRAME 4 - nivelFreio
-    CANMessage frame4;
-    frame4.ext = false;
-    frame4.rtr = false;
-    frame4.id  = 5;
-    frame4.len = 4;
-    for (int i = 0; i < 4; i++) {
-        frame4.data[i] = pickIntByte(data.nivelFreio, i);
-    }
-    sendFrameSafe(frame4, txIndex);
-
-    // FRAME 5 - latitude
-    CANMessage frame5;
-    frame5.ext = false;
-    frame5.rtr = false;
-    frame5.id  = 6;
-    frame5.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame5.data[i] = pickDoubleByte(data.latitude, i);
-    }
-    sendFrameSafe(frame5, txIndex);
-
-    // FRAME 6 - longitude
-    CANMessage frame6;
-    frame6.ext = false;
-    frame6.rtr = false;
-    frame6.id  = 7;
-    frame6.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame6.data[i] = pickDoubleByte(data.longitude, i);
-    }
-    sendFrameSafe(frame6, txIndex);
-
-    // FRAME 7 - sdrw + fix_gps
-    CANMessage frame7;
-    frame7.ext = false;
-    frame7.rtr = false;
-    frame7.id  = 8;
-    frame7.len = 2;
-    frame7.data[0] = data.sdrw;
-    frame7.data[1] = data.fix_gps;
-    sendFrameSafe(frame7, txIndex);
-
-    // FRAME 8 - nivelComb
-    CANMessage frame8;
-    frame8.ext = false;
-    frame8.rtr = false;
-    frame8.id  = 9;
-    frame8.len = 4;
-    for (int i = 0; i < 4; i++) {
-        frame8.data[i] = pickIntByte(data.nivelComb, i);
-    }
-    sendFrameSafe(frame8, txIndex);
-
-    // FRAME 9 - pedal
-    CANMessage frame9;
-    frame9.ext = false;
-    frame9.rtr = false;
-    frame9.id  = 10;
-    frame9.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame9.data[i] = pickDoubleByte(data.pedal, i);
-    }
-    sendFrameSafe(frame9, txIndex);
-
-    // FRAME 10 - pressaoFreio
-    CANMessage frame10;
-    frame10.ext = false;
-    frame10.rtr = false;
-    frame10.id  = 11;
-    frame10.len = 8;
-    for (int i = 0; i < 8; i++) {
-        frame10.data[i] = pickDoubleByte(data.pressaoFreio, i);
-    }
-    sendFrameSafe(frame10, txIndex);
-
-    Serial.print("Buffer 0: ");
-    Serial.println(can.transmitBufferCount(0));
-    Serial.print("Buffer 1: ");
-    Serial.println(can.transmitBufferCount(1));
-    Serial.print("Buffer 2: ");
-    Serial.println(can.transmitBufferCount(2));
-}/*
     void sendCanDataTo(DadosCompartilhamento data)
     {
         //dados
@@ -363,11 +205,11 @@ void sendCanDataTo(DadosCompartilhamento data)
 
         
 
-        // const bool ok2 = can.tryToSend(frame2);
-        // if (!ok2)
-        // {
-        //     Serial.println("CAN Send failure 2");
-        // }
+        const bool ok2 = can.tryToSend(frame2);
+        if (!ok2)
+        {
+            Serial.println("CAN Send failure 2");
+        }
         // packet3
         // rpm = double = 4
 
@@ -527,16 +369,16 @@ void sendCanDataTo(DadosCompartilhamento data)
         Serial.print("Buffer 2: " );
         Serial.println(can.transmitBufferCount(2));
 
-        for (int i = 0; i < 8; i++)
-        {
-            Serial.print(frame0.data[i]);
-            Serial.print(", ");
-        }
-        Serial.println("");
+        // for (int i = 0; i < 8; i++)
+        // {
+        //     Serial.print(frame0.data[i]);
+        //     Serial.print(", ");
+        // }
+        // Serial.println("");
 
         return;
     }
-*/
+
 public:
     Comunicacao() = default;
 
@@ -553,9 +395,125 @@ private:
     // double rpm;
     // double vel;
 
+    static bool getagem(){
+        ResponseStructContainer c;
+        c = e32ttl100.getConfiguration();
+        // It's important get configuration pointer before all other operation
+        Configuration configuration = *(Configuration*) c.data;
+        Serial.println(c.status.getResponseDescription());
+        if (c.status.getResponseDescription() == "Success"){
+            c.close();
+            return true;
+        }
+        Serial.println(c.status.code);
+
+        printParameters(configuration);
+
+        // ResponseStructContainer cMi;
+        // cMi = e32ttl100.getModuleInformation();
+        // // It's important get information pointer before all other operation
+        // ModuleInformation mi = *(ModuleInformation*)cMi.data;xxzxxzxxzxxzxxz
+
+        // Serial.println(cMi.status.getResponseDescription());
+        // Serial.println(cMi.status.code);
+
+        // printModuleInformation(mi);
+
+        c.close();
+        // cMi.close();
+        return false;
+    }
+
+    static void recebagem(){
+
+	
+	if (e32ttl100.available()  > 1){
+
+		ResponseStructContainer rsc = e32ttl100.receiveMessage(sizeof(DadosLight));
+		struct _DadosLight message = *(DadosLight*) rsc.data;
+
+		Serial.println((message.rpm));
+        Serial.println((message.vel));
+        Serial.println((message.tensaoBat));
+//		free(rsc.data);
+		rsc.close();
+	    }
+    }
+
+    static void setagem(){
+	ResponseStructContainer c;
+	c = e32ttl100.getConfiguration();
+	// It's important get configuration pointer before all other operation
+	Configuration configuration = *(Configuration*) c.data;
+	Serial.println(c.status.getResponseDescription());
+	Serial.println(c.status.code);
+
+	printParameters(configuration);
+	configuration.ADDL = 0x0;
+	configuration.ADDH = 0x0;
+	configuration.CHAN = 0x17;
+
+	configuration.OPTION.fec = FEC_1_ON;
+	configuration.OPTION.fixedTransmission = FT_FIXED_TRANSMISSION;
+	configuration.OPTION.ioDriveMode = IO_D_MODE_PUSH_PULLS_PULL_UPS;
+	configuration.OPTION.transmissionPower = POWER_17;
+	configuration.OPTION.wirelessWakeupTime = WAKE_UP_250;
+
+	configuration.SPED.airDataRate = AIR_DATA_RATE_011_48;
+	configuration.SPED.uartBaudRate = UART_BPS_9600;
+	configuration.SPED.uartParity = MODE_00_8N1;
+
+	// Set configuration changed and set to not hold the configuration
+	ResponseStatus rs = e32ttl100.setConfiguration(configuration, WRITE_CFG_PWR_DWN_SAVE);
+	Serial.println(rs.getResponseDescription());
+	Serial.println(rs.code);
+	printParameters(configuration);
+	c.close();
+}
+
+    static void automotivo(){
+        bool insucesso = true;
+        int counter = 0;
+
+        while (insucesso){
+            if (counter > 15){
+                return;
+            }
+            digitalWrite(4, HIGH);
+            digitalWrite(5, HIGH);
+            delay(600);
+            insucesso = !getagem();
+            delay(600);
+            digitalWrite(4, LOW);
+            digitalWrite(5, LOW);
+            delay(600);
+            recebagem();
+            delay(1000);
+            counter++;
+        }
+
+        delay(1000);
+        digitalWrite(4, HIGH);
+        digitalWrite(5, HIGH);
+
+        setagem();
+
+        delay(1000);
+
+        digitalWrite(4, LOW);
+        digitalWrite(5, LOW);
+
+
+        return;
+    }
+
     static bool setupTelemetria()
     {
+        delay(300);
         e32ttl100.begin();
+        delay(20000);
+        Serial.println("AUTOMOTIVO");
+        automotivo();
         // ResponseStructContainer c;
         // c = e32ttl100.getConfiguration();
         // Configuration configuration = *(Configuration *)c.data;
@@ -669,7 +627,7 @@ Comunicacao *Comunicacao::GetInstance()
         instance = new Comunicacao();
 
         // TODO:
-        // setupTelemetria();
+        setupTelemetria();
         setupCanBus();
     }
 

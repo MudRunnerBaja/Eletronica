@@ -12,6 +12,7 @@
 /**
  * DECLARAÇÕES DE FUNÇÕES
  */
+bool UpdateTelemetria(struct repeating_timer *t);
 bool UpdateData(struct repeating_timer *t);
 bool WriteSD(struct repeating_timer *t);
 
@@ -29,7 +30,12 @@ void setup()
 {
     //pinMode(GPIO2_P4_LIVRE, OUTPUT);
     // pinMode(GPIO3_P5_LIVRE, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(5, OUTPUT);
     pinMode(LED_BUILTIN, OUTPUT);
+
+    digitalWrite(4, HIGH);
+    digitalWrite(5, HIGH);
 
     //digitalWrite(GPIO2_P4_LIVRE, HIGH);
     // digitalWrite(GPIO3_P5_LIVRE, HIGH);
@@ -66,6 +72,8 @@ void setup1()
     D_println("Setup1 iniciando");
     delay(10);
 
+    // Core0Timer0.attachInterruptInterval(INTERVALO_TIMER_MS * 300, UpdateTelemetria);
+
     if (Core1Timer1.attachInterruptInterval(INTERVALO_TIMER_MS * 700, UpdateData))
         D_println("Core1Timer1 OK. Timer de: " + INTERVALO_TIMER_MS);
     else
@@ -78,7 +86,7 @@ unsigned long tempo = millis();
 bool teste = LOW;
 void loop()
 {
-    
+
     // myInstance->AtualizarDados();
     // delay(5);
     // myInstance->printarDados();
@@ -104,9 +112,13 @@ bool UpdateData(struct repeating_timer *t)
     myInstance->SincronizarDados();
     myInstance->EnviarDadosCanBus();
     myInstance->PrintarDados();
-    // myInstance->EnviarDadosTelemetria();
     myInstance->EscreverSD();
     digitalWrite(LED_BUILTIN, HIGH);
     // D_println(digitalRead(GPIO3_P5_LIVRE));
+    return true;
+}
+
+bool UpdateTelemetria(struct repeating_timer *t){
+    myInstance->EnviarDadosTelemetria();
     return true;
 }

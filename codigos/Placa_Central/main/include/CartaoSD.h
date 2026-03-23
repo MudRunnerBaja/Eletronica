@@ -164,7 +164,7 @@ int getHighestNumFromFiles()
 
     void escreverSD(String dados)
     {
-        Serial.println("Arquivo escrito sla");
+        // Serial.println("Arquivo escrito sla");
         arquivoDados = SD.open(nomeArquivo, FILE_WRITE);
         arquivoDados.print(millis());
         arquivoDados.print(",");
