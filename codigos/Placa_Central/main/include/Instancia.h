@@ -189,7 +189,7 @@ Instancia *Instancia::GetInstance()
         }
 
         D_println("Mantendo led aceso");
-        digitalWrite(LED_BUILTIN, HIGH);
+        // digitalWrite(LED_BUILTIN, HIGH);
 
         D_println("Chamando Setup");
 

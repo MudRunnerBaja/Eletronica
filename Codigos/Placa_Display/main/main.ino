@@ -12,8 +12,9 @@ bool intialized = false, setup0Completed = false;
 int rpmold;
 
 void setup(){
-    while(!Serial.available()){;}     //Espera um enter no serial para inicializar a placa (p/ DEBUG?)
+        //Espera um enter no serial para inicializar a placa (p/ DEBUG?)
     pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(2, OUTPUT);
     Serial.begin(115200);
     Serial.print("Inicializando setup...");
     setupDisplay();
@@ -38,10 +39,10 @@ void loop(){
     while(!intialized){
         delay(1000);
     }
-    menuButton(menu);
-    updateHUDMain(update, menu, menu); 
-    updateHUDRaw(update, menu, menu);
-    updateMenu(menu);
+    // menuButton(menu);
+    updateHUDMain(update, false, false); 
+    // updateHUDRaw(update, menu, menu);
+    // updateMenu(menu);
     // updateHUDMain(true, false, false);    
 }
 

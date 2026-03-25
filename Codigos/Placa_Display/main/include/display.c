@@ -10,7 +10,7 @@ int SCKPIN = 10, CSPIN = 13;
 int TXPIN = 11; // MOSI
 int RXPIN = 12; // MISO
 int RESETPIN = 14;
-U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, SCKPIN, TXPIN, CSPIN, RESETPIN);
+U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R2, SCKPIN, TXPIN, CSPIN, RESETPIN);
 
 float wprpm, rpmmax = 4000;
 bool  raw = false;
@@ -27,6 +27,9 @@ void rawInfos();
 
 void setupDisplay(){
     u8g2.begin();
+    // u8g2.setDisplayRotation(U8G2_R0);
+
+    // u8g2.setDisplayRotation(U8G2_MIRROR);
     wprpm = 128/rpmmax;
     // sprintf(tvel, "%f", vel); 
     // itoa(vel/10, &tvel[0], 10);

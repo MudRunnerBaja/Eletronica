@@ -109,6 +109,8 @@ static void setupComunicacao() {
             Serial.print("CAN init success");
             frame.id = 10;
 
+            digitalWrite(2, LOW);
+
             can.tryToSend(frame);
             can.poll();
 
@@ -116,6 +118,7 @@ static void setupComunicacao() {
         else
         {
             Serial.print("CAN Configuration error 0x");
+            digitalWrite(2, HIGH);
             Serial.println(errorCode, HEX);
         }
 }
